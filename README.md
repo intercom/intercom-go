@@ -45,17 +45,17 @@ Events are created using an `EventParams` structure:
 
 ```go
 err := ic.Events.New(&intercom.EventParams{
-  UserId:     "27",
+  UserId:    "27",
   EventName: "bought_item",
+  CreatedAt: int32(time.Now().Unix()),
   Metadata:  intercom.CreateMetadata().Add("item_id", 22).Add("item_name", "PocketWatch"),
 })
 ```
 
-One of `Id`, `UserId`, or `Email` is required.
-
-`EventName` is required.
-
-`Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
+* One of `Id`, `UserId`, or `Email` is required.
+* `EventName` is required.
+* `CreatedAt` is optional, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
+* `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
 
 ### Errors
 

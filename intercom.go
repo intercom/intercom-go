@@ -21,7 +21,8 @@ type Client struct {
 
 func GetClient(appId string, apiKey string) *Client {
 	c := Client{AppId: appId, ApiKey: apiKey, BaseUri: defaultBaseUri}
-	c.Events = (&Event{}).SetClient(&c)
+	resource := (&Resource{}).SetClient(&c)
+	c.Events = &Event{Resource: resource}
 	return &c
 }
 
