@@ -16,6 +16,7 @@ type Client struct {
 	ApiKey  string
 	BaseUri string
 	Events  *Event
+	V1Users *User
 	trace   bool
 }
 
@@ -23,6 +24,7 @@ func GetClient(appId string, apiKey string) *Client {
 	c := Client{AppId: appId, ApiKey: apiKey, BaseUri: defaultBaseUri}
 	resource := (&Resource{}).SetClient(&c)
 	c.Events = &Event{Resource: resource}
+	c.V1Users = &User{Resource: resource}
 	return &c
 }
 
@@ -111,7 +113,10 @@ func (c *Client) raisingPoster() func(*Client, string, interface{}) (*goreq.Resp
 			}
 			httpError := errorList.Errors[0] // only care about the first
 			httpError.StatusCode = res.StatusCode
-			return nil, &httpError
+			return res, &httpError
+		case 401:
+			httpError := HttpError{StatusCode: res.StatusCode, Code: "", Message: ""}
+			return res, &httpError
 		}
 		return res, nil
 	}
