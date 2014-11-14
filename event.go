@@ -4,12 +4,12 @@ import "time"
 
 type Event struct {
 	*Resource
-	UserId    string                 `json:"user_id,omitempty"`
-	Email     string                 `json:"email,omitempty"`
-	Id        string                 `json:"id,omitempty"`
-	EventName string                 `json:"event_name"`
-	CreatedAt int32                  `json:"created_at"`
-	Metadata  map[string]interface{} `json:"metadata,omitempty"`
+	UserId    string       `json:"user_id,omitempty"`
+	Email     string       `json:"email,omitempty"`
+	Id        string       `json:"id,omitempty"`
+	EventName string       `json:"event_name"`
+	CreatedAt int32        `json:"created_at"`
+	Metadata  AttributeMap `json:"metadata,omitempty"`
 }
 
 type EventParams struct {
@@ -18,7 +18,7 @@ type EventParams struct {
 	Id        string
 	EventName string
 	CreatedAt int32
-	Metadata  Metadata
+	Metadata  AttributeMap
 }
 
 func (e Event) New(params *EventParams) error {

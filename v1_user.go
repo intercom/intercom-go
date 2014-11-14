@@ -4,13 +4,13 @@ import "github.com/franela/goreq"
 
 type User struct {
 	*Resource
-	UserId     string                 `json:"user_id,omitempty"`
-	CustomData map[string]interface{} `json:"custom_data,omitempty"`
+	UserId     string       `json:"user_id,omitempty"`
+	CustomData AttributeMap `json:"custom_data,omitempty"`
 }
 
 type UserParams struct {
 	UserId     string
-	CustomData CustomData
+	CustomData AttributeMap
 }
 
 func (u User) New(params *UserParams) (*goreq.Response, error) {
