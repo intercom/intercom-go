@@ -74,6 +74,21 @@ note, err := c.Notes.New(&intercom.NoteParams{
 * `Body` is required.
 * `AdminId` is optional.
 
+#### Find Single
+
+```go
+note, _ := c.Notes.Find(&intercom.NoteParams{
+  Id: "87",
+})
+
+log.Printf(note.Author)
+// [intercom] admin { id: "87", name: "Jamie", email: "somemail@intercom.io" }
+```
+  
+  * One of `Id`, `UserId`, or `Email` is required.
+  * `Body` is required.
+  * `AdminId` is optional.
+
 ### Users
 
 #### New
