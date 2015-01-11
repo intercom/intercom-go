@@ -2,8 +2,8 @@ package intercom
 
 type Pages struct {
 	Next       string `json:"next,omitempty"`
-	Page       int32  `json:"page",omitempty"`
-	PerPage    int32  `json:"per_page",omitempty"`
+	Page       int32  `json:"page,omitempty"`
+	PerPage    int32  `json:"per_page,omitempty"`
 	TotalPages int32  `json:"total_pages,omitempty"`
 }
 

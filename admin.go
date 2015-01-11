@@ -4,18 +4,17 @@ import "fmt"
 
 type Admin struct {
 	*Resource
-	Type  string `json:"type"`
-	Id    int    `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Type  string      `json:"type"`
+	Id    interface{} `json:"id"`
+	Name  string      `json:"name"`
+	Email string      `json:"email"`
 }
 
 func (a Admin) String() string {
-	return fmt.Sprintf("[intercom] %s { id: %s name: %s, email: %s }", a.Type, a.Id, a.Name, a.Email)
+	return fmt.Sprintf("[intercom] admin { id: %s name: %s, email: %s }", a.Id, a.Name, a.Email)
 }
 
 type AdminList struct {
-	Pages  Pages   `json:"pages,omitempty"`
 	Admins []Admin `json:"admins"`
 }
 

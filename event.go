@@ -21,7 +21,7 @@ type EventParams struct {
 	Metadata  AttributeMap
 }
 
-func (e Event) New(params *EventParams) error {
+func (e Event) New(params EventParams) error {
 	event := Event{
 		UserId:    params.UserId,
 		Email:     params.Email,
