@@ -20,6 +20,7 @@ type Client struct {
 	Events  *Event
 	Users   *User
 	Notes   *Note
+	Admins  *Admin
 	trace   bool
 }
 
@@ -29,6 +30,7 @@ func GetClient(appId string, apiKey string) *Client {
 	c.Events = &Event{Resource: resource}
 	c.Notes = &Note{Resource: resource}
 	c.Users = &User{Resource: resource}
+	c.Admins = &Admin{Resource: resource}
 	return &c
 }
 
