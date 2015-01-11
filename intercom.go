@@ -20,6 +20,7 @@ type Client struct {
 	Events  *Event
 	Users   *User
 	Notes   *Note
+	Admins  *Admin
 	trace   bool
 }
 
@@ -29,6 +30,7 @@ func GetClient(appId string, apiKey string) *Client {
 	c.Events = &Event{Resource: resource}
 	c.Notes = &Note{Resource: resource}
 	c.Users = &User{Resource: resource}
+	c.Admins = &Admin{Resource: resource}
 	return &c
 }
 
@@ -98,7 +100,7 @@ func (c *Client) getRequestTracer() func(string, interface{}) {
 		v, err := query.Values(queryObject)
 		if err == nil && len(v) != 0 {
 			log.Printf("[intercom] GET request to %s?%s", url, v.Encode())
-		} else if err == nil {
+		} else {
 			log.Printf("[intercom] GET request to %s", url)
 		}
 	}
@@ -135,7 +137,6 @@ func (c *Client) responseTracerBody() func(int, string, error) {
 func (c *Client) raisingPoster() func(*Client, string, interface{}) (*goreq.Response, error) {
 	return func(c *Client, url string, body interface{}) (*goreq.Response, error) {
 		res, err := c.poster()(c, url, body)
-		// fmt.Printf(res.Body.ToString())
 		return c.parseResult(res, err)
 	}
 }

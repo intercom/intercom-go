@@ -1,5 +1,7 @@
 package intercom
 
+import "fmt"
+
 type User struct {
 	*Resource
 	*userIdentifiers              // inline identifiers
@@ -33,7 +35,11 @@ type queryUser struct {
 	UserId string `url:"user_id"`
 }
 
-func (u User) Find(params *UserParams) (*User, error) {
+func (u User) String() string {
+	return fmt.Sprintf("[intercom] user { id: %s name: %s, user_id: %s, email: %s }", u.Id, u.Name, u.UserId, u.Email)
+}
+
+func (u User) Find(params UserParams) (*User, error) {
 	userIdentifiers := userIdentifiers{
 		Id:     params.Id,
 		UserId: params.UserId,
@@ -46,7 +52,7 @@ func (u User) Find(params *UserParams) (*User, error) {
 	}
 }
 
-func (u User) List(params *PageParams) (*UserList, error) {
+func (u User) List(params PageParams) (*UserList, error) {
 	if responseBody, err := u.client.Get("/users", params); err != nil {
 		return nil, err
 	} else {
@@ -55,7 +61,7 @@ func (u User) List(params *PageParams) (*UserList, error) {
 	}
 }
 
-func (u User) New(params *UserParams) (*User, error) {
+func (u User) New(params UserParams) (*User, error) {
 	user := User{
 		userIdentifiers: &userIdentifiers{
 			UserId: params.UserId,

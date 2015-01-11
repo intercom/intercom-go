@@ -4,10 +4,10 @@ import "fmt"
 
 type Note struct {
 	*Resource
-	Id     string          `json:"id"`
-	User   userIdentifiers `json:"user"`
-	Author Author          `json:"author,omitempty"`
-	Body   string          `json:"body"`
+	Id    string `json:"id"`
+	User  User   `json:"user"`
+	Admin Admin  `json:"author,omitempty"`
+	Body  string `json:"body"`
 }
 
 type NoteParams struct {
@@ -24,7 +24,11 @@ type sentNote struct {
 	Body    string          `json:"body"`
 }
 
-func (n Note) New(params *NoteParams) (*Note, error) {
+func (n Note) String() string {
+	return fmt.Sprintf("[intercom] note { id: %s, body: %s }", n.Id, n.Body)
+}
+
+func (n Note) New(params NoteParams) (*Note, error) {
 	note := sentNote{
 		User: userIdentifiers{
 			Id:     params.Id,
@@ -42,7 +46,7 @@ func (n Note) New(params *NoteParams) (*Note, error) {
 	}
 }
 
-func (n Note) Find(params *NoteParams) (*Note, error) {
+func (n Note) Find(params NoteParams) (*Note, error) {
 	if responseBody, err := n.client.Get(fmt.Sprintf("/notes/%s", params.Id), nil); err != nil {
 		return nil, err
 	} else {
