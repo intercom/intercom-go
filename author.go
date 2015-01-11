@@ -2,6 +2,7 @@ package intercom
 
 import "fmt"
 
+// Author could represent a User or Admin
 type Author struct {
 	Type  string `json:"type"`
 	Id    string `json:"id"`
