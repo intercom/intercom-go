@@ -22,6 +22,7 @@ type UserParams struct {
 	RemoteCreatedAt int32
 	Name            string
 	CustomData      AttributeMap
+	Unread          *bool // used in finding conversations for a User
 }
 
 type userIdentifiers struct {

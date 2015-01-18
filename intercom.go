@@ -14,14 +14,15 @@ const defaultBaseUri = "https://api.intercom.io"
 const clientVersion = "0.0.1"
 
 type Client struct {
-	AppId   string
-	ApiKey  string
-	BaseUri string
-	Events  *Event
-	Users   *User
-	Notes   *Note
-	Admins  *Admin
-	trace   bool
+	AppId         string
+	ApiKey        string
+	BaseUri       string
+	Events        *Event
+	Users         *User
+	Notes         *Note
+	Admins        *Admin
+	Conversations *Conversation
+	trace         bool
 }
 
 func GetClient(appId string, apiKey string) *Client {
@@ -31,6 +32,7 @@ func GetClient(appId string, apiKey string) *Client {
 	c.Notes = &Note{Resource: resource}
 	c.Users = &User{Resource: resource}
 	c.Admins = &Admin{Resource: resource}
+	c.Conversations = &Conversation{Resource: resource}
 	return &c
 }
 
@@ -60,11 +62,11 @@ func BaseUri(baseUri string) option {
 }
 
 func (c *Client) Post(url string, body interface{}) (interface{}, error) {
-	return c.withTracing(c.postRequestTracer(), c.raisingPoster(), url, body)
+	return c.withTracing(c.postRequestTracer(), c.poster(), url, body)
 }
 
 func (c *Client) Get(url string, queryObject interface{}) (interface{}, error) {
-	return c.withTracing(c.getRequestTracer(), c.raisingGetter(), url, queryObject)
+	return c.withTracing(c.getRequestTracer(), c.getter(), url, queryObject)
 }
 
 func (c *Client) withTracing(
@@ -75,7 +77,10 @@ func (c *Client) withTracing(
 	if c.trace {
 		request_tracer(c.BaseUri+url, body)
 	}
-	res, err := http_function(c, url, body)
+	res, err := c.parseResult(http_function(c, url, body))
+	if err != nil {
+		return res, err
+	}
 	bodyBytes, err := ioutil.ReadAll(res.Body)
 	if c.trace {
 		if res != nil && err == nil {
@@ -106,22 +111,6 @@ func (c *Client) getRequestTracer() func(string, interface{}) {
 	}
 }
 
-func (c *Client) responseTracer() func(*goreq.Response, error) {
-	return func(res *goreq.Response, httpError error) {
-		if httpError != nil {
-			log.Printf("[intercom] returned with error: %s", httpError)
-		}
-		if res == nil {
-			return
-		}
-		log.Printf("[intercom] returned status: %d", res.StatusCode)
-		bodyString, err := res.Body.ToString()
-		if err == nil {
-			log.Printf("[intercom] with body: %s", bodyString)
-		}
-	}
-}
-
 func (c *Client) responseTracerBody() func(int, string, error) {
 	return func(statusCode int, bodyString string, httpError error) {
 		if httpError != nil {
@@ -131,20 +120,6 @@ func (c *Client) responseTracerBody() func(int, string, error) {
 		if bodyString != "" {
 			log.Printf("[intercom] with body: %s", bodyString)
 		}
-	}
-}
-
-func (c *Client) raisingPoster() func(*Client, string, interface{}) (*goreq.Response, error) {
-	return func(c *Client, url string, body interface{}) (*goreq.Response, error) {
-		res, err := c.poster()(c, url, body)
-		return c.parseResult(res, err)
-	}
-}
-
-func (c *Client) raisingGetter() func(*Client, string, interface{}) (*goreq.Response, error) {
-	return func(c *Client, url string, queryObject interface{}) (*goreq.Response, error) {
-		res, err := c.getter()(c, url, queryObject)
-		return c.parseResult(res, err)
 	}
 }
 

@@ -45,7 +45,7 @@ ic.Option(intercom.TraceHttp(true), intercom.BaseUri("http://intercom.dev"))
 Events are created using an `EventParams` structure:
 
 ```go
-err := ic.Events.New(&intercom.EventParams{
+err := ic.Events.New(intercom.EventParams{
   UserId:    "27",
   EventName: "bought_item",
   CreatedAt: int32(time.Now().Unix()),
@@ -63,7 +63,7 @@ err := ic.Events.New(&intercom.EventParams{
 #### New
 
 ```go
-note, err := c.Notes.New(&intercom.NoteParams{
+note, err := c.Notes.New(intercom.NoteParams{
   UserId: "27",
   Body: "Unicorn Developer",
   AdminId: "1457"
@@ -74,27 +74,25 @@ note, err := c.Notes.New(&intercom.NoteParams{
 * `Body` is required.
 * `AdminId` is optional.
 
-#### Find Single
+#### Find
 
 ```go
-note, _ := c.Notes.Find(&intercom.NoteParams{
+note, _ := c.Notes.Find(intercom.NoteParams{
   Id: "87",
 })
 
-log.Printf(note.Author)
-// [intercom] admin { id: "87", name: "Jamie", email: "somemail@intercom.io" }
+log.Printf(note)
+// [intercom] note { id: 87, body: "my note" }
 ```
   
-  * One of `Id`, `UserId`, or `Email` is required.
-  * `Body` is required.
-  * `AdminId` is optional.
+  * `Id` is required.
 
 ### Users
 
 #### New
 
 ```go
-usr, err := c.Users.New(&intercom.UserParams{
+usr, err := c.Users.New(intercom.UserParams{
   UserId:          "27",
   Name:            "Gopher",
   RemoteCreatedAt: 1416750500,
@@ -110,7 +108,7 @@ usr, err := c.Users.New(&intercom.UserParams{
 #### Find
 
 ```go
-usr, err := c.Users.Find(&intercom.UserParams{
+usr, err := c.Users.Find(intercom.UserParams{
   Email: "jamie+jamie@intercom.io",
 })
 ```
@@ -120,8 +118,89 @@ usr, err := c.Users.Find(&intercom.UserParams{
 #### List
 
 ```go
-usr_list, err := c.Users.List()
+usr_list, err := c.Users.List(intercom.PageParams{})
+usr_list.Pages // page information
+usr_list.Users // list of users
 ```
+
+or with paging...
+
+```go
+user_list, err := c.Users.List(intercom.PageParams{
+  Page: 2,
+})
+```
+
+### Admins
+
+
+#### List
+
+```go
+admin_list, err := c.Admins.List()
+admin_list.Admins // list of admins
+```
+
+### Conversations
+
+
+#### List
+
+```go
+conversation_list, err := c.Conversations.List(intercom.PageParams{}) // no paging; therefore first page
+conversation_list.Pages // page information
+conversation_list.Conversations // conversations
+```
+
+or with paging...
+
+```go
+user_list, err := c.Users.List(intercom.PageParams{ Page: 2})
+```
+
+#### List By Admin
+
+```go
+conversation_list, err := c.Conversations.ListForAdmin(intercom.PageParams{
+  Page: 2,
+}, intercom.AdminParams{
+  Id:   "2793",
+  Open: intercom.Bool(true),
+})
+```
+
+* Id is required for Admin
+* Open is optional, passing `intercom.Bool(true)` will return only open conversations (or false == closed conversations)
+
+#### List By User
+
+```go
+conversation_list, err := c.Conversations.ListForUser(intercom.PageParams{
+  Page: 4,
+}, intercom.UserParams{
+  Id:     "54713d0c8a68188189000013",
+  Unread: intercom.Bool(true),
+})
+```
+
+* `Id`, `UserId`, or `Email` is required.
+* Unread is optional, passing `intercom.Bool(true)` will return only unread conversations for that User.
+
+#### Find
+
+```go
+convo, err := c.Conversations.Find(intercom.ConversationParams{
+  Id:     "1315",
+})
+```
+
+* `Id` is required.
+
+### On Bools
+
+Due to the way Go represents the zero value for a bool, it's necessary to pass pointers to bool instead in some places.
+
+The helper `intercom.Bool(true)` creates these for you.
 
 ### Errors
 

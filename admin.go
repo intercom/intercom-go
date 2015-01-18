@@ -4,14 +4,23 @@ import "fmt"
 
 type Admin struct {
 	*Resource
-	Type  string      `json:"type"`
-	Id    interface{} `json:"id"`
-	Name  string      `json:"name"`
-	Email string      `json:"email"`
+	AdminParams
+	Type  string `json:"type"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type AdminParams struct {
+	Id   interface{}
+	Open *bool // used in finding conversations for an Admin
+}
+
+type adminIdentifiers struct {
+	Id interface{} `json:"id,omitempty" url:"id,omitempty"`
 }
 
 func (a Admin) String() string {
-	return fmt.Sprintf("[intercom] admin { id: %s name: %s, email: %s }", a.Id, a.Name, a.Email)
+	return fmt.Sprintf("[intercom] %s { id: %s name: %s, email: %s }", a.Type, a.Id, a.Name, a.Email)
 }
 
 type AdminList struct {
@@ -25,4 +34,8 @@ func (a Admin) List() (*AdminList, error) {
 		adminList := AdminList{}
 		return &adminList, a.Unmarshal(&adminList, responseBody.([]byte))
 	}
+}
+
+func (a Admin) IsNobodyAdmin() bool {
+	return a.Type == "nobody_admin"
 }
