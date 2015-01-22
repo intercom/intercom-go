@@ -6,8 +6,8 @@ import (
 )
 
 type Event struct {
-	Id        string
-	UserId    string
+	ID        string
+	UserID    string
 	Email     string
 	EventName string
 	CreatedAt time.Time
@@ -15,5 +15,5 @@ type Event struct {
 }
 
 func (e Event) String() string {
-	return fmt.Sprintf("[intercom] event { name: %s, id: %s, user_id: %s, email: %s }", e.EventName, e.Id, e.UserId, e.Email)
+	return fmt.Sprintf("[intercom] event { name: %s, id: %s, user_id: %s, email: %s }", e.EventName, e.ID, e.UserID, e.Email)
 }

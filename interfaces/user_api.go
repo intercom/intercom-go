@@ -6,16 +6,16 @@ import (
 )
 
 type UserAPI struct {
-	httpClient HttpClient
+	httpClient HTTPClient
 }
 
-func NewUserAPI(httpClient HttpClient) UserAPI {
+func NewUserAPI(httpClient HTTPClient) UserAPI {
 	return UserAPI{httpClient: httpClient}
 }
 
-func (api UserAPI) Find(params usecases.UserParams) (domain.User, error) {
+func (api UserAPI) Find(params usecases.UserIdentifiers) (domain.User, error) {
 	api.httpClient.Get("")
-	return domain.User{Id: params.Id, Email: params.Email, UserId: params.UserId}, nil
+	return domain.User{ID: params.ID, Email: params.Email, UserID: params.UserID}, nil
 }
 
 func (api UserAPI) List(params usecases.PageParams) ([]domain.User, error) {

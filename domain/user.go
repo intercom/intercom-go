@@ -6,17 +6,17 @@ import (
 )
 
 type User struct {
-	Id         string
+	ID         string
 	Email      string
-	UserId     string
+	UserID     string
 	SignedUp   time.Time
 	Name       string
 	CustomData map[string]interface{}
 }
 
 func (u User) AddEvent(event *Event) {
-	event.Id = u.Id
-	event.UserId = u.UserId
+	event.ID = u.ID
+	event.UserID = u.UserID
 	event.Email = u.Email
 }
 
@@ -25,7 +25,7 @@ func (u User) AddNote(note *Note) {
 }
 
 func (u User) String() string {
-	return fmt.Sprintf("[intercom] user { id: %s name: %s, user_id: %s, email: %s }", u.Id, u.Name, u.UserId, u.Email)
+	return fmt.Sprintf("[intercom] user { id: %s name: %s, user_id: %s, email: %s }", u.ID, u.Name, u.UserID, u.Email)
 }
 
 func (u User) authorType() string {

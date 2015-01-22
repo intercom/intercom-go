@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-type HttpClient interface {
+type HTTPClient interface {
 	Get(string) ([]byte, error)
 	Post(string, interface{}) ([]byte, error)
 }
@@ -24,7 +24,7 @@ type IntercomHttpClient struct {
 	Debug   bool
 }
 
-func NewIntercomHttpClient(appId, apiKey string) *IntercomHttpClient {
+func NewIntercomHTTPClient(appId, apiKey string) *IntercomHttpClient {
 	return &IntercomHttpClient{Client: &http.Client{}, AppId: appId, APIKey: apiKey, BaseURI: defaultBaseURI, Debug: true}
 }
 

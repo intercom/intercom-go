@@ -6,11 +6,6 @@ Offical bindings for the [Intercom](https://www.intercom.io) API
 
 `go get github.com/intercom/intercom-go`
 
-Dependencies:
-
-* [https://github.com/franela/goreq](https://github.com/franela/goreq)
-* [https://github.com/google/go-querystring](https://github.com/google/go-querystring)
-
 ## Usage
 
 ### Getting a Client
@@ -18,7 +13,7 @@ Dependencies:
 The first step to using Intercom's Go client is to create a client object, using your App ID and Api Key from your [settings](http://app.intercom.io/apps/api_keys).
 
 ```go
-ic := intercom.GetClient("appID", "apiKey")
+ic := intercom.NewClient("appID", "apiKey")
 ```
 
 This client can then be used to make requests.
