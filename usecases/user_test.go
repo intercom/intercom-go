@@ -13,6 +13,20 @@ func TestUserFindByID(t *testing.T) {
 	}
 }
 
+func TestUserFindByEmail(t *testing.T) {
+	user, _ := User{Repository: TestUserAPI{t: t}}.FindByEmail("jamie@example.io")
+	if user.Email != "jamie@example.io" {
+		t.Errorf("User not found")
+	}
+}
+
+func TestUserFindByUserID(t *testing.T) {
+	user, _ := User{Repository: TestUserAPI{t: t}}.FindByUserID("134d")
+	if user.UserID != "134d" {
+		t.Errorf("User not found")
+	}
+}
+
 func TestUserList(t *testing.T) {
 	users, _ := User{}.List(TestUserAPI{}, PageParams{})
 	if users[0].ID != "46adad3f09126dca" {
@@ -35,7 +49,7 @@ func (t TestUserAPI) Find(params UserIdentifiers) (domain.User, error) {
 }
 
 func (t TestUserAPI) List(params PageParams) ([]domain.User, error) {
-	return []domain.User{domain.User{ID: "46adad3f09126dca", Email: "jamie@intercom.io", UserID: "aa123"}}, nil
+	return []domain.User{domain.User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}, nil
 }
 
 func (t TestUserAPI) Save(user domain.User) error {

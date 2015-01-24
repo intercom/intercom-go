@@ -5,25 +5,25 @@ import (
 )
 
 func TestAddEvent(t *testing.T) {
-	user := User{ID: "46adad3f09126dca", Email: "jamie@intercom.io", UserID: "aa123"}
+	user := User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}
 	event := Event{}
 	user.AddEvent(&event)
-	if "46adad3f09126dca" != event.ID {
+	if event.ID != "46adad3f09126dca" {
 		t.Errorf("ID not set")
 	}
-	if "jamie@intercom.io" != event.Email {
+	if event.Email != "jamie@example.io" {
 		t.Errorf("Email not set")
 	}
-	if "aa123" != event.UserID {
+	if event.UserID != "aa123" {
 		t.Errorf("User ID not set")
 	}
 }
 
 func TestAddNote(t *testing.T) {
-	user := User{ID: "46adad3f09126dca", Email: "jamie@intercom.io", UserID: "aa123"}
+	user := User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}
 	note := Note{}
 	user.AddNote(&note)
-	if "46adad3f09126dca" != note.User.ID {
+	if note.User.ID != "46adad3f09126dca" {
 		t.Errorf("User not set on Note")
 	}
 }
