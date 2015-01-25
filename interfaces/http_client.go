@@ -16,26 +16,24 @@ type HTTPClient interface {
 	Post(string, interface{}) ([]byte, error)
 }
 
-const defaultBaseURI = "https://api.intercom.io"
-
 type IntercomHttpClient struct {
 	*http.Client
-	BaseURI string
+	BaseURI *string
 	AppId   string
 	APIKey  string
-	Debug   bool
+	Debug   *bool
 }
 
-func NewIntercomHTTPClient(appId, apiKey string) *IntercomHttpClient {
-	return &IntercomHttpClient{Client: &http.Client{}, AppId: appId, APIKey: apiKey, BaseURI: defaultBaseURI, Debug: true}
+func NewIntercomHTTPClient(appId, apiKey string, baseURI *string, debug *bool) IntercomHttpClient {
+	return IntercomHttpClient{Client: &http.Client{}, AppId: appId, APIKey: apiKey, BaseURI: baseURI, Debug: debug}
 }
 
 func (c IntercomHttpClient) Get(url string, queryParams interface{}) ([]byte, error) {
-	req, _ := http.NewRequest("GET", c.BaseURI+url, nil)
+	req, _ := http.NewRequest("GET", *c.BaseURI+url, nil)
 	req.SetBasicAuth(c.AppId, c.APIKey)
 	req.Header.Add("Accept", "application/json")
 	addQueryParams(req, queryParams)
-	if c.Debug {
+	if *c.Debug {
 		fmt.Printf("%s %s\n", req.Method, req.URL)
 	}
 	resp, _ := c.Client.Do(req)
@@ -54,13 +52,13 @@ func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
 	if err := json.NewEncoder(buffer).Encode(body); err != nil {
 		return nil, err
 	}
-	req, _ := http.NewRequest("POST", c.BaseURI+url, buffer)
+	req, _ := http.NewRequest("POST", *c.BaseURI+url, buffer)
 
 	req.SetBasicAuth(c.AppId, c.APIKey)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
 
-	if c.Debug {
+	if *c.Debug {
 		fmt.Printf("%s %s\n", req.Method, req.URL)
 	}
 	resp, _ := c.Client.Do(req)
@@ -70,7 +68,7 @@ func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
 
 func (c IntercomHttpClient) readAll(body io.Reader) ([]byte, error) {
 	b, err := ioutil.ReadAll(body)
-	if c.Debug {
+	if *c.Debug {
 		fmt.Println(string(b))
 	}
 	return b, err

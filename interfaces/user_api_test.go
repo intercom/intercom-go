@@ -4,13 +4,13 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/intercom/intercom-go/usecases"
+	"github.com/intercom/intercom-go/client"
 )
 
 func TestFind(t *testing.T) {
 	http := TestHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/users/54c42e7ea7a765fa7", t: t}
 	api := UserAPI{httpClient: &http}
-	user, _ := api.Find(usecases.UserIdentifiers{ID: "54c42e7ea7a765fa7"})
+	user, _ := api.Find(client.UserIdentifiers{ID: "54c42e7ea7a765fa7"})
 	if user.ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", user.ID)
 	}
@@ -28,7 +28,7 @@ func TestFind(t *testing.T) {
 func TestFindByEmail(t *testing.T) {
 	http := TestHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user, _ := api.Find(usecases.UserIdentifiers{Email: "myuser@example.io"})
+	user, _ := api.Find(client.UserIdentifiers{Email: "myuser@example.io"})
 	if user.Email != "myuser@example.io" {
 		t.Errorf("Email was %s, expected myuser@example.io", user.Email)
 	}
@@ -37,7 +37,7 @@ func TestFindByEmail(t *testing.T) {
 func TestListDefault(t *testing.T) {
 	http := TestHTTPClient{fixtureFilename: "fixtures/user_list.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user_list, _ := api.List(usecases.PageParams{})
+	user_list, _ := api.List(client.PageParams{})
 	users := user_list.Users
 	if users[0].ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", users[0].ID)
@@ -51,7 +51,7 @@ func TestListDefault(t *testing.T) {
 func TestListWithPageNumber(t *testing.T) {
 	http := TestHTTPClient{fixtureFilename: "fixtures/user_list_page_2.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user_list, _ := api.List(usecases.PageParams{Page: 2})
+	user_list, _ := api.List(client.PageParams{Page: 2})
 	pages := user_list.Pages
 	if pages.Page != 2 {
 		t.Errorf("Page was %d, expected 2", pages.Page)

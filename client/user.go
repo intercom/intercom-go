@@ -1,4 +1,4 @@
-package usecases
+package client
 
 import "github.com/intercom/intercom-go/domain"
 

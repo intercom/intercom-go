@@ -1,4 +1,4 @@
-package usecases
+package client
 
 type PageParams struct {
 	Page       int32 `json:"page" url:"page,omitempty"`
