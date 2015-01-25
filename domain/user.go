@@ -1,17 +1,14 @@
 package domain
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
 type User struct {
-	ID         string
-	Email      string
-	UserID     string
-	SignedUp   time.Time
-	Name       string
-	CustomData map[string]interface{}
+	ID               string                 `json:"id"`
+	Email            string                 `json:"email"`
+	UserID           string                 `json:"user_id"`
+	SignedUpAt       int64                  `json:"signed_up_at"`
+	Name             string                 `json:"name"`
+	CustomAttributes map[string]interface{} `json:"custom_attributes"`
 }
 
 func (u User) AddEvent(event *Event) {

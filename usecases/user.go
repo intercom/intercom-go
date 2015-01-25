@@ -3,15 +3,20 @@ package usecases
 import "github.com/intercom/intercom-go/domain"
 
 type UserIdentifiers struct {
-	ID     string
-	UserID string
-	Email  string
+	ID     string `url:"-"`
+	UserID string `url:"user_id,omitempty"`
+	Email  string `url:"email,omitempty"`
 }
 
 type UserRepository interface {
 	Find(UserIdentifiers) (domain.User, error)
-	List(PageParams) ([]domain.User, error)
+	List(PageParams) (UserList, error)
 	Save(domain.User) error
+}
+
+type UserList struct {
+	Pages PageParams
+	Users []domain.User
 }
 
 type User struct {
@@ -37,8 +42,8 @@ func (u User) FindWithIdentifiers(identifiers UserIdentifiers) (User, error) {
 	return u, err
 }
 
-func (u User) List(repository UserRepository, params PageParams) ([]domain.User, error) {
-	return repository.List(params)
+func (u User) List(params PageParams) (UserList, error) {
+	return u.Repository.List(params)
 }
 
 func (u User) Save() error {

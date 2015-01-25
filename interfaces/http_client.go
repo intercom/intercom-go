@@ -7,10 +7,12 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/google/go-querystring/query"
 )
 
 type HTTPClient interface {
-	Get(string) ([]byte, error)
+	Get(string, interface{}) ([]byte, error)
 	Post(string, interface{}) ([]byte, error)
 }
 
@@ -28,15 +30,23 @@ func NewIntercomHTTPClient(appId, apiKey string) *IntercomHttpClient {
 	return &IntercomHttpClient{Client: &http.Client{}, AppId: appId, APIKey: apiKey, BaseURI: defaultBaseURI, Debug: true}
 }
 
-func (c IntercomHttpClient) Get(url string) ([]byte, error) {
-	req, _ := c.newRequest("GET", url, nil)
+func (c IntercomHttpClient) Get(url string, queryParams interface{}) ([]byte, error) {
+	req, _ := http.NewRequest("GET", c.BaseURI+url, nil)
 	req.SetBasicAuth(c.AppId, c.APIKey)
 	req.Header.Add("Accept", "application/json")
-
+	addQueryParams(req, queryParams)
+	if c.Debug {
+		fmt.Printf("%s %s\n", req.Method, req.URL)
+	}
 	resp, _ := c.Client.Do(req)
 	defer resp.Body.Close()
 
 	return c.readAll(resp.Body)
+}
+
+func addQueryParams(req *http.Request, params interface{}) {
+	v, _ := query.Values(params)
+	req.URL.RawQuery = v.Encode()
 }
 
 func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
@@ -44,23 +54,18 @@ func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
 	if err := json.NewEncoder(buffer).Encode(body); err != nil {
 		return nil, err
 	}
-	req, _ := c.newRequest("POST", url, buffer)
+	req, _ := http.NewRequest("POST", c.BaseURI+url, buffer)
 
 	req.SetBasicAuth(c.AppId, c.APIKey)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
 
-	resp, _ := c.Client.Do(req)
-	defer resp.Body.Close()
-	return c.readAll(resp.Body)
-}
-
-func (c IntercomHttpClient) newRequest(method, url string, body io.Reader) (*http.Request, error) {
-	req, err := http.NewRequest(method, c.BaseURI+url, body)
 	if c.Debug {
 		fmt.Printf("%s %s\n", req.Method, req.URL)
 	}
-	return req, err
+	resp, _ := c.Client.Do(req)
+	defer resp.Body.Close()
+	return c.readAll(resp.Body)
 }
 
 func (c IntercomHttpClient) readAll(body io.Reader) ([]byte, error) {
