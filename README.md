@@ -13,6 +13,11 @@ Offical bindings for the [Intercom](https://www.intercom.io) API
 The first step to using Intercom's Go client is to create a client object, using your App ID and Api Key from your [settings](http://app.intercom.io/apps/api_keys).
 
 ```go
+import (
+  "github.com/intercom/intercom-go"
+  "github.com/intercom/intercom-go/client"
+)
+
 ic := intercom.NewClient("appID", "apiKey")
 ```
 
@@ -23,14 +28,14 @@ This client can then be used to make requests.
 The client can be configured with different options by calls to `ic.Option`:
 
 ```go
-ic.Option(intercom.TraceHttp(true)) // turn http tracing on
-ic.Option(intercom.BaseUri("http://intercom.dev")) // change the base uri used, useful for mocking
+ic.Option(intercom.TraceHTTP(true)) // turn http tracing on
+ic.Option(intercom.BaseURI("http://intercom.dev")) // change the base uri used, useful for mocking
 ```
 
 or combined:
 
 ```go
-ic.Option(intercom.TraceHttp(true), intercom.BaseUri("http://intercom.dev"))
+ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("http://intercom.dev"))
 ```
 
 ### Events
@@ -84,47 +89,43 @@ log.Printf(note)
 
 ### Users
 
-#### New
+#### New/Create
 
 ```go
-usr, err := c.Users.New(intercom.UserParams{
-  UserId:          "27",
-  Name:            "Gopher",
-  RemoteCreatedAt: 1416750500,
-  CustomData:  intercom.CreateCustomData().Add("vip_score", 22),
-})
+user := c.User
+user.UserID = "27"
+user.Email = "test@example.com"
+user.Name = "InterGopher"
+user.SignedUpAt = 1416750500
+user.CustomAttributes = map[string]interface{}{"is_cool": true}
+user, err := user.Save()
 ```
 
 * One of `UserId`, or `Email` is required.
-* `Name` is optional.
-* `RemoteCreatedAt` is optional, must be an integer representing seconds since Unix Epoch.
-* `CustomData` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
+* `SignedUpAt` (optional), like all dates in the client, must be an integer representing seconds since Unix Epoch.
 
 #### Find
 
 ```go
-usr, err := c.Users.Find(intercom.UserParams{
-  Email: "jamie+jamie@intercom.io",
-})
+user, err := c.User.FindByID("46adad3f09126dca")
 ```
 
-* One of `Id`, `UserId`, or `Email` is required.
+```go 
+user, err := c.User.FindByUserID("27")
+```
+
+```go
+user, err := c.User.FindByEmail("test@example.com")
+```
 
 #### List
 
 ```go
-usr_list, err := c.Users.List(intercom.PageParams{})
-usr_list.Pages // page information
-usr_list.Users // list of users
+user_list, err := c.Users.List(client.PageParams{Page: 2})
+user_list.Pages // page information
+user_list.Users // []User
 ```
 
-or with paging...
-
-```go
-user_list, err := c.Users.List(intercom.PageParams{
-  Page: 2,
-})
-```
 
 ### Admins
 

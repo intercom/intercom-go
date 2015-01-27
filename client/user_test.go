@@ -38,6 +38,7 @@ func TestUserList(t *testing.T) {
 func TestUserSave(t *testing.T) {
 	user := User{Repository: TestUserAPI{t: t}}
 	user.ID = "46adad3f09126dca"
+	user.CustomAttributes = map[string]interface{}{"is_cool": true}
 	user.Save()
 }
 
@@ -53,9 +54,13 @@ func (t TestUserAPI) List(params PageParams) (UserList, error) {
 	return UserList{Users: []domain.User{domain.User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
 }
 
-func (t TestUserAPI) Save(user domain.User) error {
+func (t TestUserAPI) Save(user domain.User) (domain.User, error) {
 	if user.ID != "46adad3f09126dca" {
-		t.t.Errorf("Nope %s", user.ID)
+		t.t.Errorf("User ID was %s, expected 46adad3f09126dca", user.ID)
 	}
-	return nil
+	expectedCAs := map[string]interface{}{"is_cool": true}
+	if user.CustomAttributes["is_cool"] != expectedCAs["is_cool"] {
+		t.t.Errorf("Custom attributes was %v, expected %v", user.CustomAttributes, expectedCAs)
+	}
+	return domain.User{}, nil
 }

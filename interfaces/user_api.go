@@ -47,7 +47,12 @@ func (api UserAPI) List(params client.PageParams) (client.UserList, error) {
 	return user_list, err
 }
 
-func (api UserAPI) Save(user domain.User) error {
-	api.httpClient.Post("", user)
-	return nil
+func (api UserAPI) Save(user domain.User) (domain.User, error) {
+	saved_user := domain.User{}
+	data, err := api.httpClient.Post("/users", user)
+	if err != nil {
+		return user, err
+	}
+	err = json.Unmarshal(data, &saved_user)
+	return saved_user, err
 }
