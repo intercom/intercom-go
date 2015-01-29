@@ -1,6 +1,6 @@
 # Intercom-Go
 
-Offical bindings for the [Intercom](https://www.intercom.io) API
+Thin client for the [Intercom](https://www.intercom.io) API.
 
 ## Install
 
@@ -29,7 +29,7 @@ The client can be configured with different options by calls to `ic.Option`:
 
 ```go
 ic.Option(intercom.TraceHTTP(true)) // turn http tracing on
-ic.Option(intercom.BaseURI("http://intercom.dev")) // change the base uri used, useful for mocking
+ic.Option(intercom.BaseURI("http://intercom.dev")) // change the base uri used, useful for testing
 ```
 
 or combined:
@@ -38,25 +38,69 @@ or combined:
 ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("http://intercom.dev"))
 ```
 
-### Events
+### Users
 
-#### New
-
-Events are created using an `EventParams` structure:
+#### Save
 
 ```go
-err := ic.Events.New(intercom.EventParams{
-  UserId:    "27",
-  EventName: "bought_item",
-  CreatedAt: int32(time.Now().Unix()),
-  Metadata:  intercom.CreateMetadata().Add("item_id", 22).Add("item_name", "PocketWatch"),
-})
+user := c.User
+user.UserID = "27"
+user.Email = "test@example.com"
+user.Name = "InterGopher"
+user.SignedUpAt = 1416750500
+user.CustomAttributes = map[string]interface{}{"is_cool": true}
+user, err := user.Save()
 ```
 
-* One of `Id`, `UserId`, or `Email` is required.
+* One of `UserID`, or `Email` is required.
+* `SignedUpAt` (optional), like all dates in the client, must be an integer(32) representing seconds since Unix Epoch.
+
+#### Find
+
+```go
+user, err := c.User.FindByID("46adad3f09126dca")
+```
+
+```go 
+user, err := c.User.FindByUserID("27")
+```
+
+```go
+user, err := c.User.FindByEmail("test@example.com")
+```
+
+#### List
+
+```go
+user_list, err := c.Users.List(client.PageParams{Page: 2})
+user_list.Pages // page information
+user_list.Users // []User
+```
+
+
+### Events
+
+#### Save
+  
+```go
+event := ic.Event
+event.UserId = "27"
+event.EventName = "bought_item"
+event.CreatedAt = int32(time.Now().Unix())
+event.Metadata = map[string]interface{}{"item_name": "PocketWatch"}
+err := event.Save()
+```
+
+* One of `UserID`, or `Email` is required.
 * `EventName` is required.
 * `CreatedAt` is optional, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
 * `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
+
+----
+
+#### Old Stuff
+
+----
 
 ### Notes
 
@@ -87,44 +131,6 @@ log.Printf(note)
   
   * `Id` is required.
 
-### Users
-
-#### New/Create
-
-```go
-user := c.User
-user.UserID = "27"
-user.Email = "test@example.com"
-user.Name = "InterGopher"
-user.SignedUpAt = 1416750500
-user.CustomAttributes = map[string]interface{}{"is_cool": true}
-user, err := user.Save()
-```
-
-* One of `UserId`, or `Email` is required.
-* `SignedUpAt` (optional), like all dates in the client, must be an integer representing seconds since Unix Epoch.
-
-#### Find
-
-```go
-user, err := c.User.FindByID("46adad3f09126dca")
-```
-
-```go 
-user, err := c.User.FindByUserID("27")
-```
-
-```go
-user, err := c.User.FindByEmail("test@example.com")
-```
-
-#### List
-
-```go
-user_list, err := c.Users.List(client.PageParams{Page: 2})
-user_list.Pages // page information
-user_list.Users // []User
-```
 
 
 ### Admins

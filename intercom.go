@@ -6,11 +6,13 @@ import (
 )
 
 type Client struct {
-	User           client.User
-	userRepository client.UserRepository
-	httpClient     interfaces.HTTPClient
-	baseURI        string
-	debug          bool
+	User            client.User
+	Event           client.Event
+	userRepository  client.UserRepository
+	eventRepository client.EventRepository
+	httpClient      interfaces.HTTPClient
+	baseURI         string
+	debug           bool
 }
 
 const defaultBaseURI = "https://api.intercom.io"
@@ -19,7 +21,9 @@ func NewClient(appID, apiKey string) *Client {
 	intercom := Client{baseURI: defaultBaseURI, debug: false}
 	intercom.httpClient = interfaces.NewIntercomHTTPClient(appID, apiKey, &intercom.baseURI, &intercom.debug)
 	intercom.userRepository = interfaces.NewUserAPI(intercom.httpClient)
+	intercom.eventRepository = interfaces.NewEventAPI(intercom.httpClient)
 	intercom.User = client.User{Repository: intercom.userRepository}
+	intercom.Event = client.Event{Repository: intercom.eventRepository}
 	return &intercom
 }
 

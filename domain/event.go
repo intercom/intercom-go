@@ -1,19 +1,15 @@
 package domain
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
 type Event struct {
-	ID        string
-	UserID    string
-	Email     string
-	EventName string
-	CreatedAt time.Time
-	Metadata  map[string]interface{}
+	Email     string                 `json:"email,omitempty"`
+	UserID    string                 `json:"user_id,omitempty"`
+	EventName string                 `json:"event_name,omitempty"`
+	CreatedAt int32                  `json:"created_at,omitempty"`
+	Metadata  map[string]interface{} `json:"metadata,omitempty"`
 }
 
 func (e Event) String() string {
-	return fmt.Sprintf("[intercom] event { name: %s, id: %s, user_id: %s, email: %s }", e.EventName, e.ID, e.UserID, e.Email)
+	return fmt.Sprintf("[intercom] event { name: %s, user_id: %s, email: %s }", e.EventName, e.UserID, e.Email)
 }
