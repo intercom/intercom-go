@@ -17,7 +17,7 @@ func TestEventSaveFail(t *testing.T) {
 }
 
 func failBody(t *testing.T, event domain.Event) error {
-  return errors.New("Missing Identifier")
+	return errors.New("Missing Identifier")
 }
 
 func TestEventSave(t *testing.T) {
@@ -31,20 +31,20 @@ func TestEventSave(t *testing.T) {
 
 func successBody(t *testing.T, event domain.Event) error {
 	if event.UserID != "27" {
-    t.Errorf("UserID not set")
+		t.Errorf("UserID not set")
 	}
-  if event.EventName != "govent" {
-    t.Errorf("EventName not set")
-  }
-  if event.Metadata["is_cool"] != true {
-    t.Errorf("Metadata not set")
-  }
+	if event.EventName != "govent" {
+		t.Errorf("EventName not set")
+	}
+	if event.Metadata["is_cool"] != true {
+		t.Errorf("Metadata not set")
+	}
 	return nil
 }
 
 type TestEventAPI struct {
-  t    *testing.T
-  body func(*testing.T, domain.Event) error
+	t    *testing.T
+	body func(*testing.T, domain.Event) error
 }
 
 func (t TestEventAPI) Save(event domain.Event) error {

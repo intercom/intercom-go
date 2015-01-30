@@ -95,6 +95,18 @@ err := event.Save()
 * `EventName` is required.
 * `CreatedAt` is optional, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
 * `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
+  
+
+### Errors
+
+Errors may be returned from some calls. Errors returned from the API will implement `client.IntercomError` and can be checked:
+
+```go
+_, err := c.User.FindByEmail("doesnotexist@intercom.io")
+if herr, ok := err.(client.IntercomError); ok && herr.GetCode() == "not_found" {
+  fmt.Print(herr)
+}
+```
 
 ----
 

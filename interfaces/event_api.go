@@ -14,3 +14,13 @@ func (api EventAPI) Save(event domain.Event) error {
 	_, err := api.httpClient.Post("/events", event)
 	return err
 }
+
+//
+// func parseResponseError(data []byte, statusCode int) HTTPError {
+// 	errorList := HTTPErrorList{}
+// 	err := json.Unmarshal(data, &errorList)
+// 	if err != nil {
+// 		return NewUnknownHTTPError()
+// 	}
+// 	return errorList.Errors[0] // only care about the first
+// }
