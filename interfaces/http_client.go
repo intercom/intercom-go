@@ -9,7 +9,6 @@ import (
 	"net/http"
 
 	"github.com/google/go-querystring/query"
-	"github.com/intercom/intercom-go/client"
 )
 
 type HTTPClient interface {
@@ -99,7 +98,14 @@ func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
 	return data, err
 }
 
-func (c IntercomHttpClient) parseResponseError(data []byte, statusCode int) client.IntercomError {
+type IntercomError interface {
+	Error() string
+	GetStatusCode() int
+	GetCode() string
+	GetMessage() string
+}
+
+func (c IntercomHttpClient) parseResponseError(data []byte, statusCode int) IntercomError {
 	errorList := HTTPErrorList{}
 	err := json.Unmarshal(data, &errorList)
 	if err != nil {

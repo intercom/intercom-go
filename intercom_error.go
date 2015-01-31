@@ -1,4 +1,4 @@
-package client
+package intercom
 
 type IntercomError interface {
 	Error() string

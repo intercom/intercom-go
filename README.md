@@ -15,7 +15,6 @@ The first step to using Intercom's Go client is to create a client object, using
 ```go
 import (
   "github.com/intercom/intercom-go"
-  "github.com/intercom/intercom-go/client"
 )
 
 ic := intercom.NewClient("appID", "apiKey")
@@ -58,15 +57,15 @@ user, err := user.Save()
 #### Find
 
 ```go
-user, err := c.User.FindByID("46adad3f09126dca")
+user, err := c.Users.FindByID("46adad3f09126dca")
 ```
 
 ```go 
-user, err := c.User.FindByUserID("27")
+user, err := c.Users.FindByUserID("27")
 ```
 
 ```go
-user, err := c.User.FindByEmail("test@example.com")
+user, err := c.Users.FindByEmail("test@example.com")
 ```
 
 #### List
@@ -83,7 +82,7 @@ user_list.Users // []User
 #### Save
   
 ```go
-event := ic.Event
+event := ic.Events
 event.UserId = "27"
 event.EventName = "bought_item"
 event.CreatedAt = int32(time.Now().Unix())
@@ -102,8 +101,8 @@ err := event.Save()
 Errors may be returned from some calls. Errors returned from the API will implement `client.IntercomError` and can be checked:
 
 ```go
-_, err := c.User.FindByEmail("doesnotexist@intercom.io")
-if herr, ok := err.(client.IntercomError); ok && herr.GetCode() == "not_found" {
+_, err := ic.Users.FindByEmail("doesnotexist@intercom.io")
+if herr, ok := err.(intercom.IntercomError); ok && herr.GetCode() == "not_found" {
   fmt.Print(herr)
 }
 ```

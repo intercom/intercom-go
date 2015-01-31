@@ -1,4 +1,4 @@
-package client
+package intercom
 
 type PageParams struct {
 	Page       int32 `json:"page" url:"page,omitempty"`

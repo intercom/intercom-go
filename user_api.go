@@ -1,24 +1,25 @@
-package interfaces
+package intercom
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
 
-	"github.com/intercom/intercom-go/client"
-	"github.com/intercom/intercom-go/domain"
+	"github.com/intercom/intercom-go/interfaces"
 )
 
+type UserRepository interface {
+	find(UserIdentifiers) (User, error)
+	list(PageParams) (UserList, error)
+	save(*User) (User, error)
+}
+
 type UserAPI struct {
-	httpClient HTTPClient
+	httpClient interfaces.HTTPClient
 }
 
-func NewUserAPI(httpClient HTTPClient) UserAPI {
-	return UserAPI{httpClient: httpClient}
-}
-
-func (api UserAPI) Find(params client.UserIdentifiers) (domain.User, error) {
-	user := domain.User{}
+func (api UserAPI) find(params UserIdentifiers) (User, error) {
+	user := User{}
 	data, err := api.getClientForFind(params)
 	if err != nil {
 		return user, err
@@ -27,7 +28,7 @@ func (api UserAPI) Find(params client.UserIdentifiers) (domain.User, error) {
 	return user, err
 }
 
-func (api UserAPI) getClientForFind(params client.UserIdentifiers) ([]byte, error) {
+func (api UserAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
 	switch {
 	case params.ID != "":
 		return api.httpClient.Get(fmt.Sprintf("/users/%s", params.ID), nil)
@@ -37,8 +38,8 @@ func (api UserAPI) getClientForFind(params client.UserIdentifiers) ([]byte, erro
 	return nil, errors.New("Missing User Identifier")
 }
 
-func (api UserAPI) List(params client.PageParams) (client.UserList, error) {
-	user_list := client.UserList{}
+func (api UserAPI) list(params PageParams) (UserList, error) {
+	user_list := UserList{}
 	data, err := api.httpClient.Get("/users", params)
 	if err != nil {
 		return user_list, err
@@ -47,11 +48,11 @@ func (api UserAPI) List(params client.PageParams) (client.UserList, error) {
 	return user_list, err
 }
 
-func (api UserAPI) Save(user domain.User) (domain.User, error) {
-	saved_user := domain.User{}
+func (api UserAPI) save(user *User) (User, error) {
+	saved_user := User{}
 	data, err := api.httpClient.Post("/users", user)
 	if err != nil {
-		return user, err
+		return saved_user, err
 	}
 	err = json.Unmarshal(data, &saved_user)
 	return saved_user, err

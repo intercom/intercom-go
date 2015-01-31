@@ -1,16 +1,14 @@
-package interfaces
+package intercom
 
 import (
 	"io/ioutil"
 	"testing"
-
-	"github.com/intercom/intercom-go/client"
 )
 
-func TestFind(t *testing.T) {
+func TestUserAPIFind(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/users/54c42e7ea7a765fa7", t: t}
 	api := UserAPI{httpClient: &http}
-	user, _ := api.Find(client.UserIdentifiers{ID: "54c42e7ea7a765fa7"})
+	user, _ := api.find(UserIdentifiers{ID: "54c42e7ea7a765fa7"})
 	if user.ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", user.ID)
 	}
@@ -25,19 +23,19 @@ func TestFind(t *testing.T) {
 	}
 }
 
-func TestFindByEmail(t *testing.T) {
+func TestUserAPIFindByEmail(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user, _ := api.Find(client.UserIdentifiers{Email: "myuser@example.io"})
+	user, _ := api.find(UserIdentifiers{Email: "myuser@example.io"})
 	if user.Email != "myuser@example.io" {
 		t.Errorf("Email was %s, expected myuser@example.io", user.Email)
 	}
 }
 
-func TestListDefault(t *testing.T) {
+func TestUserAPIListDefault(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/user_list.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user_list, _ := api.List(client.PageParams{})
+	user_list, _ := api.list(PageParams{})
 	users := user_list.Users
 	if users[0].ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", users[0].ID)
@@ -48,14 +46,21 @@ func TestListDefault(t *testing.T) {
 	}
 }
 
-func TestListWithPageNumber(t *testing.T) {
+func TestUserAPIListWithPageNumber(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/user_list_page_2.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user_list, _ := api.List(client.PageParams{Page: 2})
+	user_list, _ := api.list(PageParams{Page: 2})
 	pages := user_list.Pages
 	if pages.Page != 2 {
 		t.Errorf("Page was %d, expected 2", pages.Page)
 	}
+}
+
+func TestUserAPISave(t *testing.T) {
+	http := TestUserHTTPClient{t: t, expectedURI: "/users"}
+	api := UserAPI{httpClient: &http}
+	user := User{UserID: "27"}
+	api.save(&user)
 }
 
 type TestUserHTTPClient struct {
@@ -65,13 +70,16 @@ type TestUserHTTPClient struct {
 	expectedURI     string
 }
 
-func (h TestUserHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {
-	if h.expectedURI != uri {
-		h.t.Errorf("URI was %s, expected %s", uri, h.expectedURI)
+func (t TestUserHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {
+	if t.expectedURI != uri {
+		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
 	}
-	return ioutil.ReadFile(h.fixtureFilename)
+	return ioutil.ReadFile(t.fixtureFilename)
 }
 
-func (h TestUserHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
+func (t TestUserHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
+	if uri != "/users" {
+		t.t.Errorf("Wrong endpoint called")
+	}
 	return nil, nil
 }

@@ -1,4 +1,4 @@
-package interfaces
+package intercom
 
 type TestHTTPClient struct{}
 

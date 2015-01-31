@@ -1,25 +1,25 @@
-package interfaces
+package intercom
 
 import (
 	"testing"
 	"time"
 
-	"github.com/intercom/intercom-go/domain"
+	"github.com/intercom/intercom-go/interfaces"
 )
 
-func TestSave(t *testing.T) {
+func TestEventAPISave(t *testing.T) {
 	http := TestEventHTTPClient{t: t, expectedURI: "/events"}
 	api := EventAPI{httpClient: &http}
-	event := domain.Event{UserID: "27", CreatedAt: int32(time.Now().Unix()), EventName: "govent"}
-	api.Save(event)
+	event := Event{UserID: "27", CreatedAt: int32(time.Now().Unix()), EventName: "govent"}
+	api.save(&event)
 }
 
-func TestSaveFail(t *testing.T) {
+func TestEventAPISaveFail(t *testing.T) {
 	http := TestEventHTTPClient{t: t, expectedURI: "/events", shouldFail: true}
 	api := EventAPI{httpClient: &http}
-	event := domain.Event{UserID: "444", CreatedAt: int32(time.Now().Unix()), EventName: "govent"}
-	err := api.Save(event)
-	if herr, ok := err.(HTTPError); ok && herr.Code != "not_found" {
+	event := Event{UserID: "444", CreatedAt: int32(time.Now().Unix()), EventName: "govent"}
+	err := api.save(&event)
+	if herr, ok := err.(interfaces.HTTPError); ok && herr.Code != "not_found" {
 		t.Errorf("Error not returned")
 	}
 }
@@ -36,7 +36,7 @@ func (t TestEventHTTPClient) Post(uri string, event interface{}) ([]byte, error)
 		t.t.Errorf("Wrong endpoint called")
 	}
 	if t.shouldFail {
-		err := HTTPError{StatusCode: 404, Code: "not_found", Message: "User Not Found"}
+		err := interfaces.HTTPError{StatusCode: 404, Code: "not_found", Message: "User Not Found"}
 		return nil, err
 	}
 	return nil, nil
