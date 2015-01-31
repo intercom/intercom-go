@@ -5,28 +5,28 @@ import (
 )
 
 func TestUserFindByID(t *testing.T) {
-	user, _ := UserService{Repository: TestUserAPI{t: t}}.FindByID("46adad3f09126dca")
+	user, _ := (&UserService{Repository: TestUserAPI{t: t}}).FindByID("46adad3f09126dca")
 	if user.ID != "46adad3f09126dca" {
 		t.Errorf("User not found")
 	}
 }
 
 func TestUserFindByEmail(t *testing.T) {
-	user, _ := UserService{Repository: TestUserAPI{t: t}}.FindByEmail("jamie@example.io")
+	user, _ := (&UserService{Repository: TestUserAPI{t: t}}).FindByEmail("jamie@example.io")
 	if user.Email != "jamie@example.io" {
 		t.Errorf("User not found")
 	}
 }
 
 func TestUserFindByUserID(t *testing.T) {
-	user, _ := UserService{Repository: TestUserAPI{t: t}}.FindByUserID("134d")
+	user, _ := (&UserService{Repository: TestUserAPI{t: t}}).FindByUserID("134d")
 	if user.UserID != "134d" {
 		t.Errorf("User not found")
 	}
 }
 
 func TestUserList(t *testing.T) {
-	user_list, _ := UserService{Repository: TestUserAPI{t: t}}.List(PageParams{})
+	user_list, _ := (&UserService{Repository: TestUserAPI{t: t}}).List(PageParams{})
 	users := user_list.Users
 	if users[0].ID != "46adad3f09126dca" {
 		t.Errorf("User not listed")

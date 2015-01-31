@@ -14,7 +14,7 @@ type Event struct {
 	Metadata  map[string]interface{} `json:"metadata,omitempty"`
 }
 
-func (e EventService) Save(event *Event) error {
+func (e *EventService) Save(event *Event) error {
 	return e.Repository.save(event)
 }
 

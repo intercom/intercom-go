@@ -16,22 +16,22 @@ type HTTPClient interface {
 	Post(string, interface{}) ([]byte, error)
 }
 
-type IntercomHttpClient struct {
+type IntercomHTTPClient struct {
 	*http.Client
 	BaseURI *string
-	AppId   string
+	AppID   string
 	APIKey  string
 	Debug   *bool
 }
 
-func NewIntercomHTTPClient(appId, apiKey string, baseURI *string, debug *bool) IntercomHttpClient {
-	return IntercomHttpClient{Client: &http.Client{}, AppId: appId, APIKey: apiKey, BaseURI: baseURI, Debug: debug}
+func NewIntercomHTTPClient(appID, apiKey string, baseURI *string, debug *bool) IntercomHTTPClient {
+	return IntercomHTTPClient{Client: &http.Client{}, AppID: appID, APIKey: apiKey, BaseURI: baseURI, Debug: debug}
 }
 
-func (c IntercomHttpClient) Get(url string, queryParams interface{}) ([]byte, error) {
+func (c IntercomHTTPClient) Get(url string, queryParams interface{}) ([]byte, error) {
 	// Setup request
 	req, _ := http.NewRequest("GET", *c.BaseURI+url, nil)
-	req.SetBasicAuth(c.AppId, c.APIKey)
+	req.SetBasicAuth(c.AppID, c.APIKey)
 	req.Header.Add("Accept", "application/json")
 	addQueryParams(req, queryParams)
 	if *c.Debug {
@@ -61,7 +61,7 @@ func addQueryParams(req *http.Request, params interface{}) {
 	req.URL.RawQuery = v.Encode()
 }
 
-func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
+func (c IntercomHTTPClient) Post(url string, body interface{}) ([]byte, error) {
 	// Marshal our body
 	buffer := bytes.NewBuffer([]byte{})
 	if err := json.NewEncoder(buffer).Encode(body); err != nil {
@@ -73,7 +73,7 @@ func (c IntercomHttpClient) Post(url string, body interface{}) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.SetBasicAuth(c.AppId, c.APIKey)
+	req.SetBasicAuth(c.AppID, c.APIKey)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
 	if *c.Debug {
@@ -105,7 +105,7 @@ type IntercomError interface {
 	GetMessage() string
 }
 
-func (c IntercomHttpClient) parseResponseError(data []byte, statusCode int) IntercomError {
+func (c IntercomHTTPClient) parseResponseError(data []byte, statusCode int) IntercomError {
 	errorList := HTTPErrorList{}
 	err := json.Unmarshal(data, &errorList)
 	if err != nil {
@@ -116,7 +116,7 @@ func (c IntercomHttpClient) parseResponseError(data []byte, statusCode int) Inte
 	return httpError // only care about the first
 }
 
-func (c IntercomHttpClient) readAll(body io.Reader) ([]byte, error) {
+func (c IntercomHTTPClient) readAll(body io.Reader) ([]byte, error) {
 	b, err := ioutil.ReadAll(body)
 	if *c.Debug {
 		fmt.Println(string(b))

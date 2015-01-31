@@ -29,6 +29,7 @@ The client can be configured with different options by calls to `ic.Option`:
 ```go
 ic.Option(intercom.TraceHTTP(true)) // turn http tracing on
 ic.Option(intercom.BaseURI("http://intercom.dev")) // change the base uri used, useful for testing
+ic.Option(intercom.SetHTTPClient(myHTTPClient)) // set a new HTTP client, see below for more info
 ```
 
 or combined:
@@ -42,13 +43,14 @@ ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("http://intercom.dev"))
 #### Save
 
 ```go
-user := c.User
-user.UserID = "27"
-user.Email = "test@example.com"
-user.Name = "InterGopher"
-user.SignedUpAt = 1416750500
-user.CustomAttributes = map[string]interface{}{"is_cool": true}
-user, err := user.Save()
+user := intercom.User{
+  UserID: "27",
+  Email: "test@example.com",
+  Name: "InterGopher",
+  SignedUpAt: int32(time.Now().Unix()),
+  CustomAttributes: map[string]interface{}{"is_cool": true},
+}
+saved_user, err := ic.Users.Save(&user)
 ```
 
 * One of `UserID`, or `Email` is required.
@@ -57,21 +59,21 @@ user, err := user.Save()
 #### Find
 
 ```go
-user, err := c.Users.FindByID("46adad3f09126dca")
+user, err := ic.Users.FindByID("46adad3f09126dca")
 ```
 
 ```go 
-user, err := c.Users.FindByUserID("27")
+user, err := ic.Users.FindByUserID("27")
 ```
 
 ```go
-user, err := c.Users.FindByEmail("test@example.com")
+user, err := ic.Users.FindByEmail("test@example.com")
 ```
 
 #### List
 
 ```go
-user_list, err := c.Users.List(client.PageParams{Page: 2})
+user_list, err := ic.Users.List(client.PageParams{Page: 2})
 user_list.Pages // page information
 user_list.Users // []User
 ```
@@ -82,12 +84,13 @@ user_list.Users // []User
 #### Save
   
 ```go
-event := ic.Events
-event.UserId = "27"
-event.EventName = "bought_item"
-event.CreatedAt = int32(time.Now().Unix())
-event.Metadata = map[string]interface{}{"item_name": "PocketWatch"}
-err := event.Save()
+event := intercom.Event{
+  UserId: "27",
+  EventName: "bought_item",
+  CreatedAt: int32(time.Now().Unix()),
+  Metadata: map[string]interface{}{"item_name": "PocketWatch"},
+}
+err := ic.Events.Save(&event)
 ```
 
 * One of `UserID`, or `Email` is required.
@@ -98,13 +101,32 @@ err := event.Save()
 
 ### Errors
 
-Errors may be returned from some calls. Errors returned from the API will implement `client.IntercomError` and can be checked:
+Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
 
 ```go
 _, err := ic.Users.FindByEmail("doesnotexist@intercom.io")
 if herr, ok := err.(intercom.IntercomError); ok && herr.GetCode() == "not_found" {
   fmt.Print(herr)
 }
+```
+
+### HTTP Client
+
+The HTTP Client used by this package can be swapped out for one of your choosing, with your own configuration, it just needs to implement the HTTPClient interface:
+
+```go
+type HTTPClient interface {
+  Get(string, interface{}) ([]byte, error)
+  Post(string, interface{}) ([]byte, error)
+}
+```
+
+It'll probably need to hold `appId`, `apiKey` and `baseURI` values. See the provided client for an example. Then create an Intercom Client and inject the HTTPClient:
+
+```go
+ic := intercom.Client{}
+ic.Option(intercom.SetHTTPClient(myHTTPClient))
+// ready to go!
 ```
 
 ----

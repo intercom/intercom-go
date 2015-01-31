@@ -27,29 +27,27 @@ type UserIdentifiers struct {
 	Email  string `url:"email,omitempty"`
 }
 
-func (u UserService) FindByID(id string) (User, error) {
+func (u *UserService) FindByID(id string) (User, error) {
 	return u.findWithIdentifiers(UserIdentifiers{ID: id})
 }
 
-func (u UserService) FindByUserID(userID string) (User, error) {
+func (u *UserService) FindByUserID(userID string) (User, error) {
 	return u.findWithIdentifiers(UserIdentifiers{UserID: userID})
 }
 
-func (u UserService) FindByEmail(email string) (User, error) {
+func (u *UserService) FindByEmail(email string) (User, error) {
 	return u.findWithIdentifiers(UserIdentifiers{Email: email})
 }
 
-func (u UserService) findWithIdentifiers(identifiers UserIdentifiers) (User, error) {
-	var err error
-	u.User, err = u.Repository.find(identifiers)
-	return u.User, err
+func (u *UserService) findWithIdentifiers(identifiers UserIdentifiers) (User, error) {
+	return u.Repository.find(identifiers)
 }
 
-func (u UserService) List(params PageParams) (UserList, error) {
+func (u *UserService) List(params PageParams) (UserList, error) {
 	return u.Repository.list(params)
 }
 
-func (u UserService) Save(user *User) (User, error) {
+func (u *UserService) Save(user *User) (User, error) {
 	return u.Repository.save(user)
 }
 

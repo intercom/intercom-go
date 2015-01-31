@@ -7,8 +7,11 @@ import (
 type Client struct {
 	Users           UserService
 	Events          EventService
+	Conversations   ConversationService
 	UserRepository  UserRepository
 	EventRepository EventRepository
+	AppID           string
+	APIKey          string
 	HTTPClient      interfaces.HTTPClient
 	baseURI         string
 	debug           bool
@@ -17,13 +20,17 @@ type Client struct {
 const defaultBaseURI = "https://api.intercom.io"
 
 func NewClient(appID, apiKey string) *Client {
-	intercom := Client{baseURI: defaultBaseURI, debug: false}
-	intercom.HTTPClient = interfaces.NewIntercomHTTPClient(appID, apiKey, &intercom.baseURI, &intercom.debug)
-	intercom.UserRepository = UserAPI{httpClient: intercom.HTTPClient}
-	intercom.EventRepository = EventAPI{httpClient: intercom.HTTPClient}
-	intercom.Users = UserService{Repository: intercom.UserRepository}
-	intercom.Events = EventService{Repository: intercom.EventRepository}
+	intercom := Client{AppID: appID, APIKey: apiKey, baseURI: defaultBaseURI, debug: false}
+	intercom.HTTPClient = interfaces.NewIntercomHTTPClient(intercom.AppID, intercom.APIKey, &intercom.baseURI, &intercom.debug)
+	intercom.setup()
 	return &intercom
+}
+
+func (c *Client) setup() {
+	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
+	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
+	c.Users = UserService{Repository: c.UserRepository}
+	c.Events = EventService{Repository: c.EventRepository}
 }
 
 type option func(c *Client) option
@@ -48,5 +55,14 @@ func BaseURI(baseURI string) option {
 		previous := c.baseURI
 		c.baseURI = baseURI
 		return BaseURI(previous)
+	}
+}
+
+func SetHTTPClient(httpClient interfaces.HTTPClient) option {
+	return func(c *Client) option {
+		previous := c.HTTPClient
+		c.HTTPClient = httpClient
+		c.setup()
+		return SetHTTPClient(previous)
 	}
 }
