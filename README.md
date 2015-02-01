@@ -106,6 +106,15 @@ err := ic.Events.Save(&event)
 conversation, err := ic.Conversations.Find("12")
 ```
 
+### Admins
+
+### List
+
+```go
+adminList, err := ic.Admins.List()
+admins := adminList.Admins
+```
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
@@ -128,7 +137,7 @@ type HTTPClient interface {
 }
 ```
 
-It'll probably need to hold `appId`, `apiKey` and `baseURI` values. See the provided client for an example. Then create an Intercom Client and inject the HTTPClient:
+It'll probably need to work with `appId`, `apiKey` and `baseURI` values. See the provided client for an example. Then create an Intercom Client and inject the HTTPClient:
 
 ```go
 ic := intercom.Client{}

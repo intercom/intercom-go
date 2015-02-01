@@ -5,12 +5,14 @@ import (
 )
 
 type Client struct {
-	Users                  UserService
-	Events                 EventService
+	Admins                 AdminService
 	Conversations          ConversationService
-	UserRepository         UserRepository
-	EventRepository        EventRepository
+	Events                 EventService
+	Users                  UserService
+	AdminRepository        AdminRepository
 	ConversationRepository ConversationRepository
+	EventRepository        EventRepository
+	UserRepository         UserRepository
 	AppID                  string
 	APIKey                 string
 	HTTPClient             interfaces.HTTPClient
@@ -28,12 +30,14 @@ func NewClient(appID, apiKey string) *Client {
 }
 
 func (c *Client) setup() {
-	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
-	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
+	c.AdminRepository = AdminAPI{httpClient: c.HTTPClient}
 	c.ConversationRepository = ConversationAPI{httpClient: c.HTTPClient}
-	c.Users = UserService{Repository: c.UserRepository}
-	c.Events = EventService{Repository: c.EventRepository}
+	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
+	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
+	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Conversations = ConversationService{Repository: c.ConversationRepository}
+	c.Events = EventService{Repository: c.EventRepository}
+	c.Users = UserService{Repository: c.UserRepository}
 }
 
 type option func(c *Client) option

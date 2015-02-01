@@ -39,13 +39,13 @@ func (api UserAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
 }
 
 func (api UserAPI) list(params PageParams) (UserList, error) {
-	user_list := UserList{}
+	userList := UserList{}
 	data, err := api.httpClient.Get("/users", params)
 	if err != nil {
-		return user_list, err
+		return userList, err
 	}
-	err = json.Unmarshal(data, &user_list)
-	return user_list, err
+	err = json.Unmarshal(data, &userList)
+	return userList, err
 }
 
 func (api UserAPI) save(user *User) (User, error) {

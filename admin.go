@@ -1,12 +1,27 @@
 package intercom
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Admin struct {
-	ID    string `json:"id"`
-	Type  string `json:"type"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID    json.Number `json:"id"`
+	Type  string      `json:"type"`
+	Name  string      `json:"name"`
+	Email string      `json:"email"`
+}
+
+type AdminList struct {
+	Admins []Admin
+}
+
+type AdminService struct {
+	Repository AdminRepository
+}
+
+func (c *AdminService) List() (AdminList, error) {
+	return c.Repository.list()
 }
 
 func (a Admin) IsNobodyAdmin() bool {
