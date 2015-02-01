@@ -54,7 +54,3 @@ func (u *UserService) Save(user *User) (User, error) {
 func (u User) String() string {
 	return fmt.Sprintf("[intercom] user { id: %s name: %s, user_id: %s, email: %s }", u.ID, u.Name, u.UserID, u.Email)
 }
-
-func (u User) authorType() string {
-	return "user"
-}

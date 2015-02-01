@@ -5,16 +5,17 @@ import (
 )
 
 type Client struct {
-	Users           UserService
-	Events          EventService
-	Conversations   ConversationService
-	UserRepository  UserRepository
-	EventRepository EventRepository
-	AppID           string
-	APIKey          string
-	HTTPClient      interfaces.HTTPClient
-	baseURI         string
-	debug           bool
+	Users                  UserService
+	Events                 EventService
+	Conversations          ConversationService
+	UserRepository         UserRepository
+	EventRepository        EventRepository
+	ConversationRepository ConversationRepository
+	AppID                  string
+	APIKey                 string
+	HTTPClient             interfaces.HTTPClient
+	baseURI                string
+	debug                  bool
 }
 
 const defaultBaseURI = "https://api.intercom.io"
@@ -29,8 +30,10 @@ func NewClient(appID, apiKey string) *Client {
 func (c *Client) setup() {
 	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
 	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
+	c.ConversationRepository = ConversationAPI{httpClient: c.HTTPClient}
 	c.Users = UserService{Repository: c.UserRepository}
 	c.Events = EventService{Repository: c.EventRepository}
+	c.Conversations = ConversationService{Repository: c.ConversationRepository}
 }
 
 type option func(c *Client) option

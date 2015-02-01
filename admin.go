@@ -3,14 +3,10 @@ package intercom
 import "fmt"
 
 type Admin struct {
-	Id    string
-	Type  string
-	Name  string
-	Email string
-}
-
-func (a Admin) authorType() string {
-	return "admin"
+	ID    string `json:"id"`
+	Type  string `json:"type"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 func (a Admin) IsNobodyAdmin() bool {
@@ -18,5 +14,5 @@ func (a Admin) IsNobodyAdmin() bool {
 }
 
 func (a Admin) String() string {
-	return fmt.Sprintf("[intercom] %s { id: %s name: %s, email: %s }", a.Type, a.Id, a.Name, a.Email)
+	return fmt.Sprintf("[intercom] %s { id: %s name: %s, email: %s }", a.Type, a.ID, a.Name, a.Email)
 }

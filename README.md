@@ -97,7 +97,14 @@ err := ic.Events.Save(&event)
 * `EventName` is required.
 * `CreatedAt` is optional, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
 * `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
-  
+
+### Conversations
+
+#### Find
+
+```go
+conversation, err := ic.Conversations.Find("12")
+```
 
 ### Errors
 

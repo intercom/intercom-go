@@ -3,10 +3,10 @@ package intercom
 import "fmt"
 
 type Attachment struct {
-	Name        string
-	URL         string
-	ContentType string
-	Filesize    int32
+	Name        string `json:"name,omitempty"`
+	URL         string `json:"url,omitempty"`
+	ContentType string `json:"content_type,omitempty"`
+	Filesize    int32  `json:"file_size,omitempty"`
 }
 
 func (a Attachment) String() string {

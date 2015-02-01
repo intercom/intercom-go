@@ -1,5 +1,6 @@
 package intercom
 
-type Author interface {
-	authorType() string
+type Author struct {
+	Type string `json:"type"`
+	ID   string `json:"id"`
 }
