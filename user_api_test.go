@@ -8,7 +8,10 @@ import (
 func TestUserAPIFind(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/users/54c42e7ea7a765fa7", t: t}
 	api := UserAPI{httpClient: &http}
-	user, _ := api.find(UserIdentifiers{ID: "54c42e7ea7a765fa7"})
+	user, err := api.find(UserIdentifiers{ID: "54c42e7ea7a765fa7"})
+	if err != nil {
+		t.Errorf("Error parsing fixture %s", err)
+	}
 	if user.ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", user.ID)
 	}
