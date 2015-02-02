@@ -43,16 +43,31 @@
   "remote_created_at": 1422143117,
   "signed_up_at": 1422143117,
   "updated_at": 1422143201,
+  "last_seen_ip": "192.168.1.1",
   "session_count": 4,
   "social_profiles": {
     "type": "social_profile.list",
-    "social_profiles": []
+    "social_profiles": [
+      {
+        "type": "social_profile",
+        "name": "Twitter",
+        "id": "000000000",
+        "username": "TwitterUser",
+        "url": "http://www.twitter.com/twitter_user"
+      }
+    ]
   },
   "unsubscribed_from_emails": false,
   "user_agent_data": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104 Safari/537.36",
   "tags": {
     "type": "tag.list",
-    "tags": []
+    "tags": [
+      {
+        "type": "tag",
+        "id": "34202",
+        "name": "Kelly_Lead"
+      }
+    ]
   },
   "segments": {
     "type": "segment.list",

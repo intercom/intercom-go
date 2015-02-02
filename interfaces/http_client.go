@@ -77,7 +77,7 @@ func (c IntercomHTTPClient) Post(url string, body interface{}) ([]byte, error) {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
 	if *c.Debug {
-		fmt.Printf("%s %s\n", req.Method, req.URL)
+		fmt.Printf("%s %s %s\n", req.Method, req.URL, buffer)
 	}
 
 	// Do request
