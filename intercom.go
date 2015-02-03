@@ -7,9 +7,11 @@ import (
 type Client struct {
 	Admins          AdminService
 	Events          EventService
+	Tags            TagService
 	Users           UserService
 	AdminRepository AdminRepository
 	EventRepository EventRepository
+	TagRepository   TagRepository
 	UserRepository  UserRepository
 	AppID           string
 	APIKey          string
@@ -30,9 +32,11 @@ func NewClient(appID, apiKey string) *Client {
 func (c *Client) setup() {
 	c.AdminRepository = AdminAPI{httpClient: c.HTTPClient}
 	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
+	c.TagRepository = TagAPI{httpClient: c.HTTPClient}
 	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
 	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Events = EventService{Repository: c.EventRepository}
+	c.Tags = TagService{Repository: c.TagRepository}
 	c.Users = UserService{Repository: c.UserRepository}
 }
 

@@ -3,7 +3,6 @@ package intercom
 import "fmt"
 
 type UserService struct {
-	User
 	Repository UserRepository
 }
 

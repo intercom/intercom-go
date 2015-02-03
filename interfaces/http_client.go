@@ -14,6 +14,7 @@ import (
 type HTTPClient interface {
 	Get(string, interface{}) ([]byte, error)
 	Post(string, interface{}) ([]byte, error)
+	Delete(string, interface{}) ([]byte, error)
 }
 
 type IntercomHTTPClient struct {
@@ -78,6 +79,34 @@ func (c IntercomHTTPClient) Post(url string, body interface{}) ([]byte, error) {
 	req.Header.Add("Content-Type", "application/json")
 	if *c.Debug {
 		fmt.Printf("%s %s %s\n", req.Method, req.URL, buffer)
+	}
+
+	// Do request
+	resp, err := c.Client.Do(req)
+	defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	// Read response
+	data, err := c.readAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode >= 400 {
+		return nil, c.parseResponseError(data, resp.StatusCode)
+	}
+	return data, err
+}
+
+func (c IntercomHTTPClient) Delete(url string, queryParams interface{}) ([]byte, error) {
+	// Setup request
+	req, _ := http.NewRequest("DELETE", *c.BaseURI+url, nil)
+	req.SetBasicAuth(c.AppID, c.APIKey)
+	req.Header.Add("Accept", "application/json")
+	addQueryParams(req, queryParams)
+	if *c.Debug {
+		fmt.Printf("%s %s\n", req.Method, req.URL)
 	}
 
 	// Do request

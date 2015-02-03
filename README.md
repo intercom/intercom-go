@@ -101,11 +101,49 @@ err := ic.Events.Save(&event)
 
 ### Admins
 
-### List
+#### List
 
 ```go
 adminList, err := ic.Admins.List()
 admins := adminList.Admins
+```
+
+### Tags
+
+#### List
+
+```go
+tagList, err := ic.Tags.List()
+tags := tagList.Tags
+```
+
+#### Save
+
+```go
+tag := intercom.Tag{Name: "GoTag"}
+savedTag, err := ic.Tags.Save(&tag)
+```
+
+`Name` is required. Passing an `ID` will attempt to update the tag with that ID.
+
+#### Delete
+
+```go
+err := ic.Tags.Delete("6")
+```
+
+#### Tagging Users/Companies
+
+```go
+taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{intercom.Tagging{UserID: "27"}}}
+savedTag, err := ic.Tags.Tag(&taggingList)
+```
+
+A `Tagging` can identify a User or Company, and can be set to `Untag`:
+
+```go
+taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{intercom.Tagging{UserID: "27", Untag: intercom.Bool(true)}}}
+savedTag, err := ic.Tags.Tag(&taggingList)
 ```
 
 ### Errors
@@ -127,6 +165,7 @@ The HTTP Client used by this package can be swapped out for one of your choosing
 type HTTPClient interface {
   Get(string, interface{}) ([]byte, error)
   Post(string, interface{}) ([]byte, error)
+  Delete(string, interface{}) ([]byte, error)
 }
 ```
 
