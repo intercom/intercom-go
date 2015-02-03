@@ -38,7 +38,7 @@ func TestUserAPIFindByEmail(t *testing.T) {
 func TestUserAPIListDefault(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	userList, _ := api.list(PageParams{})
+	userList, _ := api.list(userListParams{})
 	users := userList.Users
 	if users[0].ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", users[0].ID)
@@ -52,10 +52,28 @@ func TestUserAPIListDefault(t *testing.T) {
 func TestUserAPIListWithPageNumber(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/users_page_2.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	userList, _ := api.list(PageParams{Page: 2})
+	userList, _ := api.list(userListParams{PageParams: PageParams{Page: 2}})
 	pages := userList.Pages
 	if pages.Page != 2 {
 		t.Errorf("Page was %d, expected 2", pages.Page)
+	}
+}
+
+func TestUserAPIListWithSegment(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
+	api := UserAPI{httpClient: &http}
+	api.list(userListParams{SegmentID: "abc123"})
+	if ulParams, ok := http.lastQueryParams.(userListParams); !ok || ulParams.SegmentID != "abc123" {
+		t.Errorf("SegmentID expected to be abc123, but was %s", ulParams.SegmentID)
+	}
+}
+
+func TestUserAPIListWithTag(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
+	api := UserAPI{httpClient: &http}
+	api.list(userListParams{TagID: "123"})
+	if ulParams, ok := http.lastQueryParams.(userListParams); !ok || ulParams.TagID != "123" {
+		t.Errorf("SegmentID expected to be 123, but was %s", ulParams.TagID)
 	}
 }
 
@@ -66,23 +84,38 @@ func TestUserAPISave(t *testing.T) {
 	api.save(&user)
 }
 
+func TestUserAPIDelete(t *testing.T) {
+	http := TestUserHTTPClient{t: t, expectedURI: "/users/1234"}
+	api := UserAPI{httpClient: &http}
+	api.delete("1234")
+}
+
 type TestUserHTTPClient struct {
 	TestHTTPClient
 	t               *testing.T
 	fixtureFilename string
 	expectedURI     string
+	lastQueryParams interface{}
 }
 
-func (t TestUserHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {
+func (t *TestUserHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {
 	if t.expectedURI != uri {
 		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
 	}
+	t.lastQueryParams = queryParams
 	return ioutil.ReadFile(t.fixtureFilename)
 }
 
-func (t TestUserHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
+func (t *TestUserHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
 	if uri != "/users" {
 		t.t.Errorf("Wrong endpoint called")
 	}
 	return nil, nil
+}
+
+func (t *TestUserHTTPClient) Delete(uri string, queryParams interface{}) ([]byte, error) {
+	if t.expectedURI != uri {
+		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
+	}
+	return ioutil.ReadFile(t.fixtureFilename)
 }

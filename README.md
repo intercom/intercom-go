@@ -50,7 +50,7 @@ user := intercom.User{
   SignedUpAt: int32(time.Now().Unix()),
   CustomAttributes: map[string]interface{}{"is_cool": true},
 }
-saved_user, err := ic.Users.Save(&user)
+savedUser, err := ic.Users.Save(&user)
 ```
 
 * One of `UserID`, or `Email` is required.
@@ -73,11 +73,69 @@ user, err := ic.Users.FindByEmail("test@example.com")
 #### List
 
 ```go
-user_list, err := ic.Users.List(intercom.PageParams{Page: 2})
-user_list.Pages // page information
-user_list.Users // []User
+userList, err := ic.Users.List(intercom.PageParams{Page: 2})
+userList.Pages // page information
+userList.Users // []User
 ```
 
+```go
+userList, err := ic.Users.ListBySegment("segmentID123", intercom.PageParams{})
+```
+
+```go
+userList, err := ic.Users.ListByTag("42", intercom.PageParams{})
+```
+
+#### Delete
+
+```go
+user, err := ic.Users.Delete("46adad3f09126dca")
+```
+
+### Companies
+
+#### Save
+
+```go
+company := intercom.Company{
+  CompanyID: "27",
+  Name: "My Co",
+  CustomAttributes: map[string]interface{}{"is_cool": true},
+}
+savedCompany, err := ic.Companies.Save(&company)
+```
+
+* `CompanyID` is required.
+
+#### Find
+
+```go
+company, err := ic.Companies.FindByID("46adad3f09126dca")
+```
+
+```go 
+company, err := ic.Companies.FindByCompanyID("27")
+```
+
+```go
+company, err := ic.Companies.FindByName("My Co")
+```
+
+#### List
+
+```go
+companyList, err := ic.Companies.List(intercom.PageParams{Page: 2})
+companyList.Pages // page information
+companyList.Companies // []Companies
+```
+
+```go
+companyList, err := ic.Companies.ListBySegment("segmentID123", intercom.PageParams{})
+```
+
+```go
+companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
+```
 
 ### Events
 
@@ -192,114 +250,8 @@ ic.Option(intercom.SetHTTPClient(myHTTPClient))
 // ready to go!
 ```
 
-----
-
-#### Old Stuff
-
-----
-
-### Notes
-
-#### New
-
-```go
-note, err := c.Notes.New(intercom.NoteParams{
-  UserId: "27",
-  Body: "Unicorn Developer",
-  AdminId: "1457"
-})
-```
-
-* One of `Id`, `UserId`, or `Email` is required.
-* `Body` is required.
-* `AdminId` is optional.
-
-#### Find
-
-```go
-note, _ := c.Notes.Find(intercom.NoteParams{
-  Id: "87",
-})
-
-log.Printf(note)
-// [intercom] note { id: 87, body: "my note" }
-```
-  
-  * `Id` is required.
-
-
-
-### Admins
-
-
-#### List
-
-```go
-admin_list, err := c.Admins.List()
-admin_list.Admins // list of admins
-```
-
-### Conversations
-
-
-#### List
-
-```go
-conversation_list, err := c.Conversations.List(intercom.PageParams{}) // no paging; therefore first page
-conversation_list.Pages // page information
-conversation_list.Conversations // conversations
-```
-
-or with paging...
-
-```go
-user_list, err := c.Users.List(intercom.PageParams{ Page: 2})
-```
-
-#### List By Admin
-
-```go
-conversation_list, err := c.Conversations.ListForAdmin(intercom.PageParams{
-  Page: 2,
-}, intercom.AdminParams{
-  Id:   "2793",
-  Open: intercom.Bool(true),
-})
-```
-
-* Id is required for Admin
-* Open is optional, passing `intercom.Bool(true)` will return only open conversations (or false == closed conversations)
-
-#### List By User
-
-```go
-conversation_list, err := c.Conversations.ListForUser(intercom.PageParams{
-  Page: 4,
-}, intercom.UserParams{
-  Id:     "54713d0c8a68188189000013",
-  Unread: intercom.Bool(true),
-})
-```
-
-* `Id`, `UserId`, or `Email` is required.
-* Unread is optional, passing `intercom.Bool(true)` will return only unread conversations for that User.
-
-#### Find
-
-```go
-convo, err := c.Conversations.Find(intercom.ConversationParams{
-  Id:     "1315",
-})
-```
-
-* `Id` is required.
-
 ### On Bools
 
 Due to the way Go represents the zero value for a bool, it's necessary to pass pointers to bool instead in some places.
 
 The helper `intercom.Bool(true)` creates these for you.
-
-### Errors
-
-All operations can return errors in addition to structured data. These errors should be checked.

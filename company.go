@@ -41,6 +41,12 @@ type Plan struct {
 	Name string `json:"name,omitempty"`
 }
 
+type companyListParams struct {
+	PageParams
+	SegmentID string `url:"segment_id,omitempty"`
+	TagID     string `url:"tag_id,omitempty"`
+}
+
 func (c *CompanyService) FindByID(id string) (Company, error) {
 	return c.findWithIdentifiers(CompanyIdentifiers{ID: id})
 }
@@ -58,7 +64,15 @@ func (c *CompanyService) findWithIdentifiers(identifiers CompanyIdentifiers) (Co
 }
 
 func (c *CompanyService) List(params PageParams) (CompanyList, error) {
-	return c.Repository.list(params)
+	return c.Repository.list(companyListParams{PageParams: params})
+}
+
+func (c *CompanyService) ListBySegment(segmentID string, params PageParams) (CompanyList, error) {
+	return c.Repository.list(companyListParams{PageParams: params, SegmentID: segmentID})
+}
+
+func (c *CompanyService) ListByTag(tagID string, params PageParams) (CompanyList, error) {
+	return c.Repository.list(companyListParams{PageParams: params, TagID: tagID})
 }
 
 func (c *CompanyService) Save(user *Company) (Company, error) {

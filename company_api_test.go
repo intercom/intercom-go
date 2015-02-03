@@ -38,7 +38,7 @@ func TestCompanyAPIFindByName(t *testing.T) {
 func TestCompanyAPIListDefault(t *testing.T) {
 	http := TestCompanyHTTPClient{fixtureFilename: "fixtures/companies.json", expectedURI: "/companies", t: t}
 	api := CompanyAPI{httpClient: &http}
-	companyList, _ := api.list(PageParams{})
+	companyList, _ := api.list(companyListParams{})
 	companies := companyList.Companies
 	if companies[0].ID != "54c42ed71623d8caa" {
 		t.Errorf("ID was %s, expected 54c42ed71623d8caa", companies[0].ID)

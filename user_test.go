@@ -39,6 +39,10 @@ func TestUserSave(t *testing.T) {
 	userService.Save(&user)
 }
 
+func TestUserDelete(t *testing.T) {
+	(&UserService{Repository: TestUserAPI{t: t}}).Delete("46adad3f09126dca")
+}
+
 type TestUserAPI struct {
 	t *testing.T
 }
@@ -47,7 +51,7 @@ func (t TestUserAPI) find(params UserIdentifiers) (User, error) {
 	return User{ID: params.ID, Email: params.Email, UserID: params.UserID}, nil
 }
 
-func (t TestUserAPI) list(params PageParams) (UserList, error) {
+func (t TestUserAPI) list(params userListParams) (UserList, error) {
 	return UserList{Users: []User{User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
 }
 
@@ -58,6 +62,13 @@ func (t TestUserAPI) save(user *User) (User, error) {
 	expectedCAs := map[string]interface{}{"is_cool": true}
 	if user.CustomAttributes["is_cool"] != expectedCAs["is_cool"] {
 		t.t.Errorf("Custom attributes was %v, expected %v", user.CustomAttributes, expectedCAs)
+	}
+	return User{}, nil
+}
+
+func (t TestUserAPI) delete(id string) (User, error) {
+	if id != "46adad3f09126dca" {
+		t.t.Errorf("id was %s, expected 46adad3f09126dca", id)
 	}
 	return User{}, nil
 }

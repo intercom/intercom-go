@@ -10,8 +10,9 @@ import (
 
 type UserRepository interface {
 	find(UserIdentifiers) (User, error)
-	list(PageParams) (UserList, error)
+	list(userListParams) (UserList, error)
 	save(*User) (User, error)
+	delete(id string) (User, error)
 }
 
 type UserAPI struct {
@@ -38,7 +39,7 @@ func (api UserAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
 	return nil, errors.New("Missing User Identifier")
 }
 
-func (api UserAPI) list(params PageParams) (UserList, error) {
+func (api UserAPI) list(params userListParams) (UserList, error) {
 	userList := UserList{}
 	data, err := api.httpClient.Get("/users", params)
 	if err != nil {
@@ -56,4 +57,14 @@ func (api UserAPI) save(user *User) (User, error) {
 	}
 	err = json.Unmarshal(data, &savedUser)
 	return savedUser, err
+}
+
+func (api UserAPI) delete(id string) (User, error) {
+	user := User{}
+	data, err := api.httpClient.Delete(fmt.Sprintf("/users/%s", id), nil)
+	if err != nil {
+		return user, err
+	}
+	err = json.Unmarshal(data, &user)
+	return user, err
 }

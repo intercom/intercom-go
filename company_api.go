@@ -10,7 +10,7 @@ import (
 
 type CompanyRepository interface {
 	find(CompanyIdentifiers) (Company, error)
-	list(PageParams) (CompanyList, error)
+	list(companyListParams) (CompanyList, error)
 	save(*Company) (Company, error)
 }
 
@@ -38,7 +38,7 @@ func (api CompanyAPI) getClientForFind(params CompanyIdentifiers) ([]byte, error
 	return nil, errors.New("Missing Company Identifier")
 }
 
-func (api CompanyAPI) list(params PageParams) (CompanyList, error) {
+func (api CompanyAPI) list(params companyListParams) (CompanyList, error) {
 	companyList := CompanyList{}
 	data, err := api.httpClient.Get("/companies", params)
 	if err != nil {

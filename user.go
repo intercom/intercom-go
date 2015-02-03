@@ -69,6 +69,12 @@ type UserAvatar struct {
 	ImageURL string `json:"image_url,omitempty"`
 }
 
+type userListParams struct {
+	PageParams
+	SegmentID string `url:"segment_id,omitempty"`
+	TagID     string `url:"tag_id,omitempty"`
+}
+
 func (u *UserService) FindByID(id string) (User, error) {
 	return u.findWithIdentifiers(UserIdentifiers{ID: id})
 }
@@ -86,11 +92,23 @@ func (u *UserService) findWithIdentifiers(identifiers UserIdentifiers) (User, er
 }
 
 func (u *UserService) List(params PageParams) (UserList, error) {
-	return u.Repository.list(params)
+	return u.Repository.list(userListParams{PageParams: params})
+}
+
+func (u *UserService) ListBySegment(segmentID string, params PageParams) (UserList, error) {
+	return u.Repository.list(userListParams{PageParams: params, SegmentID: segmentID})
+}
+
+func (u *UserService) ListByTag(tagID string, params PageParams) (UserList, error) {
+	return u.Repository.list(userListParams{PageParams: params, TagID: tagID})
 }
 
 func (u *UserService) Save(user *User) (User, error) {
 	return u.Repository.save(user)
+}
+
+func (u *UserService) Delete(id string) (User, error) {
+	return u.Repository.delete(id)
 }
 
 func (u User) String() string {
