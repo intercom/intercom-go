@@ -26,8 +26,8 @@ func TestUserFindByUserID(t *testing.T) {
 }
 
 func TestUserList(t *testing.T) {
-	user_list, _ := (&UserService{Repository: TestUserAPI{t: t}}).List(PageParams{})
-	users := user_list.Users
+	userList, _ := (&UserService{Repository: TestUserAPI{t: t}}).List(PageParams{})
+	users := userList.Users
 	if users[0].ID != "46adad3f09126dca" {
 		t.Errorf("User not listed")
 	}

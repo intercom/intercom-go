@@ -1,0 +1,42 @@
+{
+  "type": "company",
+  "company_id": "762",
+  "id": "54c42ed71623d8caa",
+  "app_id": "z4asp0",
+  "name": "Important Company",
+  "remote_created_at": 1413218536,
+  "created_at": 1413220342,
+  "updated_at": 1423000577,
+  "last_request_at": 1423000577,
+  "monthly_spend": 2000,
+  "session_count": 247,
+  "user_count": 13,
+  "tags": {
+    "type": "tag.list",
+    "tags": [
+      {
+        "type": "tag",
+        "id": "2341",
+        "name": "Lead"
+      }
+    ]
+  },
+  "segments": {
+    "type": "segment.list",
+    "segments": [
+      {
+        "type": "segment",
+        "id": "5399b8a364254129300039e"
+      }
+    ]
+  },
+  "plan": {
+    "type": "plan",
+    "id": "13",
+    "name": "small"
+  },
+  "custom_attributes": {
+    "big_company": true,
+    "score": 123
+  }
+}

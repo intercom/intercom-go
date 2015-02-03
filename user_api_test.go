@@ -36,24 +36,24 @@ func TestUserAPIFindByEmail(t *testing.T) {
 }
 
 func TestUserAPIListDefault(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/user_list.json", expectedURI: "/users", t: t}
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user_list, _ := api.list(PageParams{})
-	users := user_list.Users
+	userList, _ := api.list(PageParams{})
+	users := userList.Users
 	if users[0].ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", users[0].ID)
 	}
-	pages := user_list.Pages
+	pages := userList.Pages
 	if pages.Page != 1 {
 		t.Errorf("Page was %d, expected 1", pages.Page)
 	}
 }
 
 func TestUserAPIListWithPageNumber(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/user_list_page_2.json", expectedURI: "/users", t: t}
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/users_page_2.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	user_list, _ := api.list(PageParams{Page: 2})
-	pages := user_list.Pages
+	userList, _ := api.list(PageParams{Page: 2})
+	pages := userList.Pages
 	if pages.Page != 2 {
 		t.Errorf("Page was %d, expected 2", pages.Page)
 	}

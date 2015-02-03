@@ -73,7 +73,7 @@ user, err := ic.Users.FindByEmail("test@example.com")
 #### List
 
 ```go
-user_list, err := ic.Users.List(client.PageParams{Page: 2})
+user_list, err := ic.Users.List(intercom.PageParams{Page: 2})
 user_list.Pages // page information
 user_list.Users // []User
 ```

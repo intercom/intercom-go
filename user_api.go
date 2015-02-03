@@ -49,11 +49,11 @@ func (api UserAPI) list(params PageParams) (UserList, error) {
 }
 
 func (api UserAPI) save(user *User) (User, error) {
-	saved_user := User{}
+	savedUser := User{}
 	data, err := api.httpClient.Post("/users", user)
 	if err != nil {
-		return saved_user, err
+		return savedUser, err
 	}
-	err = json.Unmarshal(data, &saved_user)
-	return saved_user, err
+	err = json.Unmarshal(data, &savedUser)
+	return savedUser, err
 }
