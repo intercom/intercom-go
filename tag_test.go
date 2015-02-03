@@ -3,8 +3,8 @@ package intercom
 import "testing"
 
 func TestListTags(t *testing.T) {
-	tag_list, _ := (&TagService{Repository: TestTagAPI{t: t}}).List()
-	tags := tag_list.Tags
+	tagList, _ := (&TagService{Repository: TestTagAPI{t: t}}).List()
+	tags := tagList.Tags
 	if tags[0].ID != "24" {
 		t.Errorf("Got tag with ID %s, expected 24", tags[0].ID)
 	}

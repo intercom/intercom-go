@@ -12,7 +12,7 @@ type TestTagHTTPClient struct {
 	expectedURI     string
 }
 
-func TestListTag(t *testing.T) {
+func TestAPIListTag(t *testing.T) {
 	http := TestTagHTTPClient{t: t, fixtureFilename: "fixtures/tags.json", expectedURI: "/tags"}
 	api := TagAPI{httpClient: &http}
 	tagList, _ := api.list()
@@ -21,7 +21,7 @@ func TestListTag(t *testing.T) {
 	}
 }
 
-func TestTagSave(t *testing.T) {
+func TestAPITagSave(t *testing.T) {
 	http := TestTagHTTPClient{t: t, fixtureFilename: "fixtures/tag.json", expectedURI: "/tags"}
 	api := TagAPI{httpClient: &http}
 	tag := Tag{ID: "60218", Name: "My Tag"}
@@ -31,13 +31,13 @@ func TestTagSave(t *testing.T) {
 	}
 }
 
-func TestTagDelete(t *testing.T) {
+func TestAPITagDelete(t *testing.T) {
 	http := TestTagHTTPClient{t: t, expectedURI: "/tags/6"}
 	api := TagAPI{httpClient: &http}
 	api.delete("6")
 }
 
-func TestTagTagging(t *testing.T) {
+func TestAPITagTagging(t *testing.T) {
 	http := TestTagHTTPClient{t: t, fixtureFilename: "fixtures/tag.json", expectedURI: "/tags"}
 	api := TagAPI{httpClient: &http}
 	taggingList := TaggingList{Name: "My Tag", Users: []Tagging{Tagging{UserID: "2345"}}}

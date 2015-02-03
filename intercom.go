@@ -5,19 +5,21 @@ import (
 )
 
 type Client struct {
-	Admins          AdminService
-	Events          EventService
-	Tags            TagService
-	Users           UserService
-	AdminRepository AdminRepository
-	EventRepository EventRepository
-	TagRepository   TagRepository
-	UserRepository  UserRepository
-	AppID           string
-	APIKey          string
-	HTTPClient      interfaces.HTTPClient
-	baseURI         string
-	debug           bool
+	Admins            AdminService
+	Events            EventService
+	Segments          SegmentService
+	Tags              TagService
+	Users             UserService
+	AdminRepository   AdminRepository
+	EventRepository   EventRepository
+	SegmentRepository SegmentRepository
+	TagRepository     TagRepository
+	UserRepository    UserRepository
+	AppID             string
+	APIKey            string
+	HTTPClient        interfaces.HTTPClient
+	baseURI           string
+	debug             bool
 }
 
 const defaultBaseURI = "https://api.intercom.io"
@@ -32,10 +34,12 @@ func NewClient(appID, apiKey string) *Client {
 func (c *Client) setup() {
 	c.AdminRepository = AdminAPI{httpClient: c.HTTPClient}
 	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
+	c.SegmentRepository = SegmentAPI{httpClient: c.HTTPClient}
 	c.TagRepository = TagAPI{httpClient: c.HTTPClient}
 	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
 	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Events = EventService{Repository: c.EventRepository}
+	c.Segments = SegmentService{Repository: c.SegmentRepository}
 	c.Tags = TagService{Repository: c.TagRepository}
 	c.Users = UserService{Repository: c.UserRepository}
 }

@@ -146,6 +146,21 @@ taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{int
 savedTag, err := ic.Tags.Tag(&taggingList)
 ```
 
+### Segments
+
+#### List
+
+```go
+segmentList := ic.Segments.List()
+segments := segmentList.Segments
+```
+
+#### Find
+
+```go
+segment := ic.Segments.Find("abc312daf2397")
+```
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
