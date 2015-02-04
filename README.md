@@ -56,6 +56,24 @@ savedUser, err := ic.Users.Save(&user)
 * One of `UserID`, or `Email` is required.
 * `SignedUpAt` (optional), like all dates in the client, must be an integer(32) representing seconds since Unix Epoch.
 
+##### Adding/Removing Companies
+
+Adding a Company:
+
+```go
+companyList := intercom.CompanyList{
+  Companies: []intercom.Company{
+    intercom.Company{ID: "5"},
+  },
+}
+user := intercom.User{
+  UserID: "27",
+  Companies: &companyList,
+}
+```
+
+Removing is similar, but adding a `Remove: intercom.Bool(true)` attribute to a company.
+
 #### Find
 
 ```go
@@ -101,6 +119,7 @@ company := intercom.Company{
   CompanyID: "27",
   Name: "My Co",
   CustomAttributes: map[string]interface{}{"is_cool": true},
+  Plan: &intercom.Plan{Name: "MyPlan"},
 }
 savedCompany, err := ic.Companies.Save(&company)
 ```

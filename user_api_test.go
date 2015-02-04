@@ -80,7 +80,12 @@ func TestUserAPIListWithTag(t *testing.T) {
 func TestUserAPISave(t *testing.T) {
 	http := TestUserHTTPClient{t: t, expectedURI: "/users"}
 	api := UserAPI{httpClient: &http}
-	user := User{UserID: "27"}
+	companyList := CompanyList{
+		Companies: []Company{
+			Company{ID: "5"},
+		},
+	}
+	user := User{UserID: "27", Companies: &companyList}
 	api.save(&user)
 }
 

@@ -22,12 +22,11 @@ type Company struct {
 	SessionCount     int32                  `json:"session_count,omitempty"`
 	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
 	UserCount        int32                  `json:"user_count,omitempty"`
-	CompanyAgentData string                 `json:"user_agent_data,omitempty"`
 	Tags             *TagList               `json:"tags,omitempty"`
 	Segments         *SegmentList           `json:"segments,omitempty"`
 	Plan             *Plan                  `json:"plan,omitempty"`
-	PlanName         string                 `json:"plan_name,omitempty"`
 	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
+	Remove           *bool                  `json:"-"`
 }
 
 type CompanyIdentifiers struct {

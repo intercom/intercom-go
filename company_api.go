@@ -18,6 +18,17 @@ type CompanyAPI struct {
 	httpClient interfaces.HTTPClient
 }
 
+type requestCompany struct {
+	ID               string                 `json:"id,omitempty"`
+	CompanyID        string                 `json:"company_id,omitempty"`
+	Name             string                 `json:"name,omitempty"`
+	RemoteCreatedAt  int32                  `json:"remote_created_at,omitempty"`
+	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
+	Plan             string                 `json:"plan,omitempty"`
+	SessionCount     int32                  `json:"session_count,omitempty"`
+	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
+}
+
 func (api CompanyAPI) find(params CompanyIdentifiers) (Company, error) {
 	company := Company{}
 	data, err := api.getClientForFind(params)
@@ -49,11 +60,29 @@ func (api CompanyAPI) list(params companyListParams) (CompanyList, error) {
 }
 
 func (api CompanyAPI) save(company *Company) (Company, error) {
+	requestCompany := requestCompany{
+		ID:               company.ID,
+		Name:             company.Name,
+		CompanyID:        company.CompanyID,
+		RemoteCreatedAt:  company.RemoteCreatedAt,
+		MonthlySpend:     company.MonthlySpend,
+		SessionCount:     company.SessionCount,
+		Plan:             api.getPlanName(company),
+		CustomAttributes: company.CustomAttributes,
+	}
+
 	savedCompany := Company{}
-	data, err := api.httpClient.Post("/companies", company)
+	data, err := api.httpClient.Post("/companies", &requestCompany)
 	if err != nil {
 		return savedCompany, err
 	}
 	err = json.Unmarshal(data, &savedCompany)
 	return savedCompany, err
+}
+
+func (api CompanyAPI) getPlanName(company *Company) string {
+	if company.Plan == nil {
+		return ""
+	}
+	return company.Plan.Name
 }
