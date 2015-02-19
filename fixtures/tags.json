@@ -1,0 +1,20 @@
+{
+  "type": "tag.list",
+  "tags": [
+    {
+      "type": "tag",
+      "id": "51313",
+      "name": "awesome customers"
+    },
+    {
+      "type": "tag",
+      "id": "12560",
+      "name": "sales lead"
+    },
+    {
+      "type": "tag",
+      "id": "60218",
+      "name": "has feature"
+    }
+  ]
+}
