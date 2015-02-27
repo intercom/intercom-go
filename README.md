@@ -2,6 +2,8 @@
 
 Thin client for the [Intercom](https://www.intercom.io) API.
 
+_Currently in beta, though breaking API changes are not expected._
+
 ## Install
 
 `go get github.com/intercom/intercom-go`
@@ -80,7 +82,7 @@ Removing is similar, but adding a `Remove: intercom.Bool(true)` attribute to a c
 user, err := ic.Users.FindByID("46adad3f09126dca")
 ```
 
-```go 
+```go
 user, err := ic.Users.FindByUserID("27")
 ```
 
@@ -132,7 +134,7 @@ savedCompany, err := ic.Companies.Save(&company)
 company, err := ic.Companies.FindByID("46adad3f09126dca")
 ```
 
-```go 
+```go
 company, err := ic.Companies.FindByCompanyID("27")
 ```
 
@@ -159,7 +161,7 @@ companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 ### Events
 
 #### Save
-  
+
 ```go
 event := intercom.Event{
   UserId: "27",
