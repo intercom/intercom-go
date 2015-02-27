@@ -80,12 +80,15 @@ func (api UserAPI) save(user *User) (User, error) {
 		ID:                     user.ID,
 		Email:                  user.Email,
 		UserID:                 user.UserID,
+		Name:                   user.Name,
+		SignedUpAt:             user.SignedUpAt,
 		RemoteCreatedAt:        user.RemoteCreatedAt,
 		LastRequestAt:          user.LastRequestAt,
 		LastSeenIP:             user.LastSeenIP,
 		UnsubscribedFromEmails: user.UnsubscribedFromEmails,
 		Companies:              api.getCompaniesToSendFromUser(user),
 		CustomAttributes:       user.CustomAttributes,
+		UpdateLastRequestAt:    user.UpdateLastRequestAt,
 		NewSession:             user.NewSession,
 	}
 
