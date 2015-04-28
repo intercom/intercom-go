@@ -1,0 +1,159 @@
+{
+	"type": "contact.list",
+	"pages": {
+		"type": "pages",
+		"next": "https://api.intercom.io/contacts?per_page=50&page=2",
+		"page": 1,
+		"per_page": 50,
+		"total_pages": 4
+	},
+	"contacts": [
+		{
+			"type": "contact",
+			"id": "54c42e7ea7a765fa7",
+			"user_id": "123",
+			"email": "mycontact@example.io",
+			"anonymous": true,
+			"name": "My Contact",
+			"pseudonym": "Violet Bear",
+			"avatar": {
+				"type": "avatar",
+				"image_url": "https://secure.gravatar.com/avatar/712360dasd24?s=24&d=identicon"
+			},
+			"app_id": "z4asp0",
+			"companies": {
+				"type": "company.list",
+				"companies": [
+					{
+						"type": "company",
+						"company_id": "762",
+						"id": "54c42ed71623d8caa",
+						"name": "Important Company"
+					},
+					{
+						"type": "company",
+						"company_id": "231",
+						"id": "54c42e9d317e41585da7c01",
+						"name": "Side Company"
+					}
+				]
+			},
+			"location_data": {
+				"type": "location_data",
+				"city_name": "",
+				"continent_code": "EU",
+				"country_name": "United Kingdom",
+				"latitude": 51.5,
+				"longitude": -0.12999999999999545,
+				"postal_code": "",
+				"region_name": null,
+				"timezone": "Europe/London",
+				"country_code": "GBR"
+			},
+			"last_request_at": 1422143201,
+			"created_at": 1422143102,
+			"remote_created_at": 1422143117,
+			"signed_up_at": 1422143117,
+			"updated_at": 1422143201,
+			"session_count": 4,
+			"social_profiles": {
+				"type": "social_profile.list",
+				"social_profiles": []
+			},
+			"unsubscribed_from_emails": false,
+			"user_agent_data": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104 Safari/537.36",
+			"tags": {
+				"type": "tag.list",
+				"tags": []
+			},
+			"segments": {
+				"type": "segment.list",
+				"segments": [
+					{
+						"type": "segment",
+						"id": "5125603c45b438c731000029"
+					}
+				]
+			},
+			"custom_attributes": {
+				"is_awesome": true
+			}
+		},
+		{
+			"type": "contact",
+			"id": "54c42e2e924b067904615236",
+			"user_id": "52454",
+			"email": "mycontact@example.io",
+			"anonymous": true,
+			"name": "Mr Go Lang",
+			"pseudonym": "Pink Banana",
+			"avatar": {
+				"type": "avatar",
+				"image_url": "https://secure.gravatar.com/avatar/4e56f762b2a3f8ccdf123d569cee7b6?s=24&d=identicon"
+			},
+			"app_id": "tx2p130c",
+			"companies": {
+				"type": "company.list",
+				"companies": [
+					{
+						"type": "company",
+						"company_id": "762",
+						"id": "54c42ed71623d8caa",
+						"name": "Important Company"
+					}
+				]
+			},
+			"location_data": {
+				"type": "location_data",
+				"city_name": "",
+				"continent_code": "EU",
+				"country_name": "United Kingdom",
+				"latitude": 51.5,
+				"longitude": -0.12999999999999545,
+				"postal_code": "",
+				"region_name": null,
+				"timezone": "Europe/London",
+				"country_code": "GBR"
+			},
+			"last_request_at": 1422143075,
+			"created_at": 1422143022,
+			"remote_created_at": 1422143004,
+			"signed_up_at": 1422143004,
+			"updated_at": 1422143075,
+			"session_count": 1,
+			"social_profiles": {
+				"type": "social_profile.list",
+				"social_profiles": []
+			},
+			"unsubscribed_from_emails": false,
+			"user_agent_data": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104 Safari/537.36",
+			"tags": {
+				"type": "tag.list",
+				"tags": [
+					{
+						"type": "tag",
+						"id": "51390",
+						"name": "Awesome Contact"
+					}
+				]
+			},
+			"segments": {
+				"type": "segment.list",
+				"segments": [
+					{
+						"type": "segment",
+						"id": "5125603c45b438c731000029"
+					},
+					{
+						"type": "segment",
+						"id": "5125603c45b438c7310000b1"
+					}
+				]
+			},
+			"custom_attributes": {
+				"is_awesome": false
+			}
+		}
+	],
+	"total_count": 180
+}

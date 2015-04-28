@@ -114,6 +114,30 @@ userList, err := ic.Users.ListByTag("42", intercom.PageParams{})
 user, err := ic.Users.Delete("46adad3f09126dca")
 ```
 
+### Contacts
+
+#### Find
+
+```go
+contact, err := ic.Contacts.FindByID("46adad3f09126dca")
+```
+
+```go
+contact, err := ic.Contacts.FindByUserID("27")
+```
+
+#### List
+
+```go
+contactList, err := ic.Contacts.List(intercom.PageParams{Page: 2})
+contactList.Pages // page information
+contactList.Contacts // []Contact
+```
+
+```go
+contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PageParams{})
+```
+
 ### Companies
 
 #### Save
