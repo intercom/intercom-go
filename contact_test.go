@@ -2,6 +2,8 @@ package intercom
 
 import (
 	"testing"
+
+	"code.google.com/p/go-uuid/uuid"
 )
 
 func TestContactFindByID(t *testing.T) {
@@ -34,6 +36,24 @@ func TestContactListEmail(t *testing.T) {
 	}
 }
 
+func TestContactCreate(t *testing.T) {
+	contactService := ContactService{Repository: TestContactAPI{t: t}}
+	contact := Contact{Email: "some@email.com"}
+	c, _ := contactService.Create(&contact)
+	if c.Email != contact.Email {
+		t.Errorf("expected returned contact to have email %s, got %s", contact.Email, c.Email)
+	}
+}
+
+func TestContactUpdate(t *testing.T) {
+	contactService := ContactService{Repository: TestContactAPI{t: t}}
+	contact := Contact{Email: "some@email.com"}
+	c, _ := contactService.Update(&contact)
+	if c.Email != contact.Email {
+		t.Errorf("expected returned contact to have email %s, got %s", contact.Email, c.Email)
+	}
+}
+
 type TestContactAPI struct {
 	t *testing.T
 }
@@ -44,4 +64,12 @@ func (t TestContactAPI) find(params UserIdentifiers) (Contact, error) {
 
 func (t TestContactAPI) list(params contactListParams) (ContactList, error) {
 	return ContactList{Contacts: []Contact{Contact{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
+}
+
+func (t TestContactAPI) create(c *Contact) (Contact, error) {
+	return Contact{ID: c.ID, Email: c.Email, UserID: uuid.New()}, nil
+}
+
+func (t TestContactAPI) update(c *Contact) (Contact, error) {
+	return Contact{ID: c.ID, Email: c.Email, UserID: c.UserID}, nil
 }

@@ -138,6 +138,34 @@ contactList.Contacts // []Contact
 contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PageParams{})
 ```
 
+#### Create
+
+```go
+contact := intercom.Contact{
+  Email: "test@example.com",
+  Name: "SomeContact",
+  CustomAttributes: map[string]interface{}{"is_cool": true},
+}
+savedContact, err := ic.Contacts.Create(&contact)
+```
+
+* No identifier is required.
+* Set values for UserID will be ignored (consider creating _Users_ instead)
+
+#### Update
+
+```go
+contact := intercom.Contact{
+  Email: "test@example.com",
+  Name: "SomeContact",
+  CustomAttributes: map[string]interface{}{"is_cool": true},
+}
+savedContact, err := ic.Contacts.Update(&contact)
+```
+
+* ID or UserID is required.
+* Will not create new contacts.
+
 ### Companies
 
 #### Save
@@ -285,6 +313,7 @@ The HTTP Client used by this package can be swapped out for one of your choosing
 type HTTPClient interface {
   Get(string, interface{}) ([]byte, error)
   Post(string, interface{}) ([]byte, error)
+  Patch(string, interface{}) ([]byte, error)
   Delete(string, interface{}) ([]byte, error)
 }
 ```

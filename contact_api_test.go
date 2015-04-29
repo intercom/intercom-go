@@ -15,9 +15,6 @@ func TestContactAPIFind(t *testing.T) {
 	if contact.UserID != "123" {
 		t.Errorf("UserID was %s, expected 123", contact.UserID)
 	}
-	if contact.SignedUpAt != 0 {
-		t.Errorf("SignedUpAt was %d, expected empty 0", contact.SignedUpAt)
-	}
 }
 
 func TestContactAPIListDefault(t *testing.T) {
@@ -49,4 +46,18 @@ func TestContactAPIListByEmail(t *testing.T) {
 	if pages.Page != 1 {
 		t.Errorf("Page was %d, expected 1", pages.Page)
 	}
+}
+
+func TestContactAPICreate(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
+	api := ContactAPI{httpClient: &http}
+	contact := &Contact{Email: "mycontact@example.io"}
+	api.create(contact)
+}
+
+func TestContactAPIUpdate(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
+	api := ContactAPI{httpClient: &http}
+	contact := &Contact{UserID: "123", Email: "mycontact@example.io"}
+	api.update(contact)
 }

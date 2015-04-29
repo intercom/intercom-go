@@ -23,8 +23,6 @@ type Contact struct {
 	Name                   string                 `json:"name,omitempty"`
 	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
 	LocationData           *LocationData          `json:"location_data,omitempty"`
-	SignedUpAt             int32                  `json:"signed_up_at,omitempty"`
-	RemoteCreatedAt        int32                  `json:"remote_created_at,omitempty"`
 	LastRequestAt          int32                  `json:"last_request_at,omitempty"`
 	CreatedAt              int32                  `json:"created_at,omitempty"`
 	UpdatedAt              int32                  `json:"updated_at,omitempty"`
@@ -37,6 +35,8 @@ type Contact struct {
 	Segments               *SegmentList           `json:"segments,omitempty"`
 	Companies              *CompanyList           `json:"companies,omitempty"`
 	CustomAttributes       map[string]interface{} `json:"custom_attributes,omitempty"`
+	UpdateLastRequestAt    *bool                  `json:"update_last_request_at,omitempty"`
+	NewSession             *bool                  `json:"new_session,omitempty"`
 }
 
 type contactListParams struct {
@@ -78,6 +78,14 @@ func (c *ContactService) ListBySegment(segmentID string, params PageParams) (Con
 // List Contacts By Tag.
 func (c *ContactService) ListByTag(tagID string, params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params, TagID: tagID})
+}
+
+func (c *ContactService) Create(contact *Contact) (Contact, error) {
+	return c.Repository.create(contact)
+}
+
+func (c *ContactService) Update(contact *Contact) (Contact, error) {
+	return c.Repository.update(contact)
 }
 
 func (c Contact) String() string {
