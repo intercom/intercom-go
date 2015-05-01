@@ -39,6 +39,7 @@ type User struct {
 	CustomAttributes       map[string]interface{} `json:"custom_attributes,omitempty"`
 	UpdateLastRequestAt    *bool                  `json:"update_last_request_at,omitempty"`
 	NewSession             *bool                  `json:"new_session,omitempty"`
+	LastSeenUserAgent      string                 `json:"last_seen_user_agent,omitempty"`
 }
 
 // LocationData represents the location for a User.

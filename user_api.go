@@ -35,6 +35,7 @@ type requestUser struct {
 	CustomAttributes       map[string]interface{} `json:"custom_attributes,omitempty"`
 	UpdateLastRequestAt    *bool                  `json:"update_last_request_at,omitempty"`
 	NewSession             *bool                  `json:"new_session,omitempty"`
+	LastSeenUserAgent      string                 `json:"last_seen_user_agent,omitempty"`
 }
 
 func (api UserAPI) find(params UserIdentifiers) (User, error) {
@@ -90,6 +91,7 @@ func (api UserAPI) save(user *User) (User, error) {
 		CustomAttributes:       user.CustomAttributes,
 		UpdateLastRequestAt:    user.UpdateLastRequestAt,
 		NewSession:             user.NewSession,
+		LastSeenUserAgent:      user.LastSeenUserAgent,
 	}
 
 	savedUser := User{}
