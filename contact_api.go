@@ -14,6 +14,7 @@ type ContactRepository interface {
 	list(contactListParams) (ContactList, error)
 	create(*Contact) (Contact, error)
 	update(*Contact) (Contact, error)
+	convert(*Contact, *User) (User, error)
 }
 
 // ContactAPI implements ContactRepository
@@ -22,13 +23,7 @@ type ContactAPI struct {
 }
 
 func (api ContactAPI) find(params UserIdentifiers) (Contact, error) {
-	contact := Contact{}
-	data, err := api.getClientForFind(params)
-	if err != nil {
-		return contact, err
-	}
-	err = json.Unmarshal(data, &contact)
-	return contact, err
+	return unmarshalToContact(api.getClientForFind(params))
 }
 
 func (api ContactAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
@@ -59,6 +54,21 @@ func (api ContactAPI) create(contact *Contact) (Contact, error) {
 func (api ContactAPI) update(contact *Contact) (Contact, error) {
 	requestContact := api.buildRequestContact(contact)
 	return unmarshalToContact(api.httpClient.Patch("/contacts", &requestContact))
+}
+
+func (api ContactAPI) convert(contact *Contact, user *User) (User, error) {
+	cr := convertRequest{Contact: api.buildRequestContact(contact), User: requestUser{
+		ID:         user.ID,
+		UserID:     user.UserID,
+		Email:      user.Email,
+		SignedUpAt: user.SignedUpAt,
+	}}
+	return unmarshalToUser(api.httpClient.Post("/contacts/convert", &cr))
+}
+
+type convertRequest struct {
+	User    requestUser `json:"user"`
+	Contact requestUser `json:"contact"`
 }
 
 func unmarshalToContact(data []byte, err error) (Contact, error) {

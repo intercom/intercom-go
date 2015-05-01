@@ -61,3 +61,14 @@ func TestContactAPIUpdate(t *testing.T) {
 	contact := &Contact{UserID: "123", Email: "mycontact@example.io"}
 	api.update(contact)
 }
+
+func TestContactAPIConvert(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/contacts/convert", t: t}
+	api := ContactAPI{httpClient: &http}
+	contact := &Contact{UserID: "abc", Email: "mycontact@example.io"}
+	user := &User{UserID: "123"}
+	returned, _ := api.convert(contact, user)
+	if returned.UserID != "123" {
+		t.Errorf("Expected UserID %s, got %s", "123", returned.UserID)
+	}
+}

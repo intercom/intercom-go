@@ -38,13 +38,7 @@ type requestUser struct {
 }
 
 func (api UserAPI) find(params UserIdentifiers) (User, error) {
-	user := User{}
-	data, err := api.getClientForFind(params)
-	if err != nil {
-		return user, err
-	}
-	err = json.Unmarshal(data, &user)
-	return user, err
+	return unmarshalToUser(api.getClientForFind(params))
 }
 
 func (api UserAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
@@ -91,9 +85,11 @@ func (api UserAPI) save(user *User) (User, error) {
 		UpdateLastRequestAt:    user.UpdateLastRequestAt,
 		NewSession:             user.NewSession,
 	}
+	return unmarshalToUser(api.httpClient.Post("/users", &requestUser))
+}
 
+func unmarshalToUser(data []byte, err error) (User, error) {
 	savedUser := User{}
-	data, err := api.httpClient.Post("/users", &requestUser)
 	if err != nil {
 		return savedUser, err
 	}

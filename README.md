@@ -156,7 +156,7 @@ savedContact, err := ic.Contacts.Create(&contact)
 
 ```go
 contact := intercom.Contact{
-  Email: "test@example.com",
+  UserID: "abc-13d-3",
   Name: "SomeContact",
   CustomAttributes: map[string]interface{}{"is_cool": true},
 }
@@ -165,6 +165,23 @@ savedContact, err := ic.Contacts.Update(&contact)
 
 * ID or UserID is required.
 * Will not create new contacts.
+
+#### Convert
+
+Used to convert a Contact into a User
+
+```go
+contact := intercom.Contact{
+  UserID: "abc-13d-3",
+}
+user := intercom.User{
+  Email: "myuser@signedup.com",
+}
+savedUser, err := ic.Contacts.Convert(&contact, &user)
+```
+
+* If the User does not already exist in Intercom, the Contact will be uplifted to a User.
+* If the User does exist, the Contact will be merged into it and the User returned.
 
 ### Companies
 

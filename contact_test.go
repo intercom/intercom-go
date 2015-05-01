@@ -54,6 +54,19 @@ func TestContactUpdate(t *testing.T) {
 	}
 }
 
+func TestContactConvert(t *testing.T) {
+	contactService := ContactService{Repository: TestContactAPI{t: t}}
+	contact := Contact{UserID: "aaaa", Email: "some@email.com"}
+	user := User{ID: "abc13", UserID: "c135"}
+	u, _ := contactService.Convert(&contact, &user)
+	if u.Email != contact.Email {
+		t.Errorf("expected returned user to have email %s, got %s", contact.Email, u.Email)
+	}
+	if u.UserID != user.UserID {
+		t.Errorf("expected returned user to have user id %s, got %s", user.UserID, u.UserID)
+	}
+}
+
 type TestContactAPI struct {
 	t *testing.T
 }
@@ -72,4 +85,8 @@ func (t TestContactAPI) create(c *Contact) (Contact, error) {
 
 func (t TestContactAPI) update(c *Contact) (Contact, error) {
 	return Contact{ID: c.ID, Email: c.Email, UserID: c.UserID}, nil
+}
+
+func (t TestContactAPI) convert(c *Contact, u *User) (User, error) {
+	return User{ID: u.ID, Email: c.Email, UserID: u.UserID}, nil
 }

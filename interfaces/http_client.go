@@ -166,6 +166,7 @@ func (c IntercomHTTPClient) readAll(body io.Reader) ([]byte, error) {
 	b, err := ioutil.ReadAll(body)
 	if *c.Debug {
 		fmt.Println(string(b))
+		fmt.Println("")
 	}
 	return b, err
 }

@@ -80,12 +80,19 @@ func (c *ContactService) ListByTag(tagID string, params PageParams) (ContactList
 	return c.Repository.list(contactListParams{PageParams: params, TagID: tagID})
 }
 
+// Create Contact
 func (c *ContactService) Create(contact *Contact) (Contact, error) {
 	return c.Repository.create(contact)
 }
 
+// Update Contact
 func (c *ContactService) Update(contact *Contact) (Contact, error) {
 	return c.Repository.update(contact)
+}
+
+// Convert Contact to User
+func (c *ContactService) Convert(contact *Contact, user *User) (User, error) {
+	return c.Repository.convert(contact, user)
 }
 
 func (c Contact) String() string {
