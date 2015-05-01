@@ -89,8 +89,16 @@ func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
 		LastRequestAt:          contact.LastRequestAt,
 		LastSeenIP:             contact.LastSeenIP,
 		UnsubscribedFromEmails: contact.UnsubscribedFromEmails,
+		Companies:              api.getCompaniesToSendFromContact(contact),
 		CustomAttributes:       contact.CustomAttributes,
 		UpdateLastRequestAt:    contact.UpdateLastRequestAt,
 		NewSession:             contact.NewSession,
 	}
+}
+
+func (api ContactAPI) getCompaniesToSendFromContact(contact *Contact) []UserCompany {
+	if contact.Companies == nil {
+		return []UserCompany{}
+	}
+	return makeUserCompaniesFromCompanies(contact.Companies.Companies)
 }

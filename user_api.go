@@ -101,7 +101,10 @@ func (api UserAPI) getCompaniesToSendFromUser(user *User) []UserCompany {
 	if user.Companies == nil {
 		return []UserCompany{}
 	}
-	companies := user.Companies.Companies
+	return makeUserCompaniesFromCompanies(user.Companies.Companies)
+}
+
+func makeUserCompaniesFromCompanies(companies []Company) []UserCompany {
 	userCompanies := make([]UserCompany, len(companies))
 	for i := 0; i < len(companies); i++ {
 		userCompanies[i] = UserCompany{
