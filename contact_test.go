@@ -67,6 +67,12 @@ func TestContactConvert(t *testing.T) {
 	}
 }
 
+func TestContactDelete(t *testing.T) {
+	contactService := ContactService{Repository: TestContactAPI{t: t}}
+	contact := Contact{UserID: "aaaa", Email: "some@email.com"}
+	contactService.Delete(&contact)
+}
+
 type TestContactAPI struct {
 	t *testing.T
 }
@@ -89,4 +95,8 @@ func (t TestContactAPI) update(c *Contact) (Contact, error) {
 
 func (t TestContactAPI) convert(c *Contact, u *User) (User, error) {
 	return User{ID: u.ID, Email: c.Email, UserID: u.UserID}, nil
+}
+
+func (t TestContactAPI) delete(id string) (Contact, error) {
+	return Contact{ID: id}, nil
 }

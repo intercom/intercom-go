@@ -95,6 +95,11 @@ func (c *ContactService) Convert(contact *Contact, user *User) (User, error) {
 	return c.Repository.convert(contact, user)
 }
 
+// Delete Contact
+func (c *ContactService) Delete(contact *Contact) (Contact, error) {
+	return c.Repository.delete(contact.ID)
+}
+
 func (c Contact) String() string {
 	return fmt.Sprintf("[intercom] contact { id: %s name: %s, user_id: %s, email: %s }", c.ID, c.Name, c.UserID, c.Email)
 }

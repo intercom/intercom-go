@@ -15,6 +15,7 @@ type ContactRepository interface {
 	create(*Contact) (Contact, error)
 	update(*Contact) (Contact, error)
 	convert(*Contact, *User) (User, error)
+	delete(id string) (Contact, error)
 }
 
 // ContactAPI implements ContactRepository
@@ -64,6 +65,16 @@ func (api ContactAPI) convert(contact *Contact, user *User) (User, error) {
 		SignedUpAt: user.SignedUpAt,
 	}}
 	return unmarshalToUser(api.httpClient.Post("/contacts/convert", &cr))
+}
+
+func (api ContactAPI) delete(id string) (Contact, error) {
+	contact := Contact{}
+	data, err := api.httpClient.Delete(fmt.Sprintf("/contacts/%s", id), nil)
+	if err != nil {
+		return contact, err
+	}
+	err = json.Unmarshal(data, &contact)
+	return contact, err
 }
 
 type convertRequest struct {

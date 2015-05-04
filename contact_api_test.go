@@ -72,3 +72,13 @@ func TestContactAPIConvert(t *testing.T) {
 		t.Errorf("Expected UserID %s, got %s", "123", returned.UserID)
 	}
 }
+
+func TestContactAPIDelete(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts/b123d", t: t}
+	api := ContactAPI{httpClient: &http}
+	contact := &Contact{ID: "b123d"}
+	returned, _ := api.delete(contact.ID)
+	if returned.UserID != "123" {
+		t.Errorf("Expected UserID %s, got %s", "123", returned.UserID)
+	}
+}
