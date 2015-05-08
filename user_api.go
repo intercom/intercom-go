@@ -39,13 +39,7 @@ type requestUser struct {
 }
 
 func (api UserAPI) find(params UserIdentifiers) (User, error) {
-	user := User{}
-	data, err := api.getClientForFind(params)
-	if err != nil {
-		return user, err
-	}
-	err = json.Unmarshal(data, &user)
-	return user, err
+	return unmarshalToUser(api.getClientForFind(params))
 }
 
 func (api UserAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
@@ -93,9 +87,11 @@ func (api UserAPI) save(user *User) (User, error) {
 		NewSession:             user.NewSession,
 		LastSeenUserAgent:      user.LastSeenUserAgent,
 	}
+	return unmarshalToUser(api.httpClient.Post("/users", &requestUser))
+}
 
+func unmarshalToUser(data []byte, err error) (User, error) {
 	savedUser := User{}
-	data, err := api.httpClient.Post("/users", &requestUser)
 	if err != nil {
 		return savedUser, err
 	}
@@ -107,7 +103,10 @@ func (api UserAPI) getCompaniesToSendFromUser(user *User) []UserCompany {
 	if user.Companies == nil {
 		return []UserCompany{}
 	}
-	companies := user.Companies.Companies
+	return makeUserCompaniesFromCompanies(user.Companies.Companies)
+}
+
+func makeUserCompaniesFromCompanies(companies []Company) []UserCompany {
 	userCompanies := make([]UserCompany, len(companies))
 	for i := 0; i < len(companies); i++ {
 		userCompanies[i] = UserCompany{

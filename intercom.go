@@ -9,6 +9,7 @@ type Client struct {
 	// Services for interacting with various resources in Intercom.
 	Admins    AdminService
 	Companies CompanyService
+	Contacts  ContactService
 	Events    EventService
 	Segments  SegmentService
 	Tags      TagService
@@ -17,6 +18,7 @@ type Client struct {
 	// Mappings for resources to API constructs
 	AdminRepository   AdminRepository
 	CompanyRepository CompanyRepository
+	ContactRepository ContactRepository
 	EventRepository   EventRepository
 	SegmentRepository SegmentRepository
 	TagRepository     TagRepository
@@ -92,12 +94,14 @@ func SetHTTPClient(httpClient interfaces.HTTPClient) option {
 func (c *Client) setup() {
 	c.AdminRepository = AdminAPI{httpClient: c.HTTPClient}
 	c.CompanyRepository = CompanyAPI{httpClient: c.HTTPClient}
+	c.ContactRepository = ContactAPI{httpClient: c.HTTPClient}
 	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
 	c.SegmentRepository = SegmentAPI{httpClient: c.HTTPClient}
 	c.TagRepository = TagAPI{httpClient: c.HTTPClient}
 	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
 	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Companies = CompanyService{Repository: c.CompanyRepository}
+	c.Contacts = ContactService{Repository: c.ContactRepository}
 	c.Events = EventService{Repository: c.EventRepository}
 	c.Segments = SegmentService{Repository: c.SegmentRepository}
 	c.Tags = TagService{Repository: c.TagRepository}

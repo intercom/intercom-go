@@ -112,10 +112,10 @@ func (t *TestUserHTTPClient) Get(uri string, queryParams interface{}) ([]byte, e
 }
 
 func (t *TestUserHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
-	if uri != "/users" {
+	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return nil, nil
+	return ioutil.ReadFile(t.fixtureFilename)
 }
 
 func (t *TestUserHTTPClient) Delete(uri string, queryParams interface{}) ([]byte, error) {

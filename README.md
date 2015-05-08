@@ -18,7 +18,7 @@ The first step to using Intercom's Go client is to create a client object, using
 
 ```go
 import (
-  "github.com/intercom/intercom-go"
+	"github.com/intercom/intercom-go"
 )
 
 ic := intercom.NewClient("appID", "apiKey")
@@ -48,11 +48,11 @@ ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("http://intercom.dev"))
 
 ```go
 user := intercom.User{
-  UserID: "27",
-  Email: "test@example.com",
-  Name: "InterGopher",
-  SignedUpAt: int32(time.Now().Unix()),
-  CustomAttributes: map[string]interface{}{"is_cool": true},
+	UserID: "27",
+	Email: "test@example.com",
+	Name: "InterGopher",
+	SignedUpAt: int32(time.Now().Unix()),
+	CustomAttributes: map[string]interface{}{"is_cool": true},
 }
 savedUser, err := ic.Users.Save(&user)
 ```
@@ -66,13 +66,13 @@ Adding a Company:
 
 ```go
 companyList := intercom.CompanyList{
-  Companies: []intercom.Company{
-    intercom.Company{ID: "5"},
-  },
+	Companies: []intercom.Company{
+		intercom.Company{ID: "5"},
+	},
 }
 user := intercom.User{
-  UserID: "27",
-  Companies: &companyList,
+	UserID: "27",
+	Companies: &companyList,
 }
 ```
 
@@ -114,16 +114,85 @@ userList, err := ic.Users.ListByTag("42", intercom.PageParams{})
 user, err := ic.Users.Delete("46adad3f09126dca")
 ```
 
+### Contacts
+
+#### Find
+
+```go
+contact, err := ic.Contacts.FindByID("46adad3f09126dca")
+```
+
+```go
+contact, err := ic.Contacts.FindByUserID("27")
+```
+
+#### List
+
+```go
+contactList, err := ic.Contacts.List(intercom.PageParams{Page: 2})
+contactList.Pages // page information
+contactList.Contacts // []Contact
+```
+
+```go
+contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PageParams{})
+```
+
+#### Create
+
+```go
+contact := intercom.Contact{
+	Email: "test@example.com",
+	Name: "SomeContact",
+	CustomAttributes: map[string]interface{}{"is_cool": true},
+}
+savedContact, err := ic.Contacts.Create(&contact)
+```
+
+* No identifier is required.
+* Set values for UserID will be ignored (consider creating _Users_ instead)
+
+#### Update
+
+```go
+contact := intercom.Contact{
+	UserID: "abc-13d-3",
+	Name: "SomeContact",
+	CustomAttributes: map[string]interface{}{"is_cool": true},
+}
+savedContact, err := ic.Contacts.Update(&contact)
+```
+
+* ID or UserID is required.
+* Will not create new contacts.
+
+#### Convert
+
+Used to convert a Contact into a User
+
+```go
+contact := intercom.Contact{
+	UserID: "abc-13d-3",
+}
+user := intercom.User{
+	Email: "myuser@signedup.com",
+}
+savedUser, err := ic.Contacts.Convert(&contact, &user)
+```
+
+* If the User does not already exist in Intercom, the Contact will be uplifted to a User.
+* If the User does exist, the Contact will be merged into it and the User returned.
+
 ### Companies
 
 #### Save
 
 ```go
 company := intercom.Company{
-  CompanyID: "27",
-  Name: "My Co",
-  CustomAttributes: map[string]interface{}{"is_cool": true},
-  Plan: &intercom.Plan{Name: "MyPlan"},
+	CompanyID: "27",
+	Name: "My Co",
+	CustomAttributes: map[string]interface{}{"is_cool": true},
+	Plan: &intercom.Plan{Name: "MyPlan"},
 }
 savedCompany, err := ic.Companies.Save(&company)
 ```
@@ -166,10 +235,10 @@ companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 
 ```go
 event := intercom.Event{
-  UserId: "27",
-  EventName: "bought_item",
-  CreatedAt: int32(time.Now().Unix()),
-  Metadata: map[string]interface{}{"item_name": "PocketWatch"},
+	UserId: "27",
+	EventName: "bought_item",
+	CreatedAt: int32(time.Now().Unix()),
+	Metadata: map[string]interface{}{"item_name": "PocketWatch"},
 }
 err := ic.Events.Save(&event)
 ```
@@ -249,7 +318,7 @@ Errors may be returned from some calls. Errors returned from the API will implem
 ```go
 _, err := ic.Users.FindByEmail("doesnotexist@intercom.io")
 if herr, ok := err.(intercom.IntercomError); ok && herr.GetCode() == "not_found" {
-  fmt.Print(herr)
+	fmt.Print(herr)
 }
 ```
 
@@ -259,9 +328,10 @@ The HTTP Client used by this package can be swapped out for one of your choosing
 
 ```go
 type HTTPClient interface {
-  Get(string, interface{}) ([]byte, error)
-  Post(string, interface{}) ([]byte, error)
-  Delete(string, interface{}) ([]byte, error)
+	Get(string, interface{}) ([]byte, error)
+	Post(string, interface{}) ([]byte, error)
+	Patch(string, interface{}) ([]byte, error)
+	Delete(string, interface{}) ([]byte, error)
 }
 ```
 

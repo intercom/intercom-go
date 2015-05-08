@@ -20,7 +20,9 @@ type User struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
+	Anonymous              *bool                  `json:"anonymous,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
+	Pseudonym              string                 `json:"pseudonym,omitempty"`
 	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
 	LocationData           *LocationData          `json:"location_data,omitempty"`
 	SignedUpAt             int32                  `json:"signed_up_at,omitempty"`
