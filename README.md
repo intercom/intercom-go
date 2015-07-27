@@ -311,6 +311,31 @@ segments := segmentList.Segments
 segment := ic.Segments.Find("abc312daf2397")
 ```
 
+### Messages
+
+#### New Admin to User/Contact Email
+
+```go
+msg := intercom.NewEmailMessage(intercom.PERSONAL_TEMPLATE, intercom.Admin{ID: "1234"}, intercom.User{Email: "test@example.com"}, "subject", "body")
+savedMessage, err := ic.Messages.Save(&msg)
+```
+
+Can use intercom.PLAIN_TEMPLATE too, or replace the intercom.User with an intercom.Contact.
+
+#### New Admin to User/Contact InApp
+
+```go
+msg := intercom.NewInAppMessage(intercom.Admin{ID: "1234"}, intercom.Contact{Email: "test@example.com"}, "body")
+savedMessage, err := ic.Messages.Save(&msg)
+```
+
+#### New User Message
+
+```go
+msg := intercom.NewUserMessage(intercom.User{Email: "test@example.com"}, "body")
+savedMessage, err := ic.Messages.Save(&msg)
+```
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:

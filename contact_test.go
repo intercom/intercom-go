@@ -73,6 +73,23 @@ func TestContactDelete(t *testing.T) {
 	contactService.Delete(&contact)
 }
 
+func TestContactMessageAddress(t *testing.T) {
+	contact := Contact{UserID: "aaaa", Email: "some@email.com"}
+	address := contact.MessageAddress()
+	if address.ID != "" {
+		t.Errorf("Contact address had ID")
+	}
+	if address.Type != "contact" {
+		t.Errorf("Contact address was not of type contact, was %s", address.Type)
+	}
+	if address.Email != "some@email.com" {
+		t.Errorf("Contact address had wrong Email")
+	}
+	if address.UserID != "aaaa" {
+		t.Errorf("Contact address had wrong UserID")
+	}
+}
+
 type TestContactAPI struct {
 	t *testing.T
 }

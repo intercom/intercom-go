@@ -9,6 +9,20 @@ func TestNobodyAdmin(t *testing.T) {
 	}
 }
 
+func TestAdminMessageAddress(t *testing.T) {
+	admin := Admin{ID: "123", Name: "josler"}
+	address := admin.MessageAddress()
+	if address.ID != "123" {
+		t.Errorf("Admin address did not have ID")
+	}
+	if address.Type != "admin" {
+		t.Errorf("Admin address was not of type admin, was %s", address.Type)
+	}
+	if address.Email != "" && address.UserID != "" {
+		t.Errorf("Admin address had Email/UserID")
+	}
+}
+
 func TestAdminList(t *testing.T) {
 	adminService := AdminService{Repository: TestAdminAPI{t: t}}
 	adminList, _ := adminService.List()

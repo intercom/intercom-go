@@ -33,6 +33,14 @@ func (a Admin) IsNobodyAdmin() bool {
 	return a.Type == "nobody_admin"
 }
 
+// Get the address for a Contact in order to message them
+func (a Admin) MessageAddress() messageAddress {
+	return messageAddress{
+		Type: "admin",
+		ID:   a.ID.String(),
+	}
+}
+
 func (a Admin) String() string {
 	return fmt.Sprintf("[intercom] %s { id: %s name: %s, email: %s }", a.Type, a.ID, a.Name, a.Email)
 }
