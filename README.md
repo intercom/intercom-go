@@ -8,7 +8,7 @@ _Currently in beta, though breaking API changes are not expected._
 
 ## Install
 
-`go get github.com/intercom/intercom-go`
+`go get gopkg.in/intercom/intercom-go.v1`
 
 ## Usage
 
@@ -18,7 +18,7 @@ The first step to using Intercom's Go client is to create a client object, using
 
 ```go
 import (
-	"github.com/intercom/intercom-go"
+	`gopkg.in/intercom/intercom-go.v1`
 )
 
 ic := intercom.NewClient("appID", "apiKey")
