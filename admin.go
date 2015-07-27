@@ -34,8 +34,8 @@ func (a Admin) IsNobodyAdmin() bool {
 }
 
 // Get the address for a Contact in order to message them
-func (a Admin) MessageAddress() messageAddress {
-	return messageAddress{
+func (a Admin) MessageAddress() MessageAddress {
+	return MessageAddress{
 		Type: "admin",
 		ID:   a.ID.String(),
 	}

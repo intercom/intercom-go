@@ -101,8 +101,8 @@ func (c *ContactService) Delete(contact *Contact) (Contact, error) {
 }
 
 // Get the address for a Contact in order to message them
-func (c Contact) MessageAddress() messageAddress {
-	return messageAddress{
+func (c Contact) MessageAddress() MessageAddress {
+	return MessageAddress{
 		Type:   "contact",
 		ID:     c.ID,
 		Email:  c.Email,

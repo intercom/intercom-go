@@ -132,8 +132,8 @@ func (u *UserService) Delete(id string) (User, error) {
 }
 
 // Get the address for an User in order to message them
-func (u User) MessageAddress() messageAddress {
-	return messageAddress{
+func (u User) MessageAddress() MessageAddress {
+	return MessageAddress{
 		Type:   "user",
 		ID:     u.ID,
 		Email:  u.Email,
