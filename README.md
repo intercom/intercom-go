@@ -8,7 +8,7 @@ _Currently in beta, though breaking API changes are not expected._
 
 ## Install
 
-`go get github.com/intercom/intercom-go`
+`go get gopkg.in/intercom/intercom-go.v1`
 
 ## Usage
 
@@ -18,7 +18,7 @@ The first step to using Intercom's Go client is to create a client object, using
 
 ```go
 import (
-	"github.com/intercom/intercom-go"
+	`gopkg.in/intercom/intercom-go.v1`
 )
 
 ic := intercom.NewClient("appID", "apiKey")
@@ -309,6 +309,31 @@ segments := segmentList.Segments
 
 ```go
 segment := ic.Segments.Find("abc312daf2397")
+```
+
+### Messages
+
+#### New Admin to User/Contact Email
+
+```go
+msg := intercom.NewEmailMessage(intercom.PERSONAL_TEMPLATE, intercom.Admin{ID: "1234"}, intercom.User{Email: "test@example.com"}, "subject", "body")
+savedMessage, err := ic.Messages.Save(&msg)
+```
+
+Can use intercom.PLAIN_TEMPLATE too, or replace the intercom.User with an intercom.Contact.
+
+#### New Admin to User/Contact InApp
+
+```go
+msg := intercom.NewInAppMessage(intercom.Admin{ID: "1234"}, intercom.Contact{Email: "test@example.com"}, "body")
+savedMessage, err := ic.Messages.Save(&msg)
+```
+
+#### New User Message
+
+```go
+msg := intercom.NewUserMessage(intercom.User{Email: "test@example.com"}, "body")
+savedMessage, err := ic.Messages.Save(&msg)
 ```
 
 ### Errors

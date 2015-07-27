@@ -100,6 +100,16 @@ func (c *ContactService) Delete(contact *Contact) (Contact, error) {
 	return c.Repository.delete(contact.ID)
 }
 
+// Get the address for a Contact in order to message them
+func (c Contact) MessageAddress() messageAddress {
+	return messageAddress{
+		Type:   "contact",
+		ID:     c.ID,
+		Email:  c.Email,
+		UserID: c.UserID,
+	}
+}
+
 func (c Contact) String() string {
 	return fmt.Sprintf("[intercom] contact { id: %s name: %s, user_id: %s, email: %s }", c.ID, c.Name, c.UserID, c.Email)
 }

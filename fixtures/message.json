@@ -1,0 +1,7 @@
+{
+	"type": "user_message",
+	"id": "2001",
+	"created_at": 1401917202,
+	"body" : "Hey, is the new thing in stock?",
+	"message_type": "inapp"
+}

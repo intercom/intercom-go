@@ -43,6 +43,23 @@ func TestUserDelete(t *testing.T) {
 	(&UserService{Repository: TestUserAPI{t: t}}).Delete("46adad3f09126dca")
 }
 
+func TestUserMessageAddress(t *testing.T) {
+	contact := User{ID: "46adad3f09126dca", UserID: "aaaa", Email: "some@email.com"}
+	address := contact.MessageAddress()
+	if address.ID != "46adad3f09126dca" {
+		t.Errorf("User address had wrong ID")
+	}
+	if address.Type != "user" {
+		t.Errorf("User address was not of type user, was %s", address.Type)
+	}
+	if address.Email != "some@email.com" {
+		t.Errorf("User address had wrong Email")
+	}
+	if address.UserID != "aaaa" {
+		t.Errorf("User address had wrong UserID")
+	}
+}
+
 type TestUserAPI struct {
 	t *testing.T
 }

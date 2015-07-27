@@ -131,6 +131,16 @@ func (u *UserService) Delete(id string) (User, error) {
 	return u.Repository.delete(id)
 }
 
+// Get the address for an User in order to message them
+func (u User) MessageAddress() messageAddress {
+	return messageAddress{
+		Type:   "user",
+		ID:     u.ID,
+		Email:  u.Email,
+		UserID: u.UserID,
+	}
+}
+
 func (u User) String() string {
 	return fmt.Sprintf("[intercom] user { id: %s name: %s, user_id: %s, email: %s }", u.ID, u.Name, u.UserID, u.Email)
 }
