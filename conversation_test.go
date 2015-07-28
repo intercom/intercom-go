@@ -2,6 +2,81 @@ package intercom
 
 import "testing"
 
+func TestFindConversation(t *testing.T) {
+	conversationService := ConversationService{Repository: TestConversationAPI{t: t}}
+	convo, _ := conversationService.Find("123")
+	if convo.ID != "123" {
+		t.Errorf("Did not receive conversation")
+	}
+}
+
+func TestReadConversation(t *testing.T) {
+	conversationService := ConversationService{Repository: TestConversationAPI{t: t}}
+	convo, _ := conversationService.MarkRead("123")
+	if convo.ID != "123" {
+		t.Errorf("Did not receive conversation")
+	}
+}
+
+func TestReplyConversationComment(t *testing.T) {
+	testAPI := TestConversationAPI{t: t}
+	testAPI.testFunc = func(t *testing.T, reply interface{}) {
+		if reply.(*Reply).IntercomID != "abc123" {
+			t.Errorf("user id not supplied")
+		}
+		if reply.(*Reply).ReplyType != "comment" {
+			t.Errorf("part was not comment, was %s", reply.(*Reply).ReplyType)
+		}
+	}
+	conversationService := ConversationService{Repository: testAPI}
+	conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body")
+}
+
+func TestReplyConversationOpen(t *testing.T) {
+	testAPI := TestConversationAPI{t: t}
+	testAPI.testFunc = func(t *testing.T, reply interface{}) {
+		if reply.(*Reply).IntercomID != "abc123" {
+			t.Errorf("user id not supplied")
+		}
+		if reply.(*Reply).ReplyType != "open" {
+			t.Errorf("part was not open, was %s", reply.(*Reply).ReplyType)
+		}
+	}
+	conversationService := ConversationService{Repository: testAPI}
+	conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_OPEN, "Body")
+}
+
+func TestReplyConversationNote(t *testing.T) {
+	testAPI := TestConversationAPI{t: t}
+	testAPI.testFunc = func(t *testing.T, reply interface{}) {
+		if reply.(*Reply).AdminID != "abc123" {
+			t.Errorf("admin id not supplied")
+		}
+		if reply.(*Reply).ReplyType != "note" {
+			t.Errorf("part was not note, was %s", reply.(*Reply).ReplyType)
+		}
+	}
+	conversationService := ConversationService{Repository: testAPI}
+	conversationService.Reply("123", &Admin{ID: "abc123"}, CONVERSATION_NOTE, "Body")
+}
+
+func TestAssignConversation(t *testing.T) {
+	testAPI := TestConversationAPI{t: t}
+	testAPI.testFunc = func(t *testing.T, reply interface{}) {
+		if reply.(*Reply).AssigneeID != "def789" {
+			t.Errorf("assignee_id not supplied")
+		}
+		if reply.(*Reply).AdminID != "abc123" {
+			t.Errorf("admin id was not supplied")
+		}
+		if reply.(*Reply).ReplyType != "assignment" {
+			t.Errorf("part was not assignment, was %s", reply.(*Reply).ReplyType)
+		}
+	}
+	conversationService := ConversationService{Repository: testAPI}
+	conversationService.Assign("123", &Admin{ID: "abc123"}, &Admin{ID: "def789"})
+}
+
 func TestListAllConversations(t *testing.T) {
 	conversationService := ConversationService{Repository: TestConversationAPI{t: t}}
 	list, _ := conversationService.ListAll(PageParams{})
@@ -12,9 +87,9 @@ func TestListAllConversations(t *testing.T) {
 
 func TestListUserConversationsUnread(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
-	testAPI.testFunc = func(t *testing.T, params conversationListParams) {
-		if *params.Unread != true {
-			t.Errorf("unread was %v, expected true", *params.Unread)
+	testAPI.testFunc = func(t *testing.T, params interface{}) {
+		if *params.(conversationListParams).Unread != true {
+			t.Errorf("unread was %v, expected true", *params.(conversationListParams).Unread)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -27,9 +102,9 @@ func TestListUserConversationsUnread(t *testing.T) {
 
 func TestListUserConversationsAll(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
-	testAPI.testFunc = func(t *testing.T, params conversationListParams) {
-		if params.Unread != nil {
-			t.Errorf("unread was not nil, was %v", *params.Unread)
+	testAPI.testFunc = func(t *testing.T, params interface{}) {
+		if params.(conversationListParams).Unread != nil {
+			t.Errorf("unread was not nil, was %v", *params.(conversationListParams).Unread)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -42,9 +117,9 @@ func TestListUserConversationsAll(t *testing.T) {
 
 func TestListAdminConversationsAll(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
-	testAPI.testFunc = func(t *testing.T, params conversationListParams) {
-		if params.Open != nil {
-			t.Errorf("open was not nil, was %v", *params.Open)
+	testAPI.testFunc = func(t *testing.T, params interface{}) {
+		if params.(conversationListParams).Open != nil {
+			t.Errorf("open was not nil, was %v", *params.(conversationListParams).Open)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -57,9 +132,9 @@ func TestListAdminConversationsAll(t *testing.T) {
 
 func TestListAdminConversationsOpen(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
-	testAPI.testFunc = func(t *testing.T, params conversationListParams) {
-		if *params.Open != true {
-			t.Errorf("open was not true, was %v", *params.Open)
+	testAPI.testFunc = func(t *testing.T, params interface{}) {
+		if *params.(conversationListParams).Open != true {
+			t.Errorf("open was not true, was %v", *params.(conversationListParams).Open)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -71,7 +146,7 @@ func TestListAdminConversationsOpen(t *testing.T) {
 }
 
 type TestConversationAPI struct {
-	testFunc func(t *testing.T, params conversationListParams)
+	testFunc func(t *testing.T, params interface{})
 	t        *testing.T
 }
 
@@ -80,4 +155,19 @@ func (t TestConversationAPI) list(params conversationListParams) (ConversationLi
 		t.testFunc(t.t, params)
 	}
 	return ConversationList{Conversations: []Conversation{Conversation{ID: "123"}}, Pages: PageParams{Page: 1, PerPage: 20}}, nil
+}
+
+func (t TestConversationAPI) find(id string) (Conversation, error) {
+	return Conversation{ID: "123"}, nil
+}
+
+func (t TestConversationAPI) read(id string) (Conversation, error) {
+	return Conversation{ID: "123"}, nil
+}
+
+func (t TestConversationAPI) reply(id string, reply *Reply) (Conversation, error) {
+	if t.testFunc != nil {
+		t.testFunc(t.t, reply)
+	}
+	return Conversation{ID: "123"}, nil
 }

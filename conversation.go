@@ -98,6 +98,57 @@ func (c *ConversationService) ListByUser(user *User, state ConversationListState
 	return c.Repository.list(params)
 }
 
+// Find Conversation by conversation id
+func (c *ConversationService) Find(id string) (Conversation, error) {
+	return c.Repository.find(id)
+}
+
+// Mark Conversation as read (by a User)
+func (c *ConversationService) MarkRead(id string) (Conversation, error) {
+	return c.Repository.read(id)
+}
+
+// Reply to a Conversation by id
+func (c *ConversationService) Reply(id string, author MessagePerson, replyType ReplyType, body string) (Conversation, error) {
+	addr := author.MessageAddress()
+	reply := Reply{
+		Type:      addr.Type,
+		ReplyType: replyType.String(),
+		Body:      body,
+	}
+	if addr.Type == "admin" {
+		reply.AdminID = addr.ID
+	} else {
+		reply.IntercomID = addr.ID
+		reply.UserID = addr.UserID
+		reply.Email = addr.Email
+	}
+	return c.Repository.reply(id, &reply)
+}
+
+// Assign a Conversation to an Admin
+func (c *ConversationService) Assign(id string, assigner, assignee *Admin) (Conversation, error) {
+	assignerAddr := assigner.MessageAddress()
+	assigneeAddr := assignee.MessageAddress()
+	reply := Reply{
+		Type:       "admin",
+		ReplyType:  CONVERSATION_ASSIGN.String(),
+		AdminID:    assignerAddr.ID,
+		AssigneeID: assigneeAddr.ID,
+	}
+	return c.Repository.reply(id, &reply)
+}
+
+// Open a Conversation (without a body)
+func (c *ConversationService) Open(id string, opener *Admin) (Conversation, error) {
+	return c.Reply(id, opener, CONVERSATION_OPEN, "")
+}
+
+// Close a Conversation (without a body)
+func (c *ConversationService) Close(id string, closer *Admin) (Conversation, error) {
+	return c.Reply(id, closer, CONVERSATION_CLOSE, "")
+}
+
 type conversationListParams struct {
 	PageParams
 	Type           string `url:"type,omitempty"`

@@ -336,6 +336,102 @@ msg := intercom.NewUserMessage(intercom.User{Email: "test@example.com"}, "body")
 savedMessage, err := ic.Messages.Save(&msg)
 ```
 
+### Conversations
+
+### Find Conversation
+
+```go
+convo, err := intercom.Conversations.Find("1234")
+```
+
+### List Conversations
+
+#### All
+
+```go
+convoList, err := intercom.Conversations.ListAll(intercom.PageParams{})
+```
+
+#### By User
+
+Showing all for user:
+
+```go
+convoList, err := intercom.Conversations.ListByUser(&user, intercom.SHOW_ALL, intercom.PageParams{})
+```
+
+Showing just Unread for user:
+
+```go
+convoList, err := intercom.Conversations.ListByUser(&user, intercom.SHOW_UNREAD, intercom.PageParams{})
+```
+
+#### By Admin
+
+Showing all for admin:
+
+```go
+convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_ALL, intercom.PageParams{})
+```
+
+Showing just Open for admin:
+
+```go
+convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_OPEN, intercom.PageParams{})
+```
+
+Showing just Closed for admin:
+
+```go
+convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_CLOSED, intercom.PageParams{})
+```
+
+### Reply
+
+User reply:
+
+```go
+convo, err := intercom.Conversations.Reply("1234", &user, intercom.CONVERSATION_COMMENT, "my message")
+```
+
+User reply that opens:
+
+```go
+convo, err := intercom.Conversations.Reply("1234", &user, intercom.CONVERSATION_OPEN, "my message")
+```
+
+Admin reply:
+
+```go
+convo, err := intercom.Conversations.Reply("1234", &admin, intercom.CONVERSATION_COMMENT, "my message")
+```
+
+Admin note:
+
+```go
+convo, err := intercom.Conversations.Reply("1234", &admin, intercom.CONVERSATION_NOTE, "my message to just admins")
+```
+
+### Open and Close
+
+Open:
+
+```go
+convo, err := intercom.Conversations.Open("1234", &openerAdmin)
+```
+
+Close:
+
+```go
+convo, err := intercom.Conversations.Close("1234", &closerAdmin)
+```
+
+### Assign
+
+```go
+convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdmin)
+```
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:

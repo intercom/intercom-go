@@ -9,7 +9,7 @@ func TestNewEmailMessage(t *testing.T) {
 	if message.MessageType != "email" {
 		t.Errorf("Message type was not email")
 	}
-	if message.Template.String() != "personal" {
+	if message.Template != "personal" {
 		t.Errorf("Message template was not personal")
 	}
 	if message.From.Type != "admin" {
@@ -33,8 +33,8 @@ func TestNewInAppMessage(t *testing.T) {
 	if message.MessageType != "inapp" {
 		t.Errorf("Message type was not inapp")
 	}
-	if message.Template.String() != "" {
-		t.Errorf("Message template was not empty, was %s", message.Template.String())
+	if message.Template != "" {
+		t.Errorf("Message template was not empty, was %s", message.Template)
 	}
 	if message.From.Type != "admin" {
 		t.Errorf("Message from was not admin")
@@ -56,8 +56,8 @@ func TestNewUserMessage(t *testing.T) {
 	if message.MessageType != "inapp" {
 		t.Errorf("Message type was not inapp")
 	}
-	if message.Template.String() != "" {
-		t.Errorf("Message template was not empty, was %s", message.Template.String())
+	if message.Template != "" {
+		t.Errorf("Message template was not empty, was %s", message.Template)
 	}
 	if message.From.Type != "user" {
 		t.Errorf("Message from was not user")

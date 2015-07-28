@@ -5,6 +5,51 @@ import (
 	"testing"
 )
 
+func TestConversationFind(t *testing.T) {
+	http := TestConversationHTTPClient{t: t, expectedURI: "/conversations/147", fixtureFilename: "fixtures/conversation.json"}
+	api := ConversationAPI{httpClient: &http}
+	convo, _ := api.find("147")
+	if convo.ID != "147" {
+		t.Errorf("Conversation not retrieved, %s", convo.ID)
+	}
+}
+
+func TestConversationRead(t *testing.T) {
+	http := TestConversationHTTPClient{t: t, expectedURI: "/conversations/147", fixtureFilename: "fixtures/conversation.json"}
+	http.testFunc = func(t *testing.T, readRequest interface{}) {
+		req := readRequest.(conversationReadRequest)
+		if req.Read != true {
+			t.Errorf("read was not marked true")
+		}
+	}
+	api := ConversationAPI{httpClient: &http}
+	convo, err := api.read("147")
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	if convo.ID != "147" {
+		t.Errorf("Conversation not retrieved, %s", convo.ID)
+	}
+}
+
+func TestConversationReply(t *testing.T) {
+	http := TestConversationHTTPClient{t: t, expectedURI: "/conversations/147/reply", fixtureFilename: "fixtures/conversation.json"}
+	http.testFunc = func(t *testing.T, replyRequest interface{}) {
+		reply := replyRequest.(*Reply)
+		if reply.ReplyType != CONVERSATION_NOTE.String() {
+			t.Errorf("Reply was not note")
+		}
+	}
+	api := ConversationAPI{httpClient: &http}
+	convo, err := api.reply("147", &Reply{ReplyType: CONVERSATION_NOTE.String(), AdminID: "123"})
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	if convo.ID != "147" {
+		t.Errorf("Conversation not retrieved, %s", convo.ID)
+	}
+}
+
 func TestConversationListAll(t *testing.T) {
 	http := TestConversationHTTPClient{t: t, expectedURI: "/conversations", fixtureFilename: "fixtures/conversations.json"}
 	api := ConversationAPI{httpClient: &http}
@@ -59,6 +104,16 @@ type TestConversationHTTPClient struct {
 func (t *TestConversationHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {
 	if t.testFunc != nil {
 		t.testFunc(t.t, queryParams)
+	}
+	if t.expectedURI != uri {
+		t.t.Errorf("Wrong endpoint called")
+	}
+	return ioutil.ReadFile(t.fixtureFilename)
+}
+
+func (t *TestConversationHTTPClient) Post(uri string, dataObject interface{}) ([]byte, error) {
+	if t.testFunc != nil {
+		t.testFunc(t.t, dataObject)
 	}
 	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
