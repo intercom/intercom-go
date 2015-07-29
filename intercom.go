@@ -7,24 +7,26 @@ import (
 // A Client manages interacting with the Intercom API.
 type Client struct {
 	// Services for interacting with various resources in Intercom.
-	Admins    AdminService
-	Companies CompanyService
-	Contacts  ContactService
-	Events    EventService
-	Messages  MessageService
-	Segments  SegmentService
-	Tags      TagService
-	Users     UserService
+	Admins        AdminService
+	Companies     CompanyService
+	Contacts      ContactService
+	Conversations ConversationService
+	Events        EventService
+	Messages      MessageService
+	Segments      SegmentService
+	Tags          TagService
+	Users         UserService
 
 	// Mappings for resources to API constructs
-	AdminRepository   AdminRepository
-	CompanyRepository CompanyRepository
-	ContactRepository ContactRepository
-	EventRepository   EventRepository
-	MessageRepository MessageRepository
-	SegmentRepository SegmentRepository
-	TagRepository     TagRepository
-	UserRepository    UserRepository
+	AdminRepository        AdminRepository
+	CompanyRepository      CompanyRepository
+	ContactRepository      ContactRepository
+	ConversationRepository ConversationRepository
+	EventRepository        EventRepository
+	MessageRepository      MessageRepository
+	SegmentRepository      SegmentRepository
+	TagRepository          TagRepository
+	UserRepository         UserRepository
 
 	// AppID For Intercom.
 	AppID string
@@ -97,6 +99,7 @@ func (c *Client) setup() {
 	c.AdminRepository = AdminAPI{httpClient: c.HTTPClient}
 	c.CompanyRepository = CompanyAPI{httpClient: c.HTTPClient}
 	c.ContactRepository = ContactAPI{httpClient: c.HTTPClient}
+	c.ConversationRepository = ConversationAPI{httpClient: c.HTTPClient}
 	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
 	c.MessageRepository = MessageAPI{httpClient: c.HTTPClient}
 	c.SegmentRepository = SegmentAPI{httpClient: c.HTTPClient}
@@ -105,6 +108,7 @@ func (c *Client) setup() {
 	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Companies = CompanyService{Repository: c.CompanyRepository}
 	c.Contacts = ContactService{Repository: c.ContactRepository}
+	c.Conversations = ConversationService{Repository: c.ConversationRepository}
 	c.Events = EventService{Repository: c.EventRepository}
 	c.Messages = MessageService{Repository: c.MessageRepository}
 	c.Segments = SegmentService{Repository: c.SegmentRepository}

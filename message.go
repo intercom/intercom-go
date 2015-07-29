@@ -28,12 +28,12 @@ func (template MessageTemplate) String() string {
 
 // MessageRequest represents a Message to be sent through Intercom from/to an Admin, User, or Contact.
 type MessageRequest struct {
-	MessageType string          `json:"message_type,omitempty"`
-	Subject     string          `json:"subject,omitempty"`
-	Body        string          `json:"body,omitempty"`
-	Template    MessageTemplate `json:"template,omitempty"`
-	From        messageAddress  `json:"from,omitempty"`
-	To          messageAddress  `json:"to,omitempty"`
+	MessageType string         `json:"message_type,omitempty"`
+	Subject     string         `json:"subject,omitempty"`
+	Body        string         `json:"body,omitempty"`
+	Template    string         `json:"template,omitempty"`
+	From        MessageAddress `json:"from,omitempty"`
+	To          MessageAddress `json:"to,omitempty"`
 }
 
 // MessageResponse represents a Message to be sent through Intercom from/to an Admin, User, or Contact.
@@ -41,7 +41,7 @@ type MessageResponse struct {
 	MessageType string          `json:"message_type,omitempty"`
 	ID          string          `json:"id"`
 	CreatedAt   int32           `json:"created_at,omitempty"`
-	Owner       messageAddress  `json:"owner,omitempty"`
+	Owner       MessageAddress  `json:"owner,omitempty"`
 	Subject     string          `json:"subject,omitempty"`
 	Body        string          `json:"body,omitempty"`
 	Template    MessageTemplate `json:"template,omitempty"`
@@ -58,7 +58,7 @@ func (m *MessageService) Save(message *MessageRequest) (MessageResponse, error) 
 
 // NewEmailMessage creates a new *Message of email type.
 func NewEmailMessage(template MessageTemplate, from, to MessagePerson, subject, body string) MessageRequest {
-	return MessageRequest{MessageType: "email", Template: template, From: from.MessageAddress(), To: to.MessageAddress(), Subject: subject, Body: body}
+	return MessageRequest{MessageType: "email", Template: template.String(), From: from.MessageAddress(), To: to.MessageAddress(), Subject: subject, Body: body}
 }
 
 // NewInAppMessage creates a new *Message of InApp (widget) type.
@@ -73,10 +73,10 @@ func NewUserMessage(from MessagePerson, body string) MessageRequest {
 
 // A MessagePerson is someone to send a Message to and from.
 type MessagePerson interface {
-	MessageAddress() messageAddress
+	MessageAddress() MessageAddress
 }
 
-type messageAddress struct {
+type MessageAddress struct {
 	Type   string `json:"type,omitempty"`
 	ID     string `json:"id,omitempty"`
 	Email  string `json:"email,omitempty"`
