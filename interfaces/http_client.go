@@ -48,10 +48,10 @@ func (c IntercomHTTPClient) Get(url string, queryParams interface{}) ([]byte, er
 
 	// Do request
 	resp, err := c.Client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	// Read response
 	data, err := c.readAll(resp.Body)
@@ -99,10 +99,10 @@ func (c IntercomHTTPClient) postOrPatch(method, url string, body interface{}) ([
 
 	// Do request
 	resp, err := c.Client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	// Read response
 	data, err := c.readAll(resp.Body)
@@ -128,10 +128,10 @@ func (c IntercomHTTPClient) Delete(url string, queryParams interface{}) ([]byte,
 
 	// Do request
 	resp, err := c.Client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	// Read response
 	data, err := c.readAll(resp.Body)
