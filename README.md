@@ -67,7 +67,7 @@ Adding a Company:
 ```go
 companyList := intercom.CompanyList{
 	Companies: []intercom.Company{
-		intercom.Company{ID: "5"},
+		{ID: "5"},
 	},
 }
 user := intercom.User{
@@ -285,14 +285,14 @@ err := ic.Tags.Delete("6")
 #### Tagging Users/Companies
 
 ```go
-taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{intercom.Tagging{UserID: "27"}}}
+taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{{UserID: "27"}}}
 savedTag, err := ic.Tags.Tag(&taggingList)
 ```
 
 A `Tagging` can identify a User or Company, and can be set to `Untag`:
 
 ```go
-taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{intercom.Tagging{UserID: "27", Untag: intercom.Bool(true)}}}
+taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{{UserID: "27", Untag: intercom.Bool(true)}}}
 savedTag, err := ic.Tags.Tag(&taggingList)
 ```
 
