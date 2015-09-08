@@ -393,6 +393,11 @@ User reply:
 ```go
 convo, err := intercom.Conversations.Reply("1234", &user, intercom.CONVERSATION_COMMENT, "my message")
 ```
+User reply with attachment:
+
+```go
+convo, err := intercom.Conversations.ReplyWithAttachmentURLs("1234", &user, intercom.CONVERSATION_COMMENT, "my message", string[]{"http://www.example.com/attachment.jpg"})
+```
 
 User reply that opens:
 

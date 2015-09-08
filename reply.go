@@ -10,6 +10,7 @@ type Reply struct {
 	IntercomID string `json:"intercom_user_id,omitempty"`
 	Email      string `json:"email,omitempty"`
 	UserID     string `json:"user_id,omitempty"`
+	AttachmentURLs []string `json:"attachment_urls,omitempty"`
 }
 
 // ReplyType determines the type of Reply

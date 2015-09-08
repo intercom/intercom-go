@@ -32,6 +32,20 @@ func TestReplyConversationComment(t *testing.T) {
 	conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body")
 }
 
+func TestReplyConversationCommentWithAttachment(t *testing.T) {
+	testAPI := TestConversationAPI{t: t}
+	testAPI.testFunc = func(t *testing.T, reply interface{}) {
+		if reply.(*Reply).IntercomID != "abc123" {
+			t.Errorf("user id not supplied")
+		}
+		if reply.(*Reply).ReplyType != "comment" {
+			t.Errorf("part was not comment, was %s", reply.(*Reply).ReplyType)
+		}
+	}
+	conversationService := ConversationService{Repository: testAPI}
+	conversationService.ReplyWithAttachmentURLs("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body", []string{"http://www.example.com/attachment.jpg"})
+}
+
 func TestReplyConversationOpen(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
 	testAPI.testFunc = func(t *testing.T, reply interface{}) {
