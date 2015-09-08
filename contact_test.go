@@ -3,7 +3,7 @@ package intercom
 import (
 	"testing"
 
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 )
 
 func TestContactFindByID(t *testing.T) {
