@@ -24,7 +24,7 @@ type requestCompany struct {
 	ID               string                 `json:"id,omitempty"`
 	CompanyID        string                 `json:"company_id,omitempty"`
 	Name             string                 `json:"name,omitempty"`
-	RemoteCreatedAt  int32                  `json:"remote_created_at,omitempty"`
+	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
 	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
 	Plan             string                 `json:"plan,omitempty"`
 	SessionCount     int32                  `json:"session_count,omitempty"`

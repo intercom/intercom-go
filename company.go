@@ -20,7 +20,7 @@ type Company struct {
 	ID               string                 `json:"id,omitempty"`
 	CompanyID        string                 `json:"company_id,omitempty"`
 	Name             string                 `json:"name,omitempty"`
-	RemoteCreatedAt  int32                  `json:"remote_created_at,omitempty"`
+	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
 	LastRequestAt    int32                  `json:"last_request_at,omitempty"`
 	CreatedAt        int32                  `json:"created_at,omitempty"`
 	UpdatedAt        int32                  `json:"updated_at,omitempty"`
