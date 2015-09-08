@@ -27,7 +27,6 @@ type requestCompany struct {
 	RemoteCreatedAt  int32                  `json:"remote_created_at,omitempty"`
 	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
 	Plan             string                 `json:"plan,omitempty"`
-	SessionCount     int32                  `json:"session_count,omitempty"`
 	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
 }
 
@@ -68,7 +67,6 @@ func (api CompanyAPI) save(company *Company) (Company, error) {
 		CompanyID:        company.CompanyID,
 		RemoteCreatedAt:  company.RemoteCreatedAt,
 		MonthlySpend:     company.MonthlySpend,
-		SessionCount:     company.SessionCount,
 		Plan:             api.getPlanName(company),
 		CustomAttributes: company.CustomAttributes,
 	}
