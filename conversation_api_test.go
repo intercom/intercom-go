@@ -50,6 +50,24 @@ func TestConversationReply(t *testing.T) {
 	}
 }
 
+func TestConversationReplyWithAttachment(t *testing.T) {
+	http := TestConversationHTTPClient{t: t, expectedURI: "/conversations/147/reply", fixtureFilename: "fixtures/conversation.json"}
+	http.testFunc = func(t *testing.T, replyRequest interface{}) {
+		reply := replyRequest.(*Reply)
+		if reply.ReplyType != CONVERSATION_COMMENT.String() {
+			t.Errorf("Reply was not comment")
+		}
+	}
+	api := ConversationAPI{httpClient: &http}
+	convo, err := api.reply("147", &Reply{ReplyType: CONVERSATION_COMMENT.String(), AdminID: "123", AttachmentURLs: []string{"http://www.example.com/attachment.jpg"}})
+	if err != nil {
+		t.Errorf("%v", err)
+	}
+	if convo.ID != "147" {
+		t.Errorf("Conversation not retrieved, %s", convo.ID)
+	}
+}
+
 func TestConversationListAll(t *testing.T) {
 	http := TestConversationHTTPClient{t: t, expectedURI: "/conversations", fixtureFilename: "fixtures/conversations.json"}
 	api := ConversationAPI{httpClient: &http}
