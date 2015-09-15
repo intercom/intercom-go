@@ -437,6 +437,36 @@ convo, err := intercom.Conversations.Close("1234", &closerAdmin)
 convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdmin)
 ```
 
+### Bulk
+
+Bulk operations are supported through the gem, see [the documentation](https://doc.intercom.io/api/#bulk-apis) for details.
+
+New user bulk job, posts a user and deletes another:
+
+```go
+jobResponse := intercom.Jobs.NewUserJob(intercom.NewUserJobItem(user, intercom.JOB_POST), intercom.NewUserJobItem(userTwo, intercom.JOB_DELETE))
+```
+
+Append to an existing user job:
+
+```go
+jobResponse := intercom.Jobs.Append("job_5ca1ab1eca11ab1e", intercom.NewUserJobItem(user, intercom.JOB_POST))
+```
+
+New event bulk job:
+
+```go
+jobResponse := intercom.Jobs.NewEventJob(intercom.NewEventJobItem(event), intercom.NewEventJobItem(eventTwo))
+```
+
+Appending works the same way.
+
+Find a Job:
+
+```go
+jobResponse := intercom.Jobs.Find("job_5ca1ab1eca11ab1e")
+```
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
