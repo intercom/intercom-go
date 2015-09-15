@@ -235,7 +235,7 @@ companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 
 ```go
 event := intercom.Event{
-	UserId: "27",
+	UserID: "27",
 	EventName: "bought_item",
 	CreatedAt: int32(time.Now().Unix()),
 	Metadata: map[string]interface{}{"item_name": "PocketWatch"},
@@ -439,32 +439,36 @@ convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdm
 
 ### Bulk
 
-Bulk operations are supported through the gem, see [the documentation](https://doc.intercom.io/api/#bulk-apis) for details.
+Bulk operations are supported through this package, see [the documentation](https://doc.intercom.io/api/#bulk-apis) for details.
 
 New user bulk job, posts a user and deletes another:
 
 ```go
-jobResponse := intercom.Jobs.NewUserJob(intercom.NewUserJobItem(user, intercom.JOB_POST), intercom.NewUserJobItem(userTwo, intercom.JOB_DELETE))
+jobResponse := ic.Jobs.NewUserJob(intercom.NewUserJobItem(&user, intercom.JOB_POST), intercom.NewUserJobItem(&userTwo, intercom.JOB_DELETE))
 ```
 
 Append to an existing user job:
 
 ```go
-jobResponse := intercom.Jobs.Append("job_5ca1ab1eca11ab1e", intercom.NewUserJobItem(user, intercom.JOB_POST))
+jobResponse := ic.Jobs.AppendUsers("job_5ca1ab1eca11ab1e", intercom.NewUserJobItem(&user, intercom.JOB_POST))
 ```
 
 New event bulk job:
 
 ```go
-jobResponse := intercom.Jobs.NewEventJob(intercom.NewEventJobItem(event), intercom.NewEventJobItem(eventTwo))
+jobResponse := ic.Jobs.NewEventJob(intercom.NewEventJobItem(&event), intercom.NewEventJobItem(&eventTwo))
 ```
 
-Appending works the same way.
+Append to an existing event job:
+
+```go
+jobResponse := ic.Jobs.AppendEvents("job_5ca1ab1eca11ab1e", intercom.NewEventJobItem(&eventTwo))
+```
 
 Find a Job:
 
 ```go
-jobResponse := intercom.Jobs.Find("job_5ca1ab1eca11ab1e")
+jobResponse := ic.Jobs.Find("job_5ca1ab1eca11ab1e")
 ```
 
 ### Errors
