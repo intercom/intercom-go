@@ -4,11 +4,9 @@
 
 Thin client for the [Intercom](https://www.intercom.io) API.
 
-_Currently in beta, though breaking API changes are not expected._
-
 ## Install
 
-`go get gopkg.in/intercom/intercom-go.v1`
+`go get gopkg.in/intercom/intercom-go.v2`
 
 ## Usage
 
