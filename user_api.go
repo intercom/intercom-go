@@ -62,32 +62,8 @@ func (api UserAPI) list(params userListParams) (UserList, error) {
 	return userList, err
 }
 
-// A Company the User belongs to
-// used to update Companies on a User.
-type UserCompany struct {
-	ID     string `json:"id,omitempty"`
-	Name   string `json:"name,omitempty"`
-	Remove *bool  `json:"remove,omitempty"`
-}
-
 func (api UserAPI) save(user *User) (User, error) {
-	requestUser := requestUser{
-		ID:                     user.ID,
-		Email:                  user.Email,
-		UserID:                 user.UserID,
-		Name:                   user.Name,
-		SignedUpAt:             user.SignedUpAt,
-		RemoteCreatedAt:        user.RemoteCreatedAt,
-		LastRequestAt:          user.LastRequestAt,
-		LastSeenIP:             user.LastSeenIP,
-		UnsubscribedFromEmails: user.UnsubscribedFromEmails,
-		Companies:              api.getCompaniesToSendFromUser(user),
-		CustomAttributes:       user.CustomAttributes,
-		UpdateLastRequestAt:    user.UpdateLastRequestAt,
-		NewSession:             user.NewSession,
-		LastSeenUserAgent:      user.LastSeenUserAgent,
-	}
-	return unmarshalToUser(api.httpClient.Post("/users", &requestUser))
+	return unmarshalToUser(api.httpClient.Post("/users", RequestUserMapper{}.ConvertUser(user)))
 }
 
 func unmarshalToUser(data []byte, err error) (User, error) {
@@ -97,25 +73,6 @@ func unmarshalToUser(data []byte, err error) (User, error) {
 	}
 	err = json.Unmarshal(data, &savedUser)
 	return savedUser, err
-}
-
-func (api UserAPI) getCompaniesToSendFromUser(user *User) []UserCompany {
-	if user.Companies == nil {
-		return []UserCompany{}
-	}
-	return makeUserCompaniesFromCompanies(user.Companies.Companies)
-}
-
-func makeUserCompaniesFromCompanies(companies []Company) []UserCompany {
-	userCompanies := make([]UserCompany, len(companies))
-	for i := 0; i < len(companies); i++ {
-		userCompanies[i] = UserCompany{
-			ID:     companies[i].ID,
-			Name:   companies[i].Name,
-			Remove: companies[i].Remove,
-		}
-	}
-	return userCompanies
 }
 
 func (api UserAPI) delete(id string) (User, error) {

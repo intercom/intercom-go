@@ -111,5 +111,5 @@ func (api ContactAPI) getCompaniesToSendFromContact(contact *Contact) []UserComp
 	if contact.Companies == nil {
 		return []UserCompany{}
 	}
-	return makeUserCompaniesFromCompanies(contact.Companies.Companies)
+	return RequestUserMapper{}.MakeUserCompaniesFromCompanies(contact.Companies.Companies)
 }
