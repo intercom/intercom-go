@@ -46,7 +46,7 @@ type Client struct {
 
 const (
 	defaultBaseURI = "https://api.intercom.io"
-	clientVersion  = "0.0.1"
+	clientVersion  = "2.0.0"
 )
 
 type option func(c *Client) option
