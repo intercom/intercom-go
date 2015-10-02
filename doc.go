@@ -9,7 +9,7 @@ Package intercom-go provides a thin client for the Intercom API: http://doc.inte
 The first step to using Intercom's Go client is to create a client object, using your App ID and Api Key from your [settings](http://app.intercom.io/apps/api_keys).
 
   import (
-    "github.com/intercom/intercom-go"
+    "gopkg.in/intercom/intercom-go.v2"
   )
   ic := intercom.NewClient("appID", "apiKey")
 

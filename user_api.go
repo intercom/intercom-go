@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/intercom/intercom-go/interfaces"
+	"gopkg.in/intercom/intercom-go.v2/interfaces"
 )
 
 // UserRepository defines the interface for working with Users through the API.
