@@ -27,8 +27,8 @@ func (segmentPersonType SegmentPersonType) String() string {
 type Segment struct {
 	ID         string            `json:"id,omitempty"`
 	Name       string            `json:"name,omitempty"`
-	CreatedAt  int32             `json:"created_at,omitempty"`
-	UpdatedAt  int32             `json:"updated_at,omitempty"`
+	CreatedAt  int64             `json:"created_at,omitempty"`
+	UpdatedAt  int64             `json:"updated_at,omitempty"`
 	PersonType SegmentPersonType `json:"person_type,omitempty"`
 }
 

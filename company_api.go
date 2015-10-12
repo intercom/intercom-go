@@ -25,7 +25,7 @@ type requestCompany struct {
 	CompanyID        string                 `json:"company_id,omitempty"`
 	Name             string                 `json:"name,omitempty"`
 	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
-	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
+	MonthlySpend     int64                  `json:"monthly_spend,omitempty"`
 	Plan             string                 `json:"plan,omitempty"`
 	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
 }

@@ -2,14 +2,14 @@ package intercom
 
 // A Reply to an Intercom conversation
 type Reply struct {
-	Type       string `json:"type"`
-	ReplyType  string `json:"message_type"`
-	Body       string `json:"body,omitempty"`
-	AssigneeID string `json:"assignee_id,omitempty"`
-	AdminID    string `json:"admin_id,omitempty"`
-	IntercomID string `json:"intercom_user_id,omitempty"`
-	Email      string `json:"email,omitempty"`
-	UserID     string `json:"user_id,omitempty"`
+	Type           string   `json:"type"`
+	ReplyType      string   `json:"message_type"`
+	Body           string   `json:"body,omitempty"`
+	AssigneeID     string   `json:"assignee_id,omitempty"`
+	AdminID        string   `json:"admin_id,omitempty"`
+	IntercomID     string   `json:"intercom_user_id,omitempty"`
+	Email          string   `json:"email,omitempty"`
+	UserID         string   `json:"user_id,omitempty"`
 	AttachmentURLs []string `json:"attachment_urls,omitempty"`
 }
 

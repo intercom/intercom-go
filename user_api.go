@@ -26,9 +26,9 @@ type requestUser struct {
 	Email                  string                 `json:"email,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
-	SignedUpAt             int32                  `json:"signed_up_at,omitempty"`
-	RemoteCreatedAt        int32                  `json:"remote_created_at,omitempty"`
-	LastRequestAt          int32                  `json:"last_request_at,omitempty"`
+	SignedUpAt             int64                  `json:"signed_up_at,omitempty"`
+	RemoteCreatedAt        int64                  `json:"remote_created_at,omitempty"`
+	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
 	LastSeenIP             string                 `json:"last_seen_ip,omitempty"`
 	UnsubscribedFromEmails *bool                  `json:"unsubscribed_from_emails,omitempty"`
 	Companies              []UserCompany          `json:"companies,omitempty"`

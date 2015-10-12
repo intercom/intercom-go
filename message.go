@@ -40,7 +40,7 @@ type MessageRequest struct {
 type MessageResponse struct {
 	MessageType string          `json:"message_type,omitempty"`
 	ID          string          `json:"id"`
-	CreatedAt   int32           `json:"created_at,omitempty"`
+	CreatedAt   int64           `json:"created_at,omitempty"`
 	Owner       MessageAddress  `json:"owner,omitempty"`
 	Subject     string          `json:"subject,omitempty"`
 	Body        string          `json:"body,omitempty"`
