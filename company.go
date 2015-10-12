@@ -21,12 +21,12 @@ type Company struct {
 	CompanyID        string                 `json:"company_id,omitempty"`
 	Name             string                 `json:"name,omitempty"`
 	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
-	LastRequestAt    int32                  `json:"last_request_at,omitempty"`
-	CreatedAt        int32                  `json:"created_at,omitempty"`
-	UpdatedAt        int32                  `json:"updated_at,omitempty"`
-	SessionCount     int32                  `json:"session_count,omitempty"`
-	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
-	UserCount        int32                  `json:"user_count,omitempty"`
+	LastRequestAt    int64                  `json:"last_request_at,omitempty"`
+	CreatedAt        int64                  `json:"created_at,omitempty"`
+	UpdatedAt        int64                  `json:"updated_at,omitempty"`
+	SessionCount     int64                  `json:"session_count,omitempty"`
+	MonthlySpend     int64                  `json:"monthly_spend,omitempty"`
+	UserCount        int64                  `json:"user_count,omitempty"`
 	Tags             *TagList               `json:"tags,omitempty"`
 	Segments         *SegmentList           `json:"segments,omitempty"`
 	Plan             *Plan                  `json:"plan,omitempty"`

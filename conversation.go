@@ -14,8 +14,8 @@ type ConversationList struct {
 // A Conversation represents a conversation between users and admins in Intercom.
 type Conversation struct {
 	ID                  string               `json:"id"`
-	CreatedAt           int32                `json:"created_at"`
-	UpdatedAt           int32                `json:"updated_at"`
+	CreatedAt           int64                `json:"created_at"`
+	UpdatedAt           int64                `json:"updated_at"`
 	User                User                 `json:"user"`
 	Assignee            Admin                `json:"assignee"`
 	Open                bool                 `json:"open"`
@@ -41,9 +41,9 @@ type ConversationPart struct {
 	ID         string         `json:"id"`
 	PartType   string         `json:"part_type"`
 	Body       string         `json:"body"`
-	CreatedAt  int32          `json:"created_at"`
-	UpdatedAt  int32          `json:"updated_at"`
-	NotifiedAt int32          `json:"notified_at"`
+	CreatedAt  int64          `json:"created_at"`
+	UpdatedAt  int64          `json:"updated_at"`
+	NotifiedAt int64          `json:"notified_at"`
 	AssignedTo Admin          `json:"assigned_to"`
 	Author     MessageAddress `json:"author"`
 }
@@ -120,9 +120,9 @@ func (c *ConversationService) ReplyWithAttachmentURLs(id string, author MessageP
 func (c *ConversationService) reply(id string, author MessagePerson, replyType ReplyType, body string, attachmentURLs []string) (Conversation, error) {
 	addr := author.MessageAddress()
 	reply := Reply{
-		Type:      addr.Type,
-		ReplyType: replyType.String(),
-		Body:      body,
+		Type:           addr.Type,
+		ReplyType:      replyType.String(),
+		Body:           body,
 		AttachmentURLs: attachmentURLs,
 	}
 	if addr.Type == "admin" {

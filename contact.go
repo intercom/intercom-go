@@ -23,10 +23,10 @@ type Contact struct {
 	Name                   string                 `json:"name,omitempty"`
 	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
 	LocationData           *LocationData          `json:"location_data,omitempty"`
-	LastRequestAt          int32                  `json:"last_request_at,omitempty"`
-	CreatedAt              int32                  `json:"created_at,omitempty"`
-	UpdatedAt              int32                  `json:"updated_at,omitempty"`
-	SessionCount           int32                  `json:"session_count,omitempty"`
+	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
+	CreatedAt              int64                  `json:"created_at,omitempty"`
+	UpdatedAt              int64                  `json:"updated_at,omitempty"`
+	SessionCount           int64                  `json:"session_count,omitempty"`
 	LastSeenIP             string                 `json:"last_seen_ip,omitempty"`
 	SocialProfiles         *SocialProfileList     `json:"social_profiles,omitempty"`
 	UnsubscribedFromEmails *bool                  `json:"unsubscribed_from_emails,omitempty"`

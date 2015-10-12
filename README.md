@@ -49,7 +49,7 @@ user := intercom.User{
 	UserID: "27",
 	Email: "test@example.com",
 	Name: "InterGopher",
-	SignedUpAt: int32(time.Now().Unix()),
+	SignedUpAt: int64(time.Now().Unix()),
 	CustomAttributes: map[string]interface{}{"is_cool": true},
 }
 savedUser, err := ic.Users.Save(&user)
@@ -235,7 +235,7 @@ companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 event := intercom.Event{
 	UserID: "27",
 	EventName: "bought_item",
-	CreatedAt: int32(time.Now().Unix()),
+	CreatedAt: int64(time.Now().Unix()),
 	Metadata: map[string]interface{}{"item_name": "PocketWatch"},
 }
 err := ic.Events.Save(&event)
