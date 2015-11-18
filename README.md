@@ -235,7 +235,7 @@ companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 
 ```go
 event := intercom.Event{
-	UserId: "27",
+	UserID: "27",
 	EventName: "bought_item",
 	CreatedAt: int32(time.Now().Unix()),
 	Metadata: map[string]interface{}{"item_name": "PocketWatch"},
