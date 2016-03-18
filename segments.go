@@ -7,29 +7,13 @@ type SegmentService struct {
 	Repository SegmentRepository
 }
 
-type SegmentPersonType int
-
-const (
-	USER SegmentPersonType = iota
-	CONTACT
-)
-
-var personTypes = [...]string{
-	"user",
-	"contact",
-}
-
-func (segmentPersonType SegmentPersonType) String() string {
-	return personTypes[segmentPersonType]
-}
-
 // Segment represents an Segment in Intercom.
 type Segment struct {
-	ID         string            `json:"id,omitempty"`
-	Name       string            `json:"name,omitempty"`
-	CreatedAt  int64             `json:"created_at,omitempty"`
-	UpdatedAt  int64             `json:"updated_at,omitempty"`
-	PersonType SegmentPersonType `json:"person_type,omitempty"`
+	ID         string `json:"id,omitempty"`
+	Name       string `json:"name,omitempty"`
+	CreatedAt  int64  `json:"created_at,omitempty"`
+	UpdatedAt  int64  `json:"updated_at,omitempty"`
+	PersonType string `json:"person_type,omitempty"`
 }
 
 // SegmentList, an object holding a list of Segments

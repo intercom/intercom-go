@@ -2,7 +2,7 @@
   "type": "segment",
   "id": "5443ac9b316c12246c000005",
   "name": "Active",
-  "person_type": "user",
+  "person_type": "contact",
   "created_at": 1413721243,
   "updated_at": 1422997985
 }
