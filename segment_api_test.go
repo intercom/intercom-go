@@ -12,6 +12,9 @@ func TestAPIListSegments(t *testing.T) {
 	if segmentList.Segments[0].ID != "5443ac9b316c12246c000005" {
 		t.Errorf("Segment list should start with segment 5443ac9b316c12246c000005, but had %s", segmentList.Segments[0].ID)
 	}
+	if segmentList.Segments[0].PersonType != USER {
+		t.Errorf("Segment list should generate person types from strings")
+	}
 }
 
 func TestAPIFindSegment(t *testing.T) {
@@ -20,6 +23,9 @@ func TestAPIFindSegment(t *testing.T) {
 	segment, _ := api.find("5443ac9b316c12246c000005")
 	if segment.ID != "5443ac9b316c12246c000005" {
 		t.Errorf("Segment should have ID 5443ac9b316c12246c000005, but had %s", segment.ID)
+	}
+	if segment.PersonType != USER {
+		t.Errorf("Segment should generate person types from strings")
 	}
 }
 
