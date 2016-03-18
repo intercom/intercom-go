@@ -16,7 +16,7 @@ The first step to using Intercom's Go client is to create a client object, using
 
 ```go
 import (
-	`gopkg.in/intercom/intercom-go.v1`
+	`import intercom "gopkg.in/intercom/intercom-go.v2"`
 )
 
 ic := intercom.NewClient("appID", "apiKey")
@@ -300,13 +300,13 @@ savedTag, err := ic.Tags.Tag(&taggingList)
 
 ```go
 segmentList := ic.Segments.List()
-segments := segmentList.Segments
+segments, err := segmentList.Segments
 ```
 
 #### Find
 
 ```go
-segment := ic.Segments.Find("abc312daf2397")
+segment, err := ic.Segments.Find("abc312daf2397")
 ```
 
 ### Messages
