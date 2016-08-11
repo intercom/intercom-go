@@ -13,6 +13,12 @@ type UserList struct {
 	Users []User
 }
 
+// UserScroll holds a list of Users and scrolling information.
+type UserScroll struct {
+	ScrollParams
+	Users []User
+}
+
 // User represents a User within Intercom.
 // Not all of the fields are writeable to the API, non-writeable fields are
 // stripped out from the request. Please see the API documentation for details.
@@ -120,6 +126,11 @@ func (u *UserService) ListBySegment(segmentID string, params PageParams) (UserLi
 // List Users By Tag.
 func (u *UserService) ListByTag(tagID string, params PageParams) (UserList, error) {
 	return u.Repository.list(userListParams{PageParams: params, TagID: tagID})
+}
+
+// Scroll lists all Users for App.
+func (u *UserService) Scroll(scrollParam string) (UserScroll, error) {
+	return u.Repository.scroll(scrollParam)
 }
 
 // Save a User, creating or updating them.
