@@ -1,6 +1,7 @@
 package intercom
 
 import (
+	"errors"
 	"testing"
 )
 
@@ -30,6 +31,18 @@ func TestUserList(t *testing.T) {
 	users := userList.Users
 	if users[0].ID != "46adad3f09126dca" {
 		t.Errorf("User not listed")
+	}
+}
+
+func TestUserScroll(t *testing.T) {
+	scroll1, _ := (&UserService{Repository: TestUserAPI{t: t}}).Scroll("")
+	if scroll1.Users[0].ID != "46adad3f09126dcb" {
+		t.Errorf("First user not listed")
+	}
+
+	scroll2, _ := (&UserService{Repository: TestUserAPI{t: t}}).Scroll(scroll1.Param)
+	if scroll2.Users[0].ID != "46adad3f09126dca" {
+		t.Errorf("First user not listed")
 	}
 }
 
@@ -70,6 +83,30 @@ func (t TestUserAPI) find(params UserIdentifiers) (User, error) {
 
 func (t TestUserAPI) list(params userListParams) (UserList, error) {
 	return UserList{Users: []User{User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
+}
+
+func (t TestUserAPI) scroll(scrollParam string) (UserScroll, error) {
+	if scrollParam == "" {
+		return UserScroll{
+			Users: []User{
+				User{ID: "46adad3f09126dcb", Email: "jamie@example.com", UserID: "aa12345"},
+			},
+			ScrollParams: ScrollParams{
+				Param: "139e9131-4147-4f1e-a64e-f41edd71e6bc",
+				Type:  "user.list",
+			},
+		}, nil
+	}
+
+	if scrollParam == "139e9131-4147-4f1e-a64e-f41edd71e6bc" {
+		return UserScroll{
+			Users: []User{
+				User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"},
+			},
+		}, nil
+	}
+
+	return UserScroll{}, errors.New("Scroll not found")
 }
 
 func (t TestUserAPI) save(user *User) (User, error) {
