@@ -12,6 +12,7 @@ import (
 type UserRepository interface {
 	find(UserIdentifiers) (User, error)
 	list(userListParams) (UserList, error)
+	scroll(scrollParam string) (UserScroll, error)
 	save(*User) (User, error)
 	delete(id string) (User, error)
 }
@@ -60,6 +61,23 @@ func (api UserAPI) list(params userListParams) (UserList, error) {
 	}
 	err = json.Unmarshal(data, &userList)
 	return userList, err
+}
+
+func (api UserAPI) scroll(scrollParam string) (UserScroll, error) {
+	userScroll := UserScroll{}
+
+	data, err := api.httpClient.Get("/users/scroll", map[string]string{
+		"scroll_param": scrollParam,
+	})
+	if err != nil {
+		return userScroll, err
+	}
+
+	if err = json.Unmarshal(data, &userScroll); err != nil {
+		return userScroll, err
+	}
+
+	return userScroll, err
 }
 
 // A Company the User belongs to

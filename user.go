@@ -88,6 +88,11 @@ type userListParams struct {
 	TagID     string `url:"tag_id,omitempty"`
 }
 
+type UserScroll struct {
+	ScrollParams
+	Users []User
+}
+
 // FindByID looks up a User by their Intercom ID.
 func (u *UserService) FindByID(id string) (User, error) {
 	return u.findWithIdentifiers(UserIdentifiers{ID: id})
@@ -129,6 +134,10 @@ func (u *UserService) Save(user *User) (User, error) {
 
 func (u *UserService) Delete(id string) (User, error) {
 	return u.Repository.delete(id)
+}
+
+func (u *UserService) Scroll(scrollParam string) (UserScroll, error) {
+	return u.Repository.scroll(scrollParam)
 }
 
 // Get the address for an User in order to message them
