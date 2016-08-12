@@ -84,8 +84,11 @@ type UserAvatar struct {
 
 type userListParams struct {
 	PageParams
-	SegmentID string `url:"segment_id,omitempty"`
-	TagID     string `url:"tag_id,omitempty"`
+	SegmentID    string `url:"segment_id,omitempty"`
+	TagID        string `url:"tag_id,omitempty"`
+	Sort         string `url:"sort,omitempty"`
+	Order        string `url:"sort,omitempty"`
+	CreatedSince string `url:"created_since,omitempty"`
 }
 
 // FindByID looks up a User by their Intercom ID.
