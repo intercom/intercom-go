@@ -1,6 +1,9 @@
 package intercom
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // MessageService handles interactions with the API through an MessageRepository.
 type MessageService struct {
@@ -24,6 +27,21 @@ var templates = [...]string{
 
 func (template MessageTemplate) String() string {
 	return templates[template]
+}
+
+func (template *MessageTemplate) UnmarshalJSON(b []byte) error {
+	str := strings.Trim(string(b), `"`)
+
+	switch {
+	case str == "personal":
+		*template = PERSONAL_TEMPLATE
+	case str == "plain":
+		*template = PLAIN_TEMPLATE
+	default:
+		*template = NO_TEMPLATE
+	}
+
+	return nil
 }
 
 // MessageRequest represents a Message to be sent through Intercom from/to an Admin, User, or Contact.
