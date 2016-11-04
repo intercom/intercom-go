@@ -1,6 +1,6 @@
 package intercom
 
-import "gopkg.in/intercom/intercom-go.v2/interfaces"
+import "github.com/intercom/intercom-go/interfaces"
 
 // EventRepository defines the interface for working with Events through the API.
 type EventRepository interface {
