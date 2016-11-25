@@ -21,6 +21,7 @@ type HTTPClient interface {
 type IntercomHTTPClient struct {
 	*http.Client
 	BaseURI       *string
+	token         string
 	AppID         string
 	APIKey        string
 	ClientVersion *string
@@ -31,6 +32,10 @@ func NewIntercomHTTPClient(appID, apiKey string, baseURI, clientVersion *string,
 	return IntercomHTTPClient{Client: &http.Client{}, AppID: appID, APIKey: apiKey, BaseURI: baseURI, ClientVersion: clientVersion, Debug: debug}
 }
 
+func NewIntercomHTTPClient(token, baseURI, clientVersion *string, debug *bool) IntercomHTTPClient {
+	return IntercomHTTPClient{Client: &http.Client{}, token: token, BaseURI: baseURI, ClientVersion: clientVersion, Debug: debug}
+}
+
 func (c IntercomHTTPClient) UserAgentHeader() string {
 	return fmt.Sprintf("intercom-go/%s", *c.ClientVersion)
 }
@@ -38,7 +43,11 @@ func (c IntercomHTTPClient) UserAgentHeader() string {
 func (c IntercomHTTPClient) Get(url string, queryParams interface{}) ([]byte, error) {
 	// Setup request
 	req, _ := http.NewRequest("GET", *c.BaseURI+url, nil)
-	req.SetBasicAuth(c.AppID, c.APIKey)
+	if c.token {
+		req.SetBasicAuth(c.token, "")
+	} else {
+		req.SetBasicAuth(c.AppID, c.APIKey)
+	}
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("User-Agent", c.UserAgentHeader())
 	addQueryParams(req, queryParams)

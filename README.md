@@ -25,6 +25,8 @@ import (
 )
 
 ic := intercom.NewClient("appID", "apiKey")
+# or using an access token
+ic := intercom.NewClient("token")
 ```
 
 This client can then be used to make requests.
