@@ -95,6 +95,7 @@ func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
 	return requestUser{
 		ID:                     contact.ID,
 		Email:                  contact.Email,
+		Phone:                  contact.Phone,
 		UserID:                 contact.UserID,
 		Name:                   contact.Name,
 		LastRequestAt:          contact.LastRequestAt,
