@@ -19,6 +19,7 @@ type UserList struct {
 type User struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
+	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Anonymous              *bool                  `json:"anonymous,omitempty"`
 	Name                   string                 `json:"name,omitempty"`

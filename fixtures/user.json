@@ -3,6 +3,7 @@
   "id": "54c42e7ea7a765fa7",
   "user_id": "123",
   "email": "myuser@example.io",
+  "phone": "+12345678910",
   "anonymous": true,
   "name": "My User",
   "pseudonym": "Violet Bear",

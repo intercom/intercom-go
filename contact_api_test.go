@@ -12,6 +12,9 @@ func TestContactAPIFind(t *testing.T) {
 	if contact.ID != "54c42e7ea7a765fa7" {
 		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", contact.ID)
 	}
+	if contact.Phone != "+1234567890" {
+		t.Errorf("Phone was %s, expected +1234567890", contact.Phone)
+	}
 	if contact.UserID != "123" {
 		t.Errorf("UserID was %s, expected 123", contact.UserID)
 	}

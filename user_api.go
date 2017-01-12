@@ -24,6 +24,7 @@ type UserAPI struct {
 type requestUser struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
+	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
 	SignedUpAt             int64                  `json:"signed_up_at,omitempty"`

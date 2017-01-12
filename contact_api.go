@@ -54,7 +54,7 @@ func (api ContactAPI) create(contact *Contact) (Contact, error) {
 
 func (api ContactAPI) update(contact *Contact) (Contact, error) {
 	requestContact := api.buildRequestContact(contact)
-	return unmarshalToContact(api.httpClient.Patch("/contacts", &requestContact))
+	return unmarshalToContact(api.httpClient.Post("/contacts", &requestContact))
 }
 
 func (api ContactAPI) convert(contact *Contact, user *User) (User, error) {
@@ -95,6 +95,7 @@ func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
 	return requestUser{
 		ID:                     contact.ID,
 		Email:                  contact.Email,
+		Phone:                  contact.Phone,
 		UserID:                 contact.UserID,
 		Name:                   contact.Name,
 		LastRequestAt:          contact.LastRequestAt,
