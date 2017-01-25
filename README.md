@@ -17,17 +17,19 @@ It should make it easier to get setup with the SDK and start interacting with th
 
 ### Getting a Client
 
-The first step to using Intercom's Go client is to create a client object, using your App ID and Api Key from your [settings](http://app.intercom.io/apps/api_keys).
-
 ```go
 import (
 	`import intercom "gopkg.in/intercom/intercom-go.v2"`
 )
-
-ic := intercom.NewClient("appID", "apiKey")
+// You can use either an an OAuth or Access Token
+ic := intercom.NewClient("access_token", "")
 ```
-
 This client can then be used to make requests.
+
+If you already have an access token you can find it [here](https://app.intercom.com/developers/_). If you want to create or learn more about access tokens then you can find more info [here](https://developers.intercom.io/docs/personal-access-tokens).
+
+If you are building a third party application you can get your OAuth token by [setting-up-oauth](https://developers.intercom.io/page/setting-up-oauth) for Intercom.
+You can use the [Goth library](https://github.com/markbates/goth) which is a simple OAuth package for Go web aplicaitons and supports Intercom to more easily implement Oauth.
 
 #### Client Options
 
