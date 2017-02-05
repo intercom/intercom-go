@@ -12,6 +12,7 @@ import (
 type ContactRepository interface {
 	find(UserIdentifiers) (Contact, error)
 	list(contactListParams) (ContactList, error)
+	scroll(scrollParam string) (ContactList, error)
 	create(*Contact) (Contact, error)
 	update(*Contact) (Contact, error)
 	convert(*Contact, *User) (User, error)
@@ -45,6 +46,17 @@ func (api ContactAPI) list(params contactListParams) (ContactList, error) {
 	}
 	err = json.Unmarshal(data, &contactList)
 	return contactList, err
+}
+
+func (api ContactAPI) scroll(scrollParam string) (ContactList, error) {
+       contactList := ContactList{}
+       params := scrollParams{ ScrollParam: scrollParam }
+       data, err := api.httpClient.Get("/contacts/scroll", params)
+       if err != nil {
+               return contactList, err
+       }
+       err = json.Unmarshal(data, &contactList)
+       return contactList, err
 }
 
 func (api ContactAPI) create(contact *Contact) (Contact, error) {

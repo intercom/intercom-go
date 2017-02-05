@@ -11,6 +11,7 @@ type UserService struct {
 type UserList struct {
 	Pages PageParams
 	Users []User
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // User represents a User within Intercom.
@@ -89,6 +90,10 @@ type userListParams struct {
 	TagID     string `url:"tag_id,omitempty"`
 }
 
+type scrollParams struct {
+	ScrollParam  string `url:"scroll_param,omitempty"`
+}
+
 // FindByID looks up a User by their Intercom ID.
 func (u *UserService) FindByID(id string) (User, error) {
 	return u.findWithIdentifiers(UserIdentifiers{ID: id})
@@ -111,6 +116,11 @@ func (u *UserService) findWithIdentifiers(identifiers UserIdentifiers) (User, er
 // List all Users for App.
 func (u *UserService) List(params PageParams) (UserList, error) {
 	return u.Repository.list(userListParams{PageParams: params})
+}
+
+// List all Users for App via Scroll API
+func (u *UserService) Scroll(scrollParam string) (UserList, error) {
+       return u.Repository.scroll(scrollParam)
 }
 
 // List Users by Segment.
