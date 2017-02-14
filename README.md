@@ -19,7 +19,7 @@ It should make it easier to get setup with the SDK and start interacting with th
 
 ```go
 import (
-	`import intercom "gopkg.in/intercom/intercom-go.v2"`
+	intercom "gopkg.in/intercom/intercom-go.v2"
 )
 // You can use either an an OAuth or Access Token
 ic := intercom.NewClient("access_token", "")
