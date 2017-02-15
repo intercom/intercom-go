@@ -9,8 +9,9 @@ type CompanyService struct {
 
 // CompanyList holds a list of Companies and paging information
 type CompanyList struct {
-	Pages     PageParams
-	Companies []Company
+	Pages       PageParams
+	Companies   []Company
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // Company represents a Company in Intercom
@@ -86,6 +87,11 @@ func (c *CompanyService) ListBySegment(segmentID string, params PageParams) (Com
 // List Companies by Tag
 func (c *CompanyService) ListByTag(tagID string, params PageParams) (CompanyList, error) {
 	return c.Repository.list(companyListParams{PageParams: params, TagID: tagID})
+}
+
+// List all Companies for App via Scroll API
+func (c *CompanyService) Scroll(scrollParam string) (CompanyList, error) {
+	return c.Repository.scroll(scrollParam)
 }
 
 // Save a new Company, or update an existing one.
