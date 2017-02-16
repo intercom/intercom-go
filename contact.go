@@ -11,6 +11,7 @@ type ContactService struct {
 type ContactList struct {
 	Pages    PageParams
 	Contacts []Contact
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // Contact represents a Contact within Intercom.
@@ -64,6 +65,11 @@ func (c *ContactService) findWithIdentifiers(identifiers UserIdentifiers) (Conta
 // List all Contacts for App.
 func (c *ContactService) List(params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params})
+}
+
+// List all Contacts for App via Scroll API
+func (c *ContactService) Scroll(scrollParam string) (ContactList, error) {
+       return c.Repository.scroll(scrollParam)
 }
 
 // ListByEmail looks up a list of Contacts by their Email.

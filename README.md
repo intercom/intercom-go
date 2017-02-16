@@ -106,6 +106,12 @@ userList.Users // []User
 ```
 
 ```go
+userList, err := ic.Users.Scroll("")
+scrollParam := userList.ScrollParam
+userList, err := ic.Users.Scroll(scrollParam)
+```
+
+```go
 userList, err := ic.Users.ListBySegment("segmentID123", intercom.PageParams{})
 ```
 
@@ -138,6 +144,12 @@ contactList, err := ic.Contacts.List(intercom.PageParams{Page: 2})
 contactList.Pages // page information
 contactList.Contacts // []Contact
 ```
+```go
+contactList, err := ic.Contacts.Scroll("")
+scrollParam = contactList.ScrollParam
+contactList, err := ic.Contacts.Scroll(scrollParam)
+```
+
 
 ```go
 contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PageParams{})

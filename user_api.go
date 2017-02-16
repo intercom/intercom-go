@@ -12,6 +12,7 @@ import (
 type UserRepository interface {
 	find(UserIdentifiers) (User, error)
 	list(userListParams) (UserList, error)
+	scroll(scrollParam string) (UserList, error)
 	save(*User) (User, error)
 	delete(id string) (User, error)
 }
@@ -21,6 +22,9 @@ type UserAPI struct {
 	httpClient interfaces.HTTPClient
 }
 
+type requestScroll struct {
+	ScrollParam            string                 `json:"scroll_param,omitempty"`
+}
 type requestUser struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
@@ -61,6 +65,20 @@ func (api UserAPI) list(params userListParams) (UserList, error) {
 	}
 	err = json.Unmarshal(data, &userList)
 	return userList, err
+}
+
+func (api UserAPI) scroll(scrollParam string) (UserList, error) {
+       userList := UserList{}
+
+       url := "/users/scroll"
+       params := scrollParams{ ScrollParam: scrollParam }
+       data, err := api.httpClient.Get(url, params)
+
+       if err != nil {
+               return userList, err
+       }
+       err = json.Unmarshal(data, &userList)
+       return userList, err
 }
 
 func (api UserAPI) save(user *User) (User, error) {

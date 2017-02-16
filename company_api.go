@@ -12,6 +12,7 @@ import (
 type CompanyRepository interface {
 	find(CompanyIdentifiers) (Company, error)
 	list(companyListParams) (CompanyList, error)
+	scroll(scrollParam string) (CompanyList, error)
 	save(*Company) (Company, error)
 }
 
@@ -53,6 +54,17 @@ func (api CompanyAPI) getClientForFind(params CompanyIdentifiers) ([]byte, error
 func (api CompanyAPI) list(params companyListParams) (CompanyList, error) {
 	companyList := CompanyList{}
 	data, err := api.httpClient.Get("/companies", params)
+	if err != nil {
+		return companyList, err
+	}
+	err = json.Unmarshal(data, &companyList)
+	return companyList, err
+}
+
+func (api CompanyAPI) scroll(scrollParam string) (CompanyList, error) {
+	companyList := CompanyList{}
+	params := scrollParams{ScrollParam: scrollParam }
+	data, err := api.httpClient.Get("/companies/scroll", params)
 	if err != nil {
 		return companyList, err
 	}
