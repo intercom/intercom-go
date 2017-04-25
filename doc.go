@@ -4,7 +4,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package intercom-go provides a thin client for the Intercom API: http://doc.intercom.io/api/.
+Package intercom-go provides a thin client for the Intercom API: http://developers.intercom.com/reference.
 
 The first step to using Intercom's Go client is to create a client object, using your App ID and Api Key from your [settings](http://app.intercom.io/apps/api_keys).
 
