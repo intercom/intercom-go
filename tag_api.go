@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/intercom/intercom-go/interfaces"
 )
 
 // TagRepository defines the interface for working with Tags through the API.
