@@ -454,6 +454,19 @@ convo, err := intercom.Conversations.Close("1234", &closerAdmin)
 convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdmin)
 ```
 
+### Webhooks
+
+### Notifications
+
+A Notification can be created any `io.Reader`, typically a http request:
+
+```go
+var r io.Reader
+notif, err := intercom.NewNotification(r)
+```
+
+The Notification will contain exactly 1 of the `Compmay`, `Conversation`, `Event`, `Tag` or `User` fields populated.
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
