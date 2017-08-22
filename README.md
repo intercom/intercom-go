@@ -458,14 +458,14 @@ convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdm
 
 ### Notifications
 
-A Notification can be created any `io.Reader`, typically a http request:
+If you have received a JSON webhook notification, you may want to convert it into real Intercom object. A Notification can be created from any `io.Reader`, typically a http request:
 
 ```go
 var r io.Reader
 notif, err := intercom.NewNotification(r)
 ```
 
-The Notification will contain exactly 1 of the `Compmay`, `Conversation`, `Event`, `Tag` or `User` fields populated.
+The returned Notification will contain exactly 1 of the `Compmay`, `Conversation`, `Event`, `Tag` or `User` fields populated.
 
 ### Errors
 
