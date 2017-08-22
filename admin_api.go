@@ -2,7 +2,6 @@ package intercom
 
 import (
 	"encoding/json"
-
 	"gopkg.in/intercom/intercom-go.v2/interfaces"
 )
 
