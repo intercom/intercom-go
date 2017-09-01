@@ -12,6 +12,9 @@ func TestConversationFind(t *testing.T) {
 	if convo.ID != "147" {
 		t.Errorf("Conversation not retrieved, %s", convo.ID)
 	}
+	if convo.TagList == nil || convo.TagList.Tags[0].ID != "12345" {
+		t.Errorf("Conversation tags not retrieved, %s", convo.ID)
+	}
 }
 
 func TestConversationRead(t *testing.T) {
@@ -83,6 +86,9 @@ func TestConversationListAll(t *testing.T) {
 	}
 	if convos.Conversations[0].ConversationParts.Parts[0].CreatedAt != 1400857494 {
 		t.Errorf("Conversation Part CreatedAt not retrieved")
+	}
+	if convos.Conversations[0].TagList != nil {
+		t.Errorf("Conversation Tags should be nil")
 	}
 }
 

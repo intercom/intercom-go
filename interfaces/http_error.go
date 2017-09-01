@@ -1,6 +1,9 @@
 package interfaces
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 type HTTPErrorList struct {
 	Type   string      `json:"type"`
@@ -13,8 +16,12 @@ type HTTPError struct {
 	Message    string `json:"message"`
 }
 
-func NewUnknownHTTPError() HTTPError {
-	return HTTPError{Code: "Unknown", Message: "Unknown Error"}
+func NewUnknownHTTPError(statusCode int) HTTPError {
+	message := http.StatusText(statusCode)
+	if message == "" {
+		message = "Unknown Error"
+	}
+	return HTTPError{Code: "Unknown", Message: message, StatusCode: statusCode}
 }
 
 func (e HTTPError) Error() string {

@@ -41,5 +41,13 @@
 			},
 			"attachments": []
 		}]
+	},
+	"tags": {
+    	"type": "tag.list",
+		"tags": [{
+			"type": "tag",
+			"id": "12345",
+			"name": "Some tag"
+		}]
 	}
 }
