@@ -465,7 +465,7 @@ var r io.Reader
 notif, err := intercom.NewNotification(r)
 ```
 
-The returned Notification will contain exactly 1 of the `Compmay`, `Conversation`, `Event`, `Tag` or `User` fields populated.
+The returned Notification will contain exactly 1 of the `Company`, `Conversation`, `Event`, `Tag` or `User` fields populated. It may only contain partial objects (such as a single conversation part) depending on what is provided by the webhook.
 
 ### Errors
 
