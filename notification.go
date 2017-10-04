@@ -26,6 +26,8 @@ type Data struct {
 }
 
 // NewNotification parses a Notification from json read from an io.Reader.
+// It may only contain partial objects (such as a single conversation part)
+// depending on what is provided by the webhook.
 func NewNotification(r io.Reader) (*Notification, error) {
 	notification := &Notification{
 		RawData: &Data{},
