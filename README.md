@@ -454,6 +454,19 @@ convo, err := intercom.Conversations.Close("1234", &closerAdmin)
 convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdmin)
 ```
 
+### Webhooks
+
+### Notifications
+
+If you have received a JSON webhook notification, you may want to convert it into real Intercom object. A Notification can be created from any `io.Reader`, typically a http request:
+
+```go
+var r io.Reader
+notif, err := intercom.NewNotification(r)
+```
+
+The returned Notification will contain exactly 1 of the `Company`, `Conversation`, `Event`, `Tag` or `User` fields populated. It may only contain partial objects (such as a single conversation part) depending on what is provided by the webhook.
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
