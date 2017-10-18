@@ -30,6 +30,7 @@ type ConversationMessage struct {
 	Subject string         `json:"subject"`
 	Body    string         `json:"body"`
 	Author  MessageAddress `json:"author"`
+	URL     string         `json:"url"`
 }
 
 // A ConversationPartList lists the subsequent Conversation Parts

@@ -15,6 +15,9 @@ func TestConversationFind(t *testing.T) {
 	if convo.TagList == nil || convo.TagList.Tags[0].ID != "12345" {
 		t.Errorf("Conversation tags not retrieved, %s", convo.ID)
 	}
+	if convo.ConversationMessage.URL != "/the/page/url.html" {
+		t.Errorf("Conversation URL not retrieved, %s", convo.ConversationMessage.URL)
+	}
 }
 
 func TestConversationRead(t *testing.T) {
