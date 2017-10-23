@@ -22,7 +22,8 @@
 		"attachments": [{
 			"name": "signature",
 			"url": "http://someurl.com/signature.jpg"
-		}]
+		}],
+		"url": "/the/page/url.html"
 	},
 	"conversation_parts": {
 		"type": "conversation_part.list",
