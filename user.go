@@ -89,6 +89,7 @@ type userListParams struct {
 	PageParams
 	SegmentID string `url:"segment_id,omitempty"`
 	TagID     string `url:"tag_id,omitempty"`
+	CompanyID string `url:"company_id,omitempty"`
 }
 
 type scrollParams struct {
@@ -132,6 +133,11 @@ func (u *UserService) ListBySegment(segmentID string, params PageParams) (UserLi
 // List Users By Tag.
 func (u *UserService) ListByTag(tagID string, params PageParams) (UserList, error) {
 	return u.Repository.list(userListParams{PageParams: params, TagID: tagID})
+}
+
+//List all Users by CompanyID
+func (u *UserService) ListByCompanyID(companyID string, params PageParams) (UserList, error) {
+	return u.Repository.list(userListParams{PageParams: params, CompanyID: companyID})
 }
 
 // Save a User, creating or updating them.

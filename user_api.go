@@ -59,7 +59,15 @@ func (api UserAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
 
 func (api UserAPI) list(params userListParams) (UserList, error) {
 	userList := UserList{}
-	data, err := api.httpClient.Get("/users", params)
+	var path string
+	switch {
+	case params.CompanyID != "":
+		path = fmt.Sprintf("/companies/%s/users", params.CompanyID)
+	default:
+		path = "/users"
+	}
+
+	data, err := api.httpClient.Get(path, params)
 	if err != nil {
 		return userList, err
 	}
