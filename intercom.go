@@ -17,6 +17,7 @@ type Client struct {
 	Segments      SegmentService
 	Tags          TagService
 	Users         UserService
+	Visitors      VisitorService
 
 	// Mappings for resources to API constructs
 	AdminRepository        AdminRepository
@@ -29,6 +30,7 @@ type Client struct {
 	SegmentRepository      SegmentRepository
 	TagRepository          TagRepository
 	UserRepository         UserRepository
+	VisitorRepository      VisitorRepository
 
 	// AppID For Intercom.
 	AppID string
@@ -108,6 +110,7 @@ func (c *Client) setup() {
 	c.SegmentRepository = SegmentAPI{httpClient: c.HTTPClient}
 	c.TagRepository = TagAPI{httpClient: c.HTTPClient}
 	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
+	c.VisitorRepository = VisitorAPI{httpClient: c.HTTPClient}
 	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Companies = CompanyService{Repository: c.CompanyRepository}
 	c.Contacts = ContactService{Repository: c.ContactRepository}
@@ -118,4 +121,5 @@ func (c *Client) setup() {
 	c.Segments = SegmentService{Repository: c.SegmentRepository}
 	c.Tags = TagService{Repository: c.TagRepository}
 	c.Users = UserService{Repository: c.UserRepository}
+	c.Visitors = VisitorService{Repository: c.VisitorRepository}
 }

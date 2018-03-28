@@ -53,19 +53,19 @@ func (v *VisitorService) Update(visitor *Visitor) (Visitor, error) {
 	return v.Repository.update(visitor)
 }
 
-// Convert Visitor to Lead
-func (v *VisitorService) Convert(visitor *Visitor, lead *Lead) (Lead, error) {
-	return v.Repository.convert(visitor, lead)
+// Convert Visitor to Contact
+func (v *VisitorService) ConvertToContact(visitor *Visitor) (Contact, error) {
+	return v.Repository.convertToContact(visitor)
 }
 
 // Convert Visitor to User
-func (v *VisitorService) Convert(visitor *Visitor, user *User) (User, error) {
-	return v.Repository.convert(visitor, user)
+func (v *VisitorService) ConvertToUser(visitor *Visitor, user *User) (User, error) {
+	return v.Repository.convertToUser(visitor, user)
 }
 
 // Delete Visitor
-func (v *VisitorService) Delete(visitor *Visitor) (Visitor, error) {
-	return v.Repository.delete(visitor.ID)
+func (v *VisitorService) Delete(id string) (Visitor, error) {
+	return v.Repository.delete(id)
 }
 
 func (c Visitor) String() string {

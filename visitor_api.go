@@ -12,8 +12,8 @@ import (
 type VisitorRepository interface {
 	find(UserIdentifiers) (Visitor, error)
 	update(*Visitor) (Visitor, error)
-	convert(*Visitor, *Lead) (Lead, error)
-	convert(*Visitor, *User) (User, error)
+	convertToContact(*Visitor) (Contact, error)
+	convertToUser(*Visitor, *User) (User, error)
 	delete(id string) (Visitor, error)
 }
 
@@ -41,23 +41,17 @@ func (api VisitorAPI) update(visitor *Visitor) (Visitor, error) {
 	return unmarshalToVisitor(api.httpClient.Post("/visitors", &requestVisitor))
 }
 
-func (api VisitorAPI) convert(visitor *Visitor, lead *Lead) (Lead, error) {
-	cr := convertToLeadRequest{Visitor: api.buildRequestVisitor(visitor), Lead: requestUser{
-		ID:         lead.ID,
-		UserID:     lead.UserID,
-		Email:      lead.Email,
-		SignedUpAt: lead.SignedUpAt,
-	}}
-	return unmarshalToUser(api.httpClient.Post("/visitors/convert", &cr))
+func (api VisitorAPI) convertToContact(visitor *Visitor) (Contact, error) {
+	cr := convertToContactRequest{Visitor: api.buildRequestVisitor(visitor), Type: "lead" }
+	return unmarshalToContact(api.httpClient.Post("/visitors/convert", &cr))
 }
 
-func (api VisitorAPI) convert(visitor *Visitor, user *User) (User, error) {
+func (api VisitorAPI) convertToUser(visitor *Visitor, user *User) (User, error) {
 	cr := convertToUserRequest{Visitor: api.buildRequestVisitor(visitor), User: requestUser{
 		ID:         user.ID,
 		UserID:     user.UserID,
 		Email:      user.Email,
-		SignedUpAt: user.SignedUpAt,
-	}}
+	}, Type: "user"}
 	return unmarshalToUser(api.httpClient.Post("/visitors/convert", &cr))
 }
 
@@ -71,14 +65,16 @@ func (api VisitorAPI) delete(id string) (Visitor, error) {
 	return visitor, err
 }
 
-type convertToLeadRequest struct {
-	Lead    requestUser `json:"lead"`
+type convertToContactRequest struct {
 	Visitor requestUser `json:"visitor"`
+	Type string `json:"type"`
 }
 
 type convertToUserRequest struct {
 	User    requestUser `json:"user"`
 	Visitor requestUser `json:"visitor"`
+	Type string `json:"type"`
+
 }
 
 func unmarshalToVisitor(data []byte, err error) (Visitor, error) {
