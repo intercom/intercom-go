@@ -5,13 +5,15 @@
             "type": "admin",
             "email": "admin_a@example.io",
             "id": "1",
-            "name": "Admin A"
+            "name": "Admin A",
+            "avatar": "https://intercom.io/testA.png"
         },
         {
             "type": "admin",
             "email": "admin_b@example.io",
             "id": "2",
-            "name": "Admin B"
+            "name": "Admin B",
+            "avatar": "https://intercom.io/testB.png"
         }
     ]
 }
