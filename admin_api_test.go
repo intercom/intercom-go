@@ -12,8 +12,18 @@ func TestAdminAPIList(t *testing.T) {
 	if adminList.Admins[0].ID != "1" {
 		t.Errorf("ID was %s, expected 1", adminList.Admins[0].ID)
 	}
-	if adminList.Admins[0].Avatar.ImageURL != "https://intercom.io/testA.png" {
-		t.Errorf("Avatar was %s, expected https://intercom.io/testA.png", adminList.Admins[0].Avatar)
+}
+
+func TestAdminAPIRead(t *testing.T) {
+	http := TestAdminHTTPClient{fixtureFilename: "fixtures/admin.json", expectedURI: "/admins/123", t: t}
+	api := AdminAPI{httpClient: &http}
+	admin, err := api.read("123")
+	if err != nil {
+		t.Errorf("Error reading admin: %v", err)
+	}
+
+	if admin.Avatar.ImageURL != "https://intercom.io/testA.png" {
+		t.Errorf("Expected: https://intercom.io/testA.png, got %s", admin.Avatar.ImageURL)
 	}
 }
 

@@ -24,3 +24,13 @@ func (api AdminAPI) list() (AdminList, error) {
 	err = json.Unmarshal(data, &adminList)
 	return adminList, err
 }
+
+func (api AdminAPI) read(adminID string) (Admin, error) {
+	admin := Admin{}
+	data, err := api.httpClient.Get("/admins/"+adminID, nil)
+	if err != nil {
+		return admin, err
+	}
+	err = json.Unmarshal(data, &admin)
+	return admin, err
+}

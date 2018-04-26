@@ -12,11 +12,11 @@ type AdminAvatar struct {
 
 // Admin represents an Admin in Intercom.
 type Admin struct {
-	ID     json.Number `json:"id"`
-	Type   string      `json:"type"`
-	Name   string      `json:"name"`
-	Email  string      `json:"email"`
-	Avatar *UserAvatar `json:"avatar"`
+	ID     json.Number  `json:"id"`
+	Type   string       `json:"type"`
+	Name   string       `json:"name"`
+	Email  string       `json:"email"`
+	Avatar *AdminAvatar `json:"avatar"`
 }
 
 // AdminList represents an object holding list of Admins
