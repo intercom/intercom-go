@@ -12,7 +12,7 @@ func TestAdminAPIList(t *testing.T) {
 	if adminList.Admins[0].ID != "1" {
 		t.Errorf("ID was %s, expected 1", adminList.Admins[0].ID)
 	}
-	if adminList.Admins[0].Avatar != "https://intercom.io/testA.png" {
+	if adminList.Admins[0].Avatar.ImageURL != "https://intercom.io/testA.png" {
 		t.Errorf("Avatar was %s, expected https://intercom.io/testA.png", adminList.Admins[0].Avatar)
 	}
 }
