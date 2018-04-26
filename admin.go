@@ -34,6 +34,11 @@ func (c *AdminService) List() (AdminList, error) {
 	return c.Repository.list()
 }
 
+// Read reads an Admin associated with your App.
+func (c *AdminService) Read(adminID string) (Admin, error) {
+	return c.Repository.read(adminID)
+}
+
 // IsNobodyAdmin is a helper function to determine if the Admin is 'Nobody'.
 func (a Admin) IsNobodyAdmin() bool {
 	return a.Type == "nobody_admin"

@@ -38,3 +38,15 @@ type TestAdminAPI struct {
 func (t TestAdminAPI) list() (AdminList, error) {
 	return AdminList{Admins: []Admin{Admin{ID: "213"}}}, nil
 }
+
+func (t TestAdminAPI) read(string) (Admin, error) {
+	return Admin{
+		Type:  "admin",
+		Email: "admin_a@example.io",
+		ID:    "123",
+		Name:  "Admin A",
+		Avatar: &AdminAvatar{
+			ImageURL: "https://intercom.io/testA.png",
+		},
+	}, nil
+}

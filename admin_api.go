@@ -8,6 +8,7 @@ import (
 // AdminRepository defines the interface for working with Admins through the API.
 type AdminRepository interface {
 	list() (AdminList, error)
+	read(string) (Admin, error)
 }
 
 // AdminAPI implements AdminRepository
