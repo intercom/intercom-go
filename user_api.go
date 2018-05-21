@@ -15,6 +15,7 @@ type UserRepository interface {
 	scroll(scrollParam string) (UserList, error)
 	save(*User) (User, error)
 	delete(id string) (User, error)
+  permanentDelete(id string) (error)
 }
 
 // UserAPI implements UserRepository
@@ -102,4 +103,13 @@ func (api UserAPI) delete(id string) (User, error) {
 	}
 	err = json.Unmarshal(data, &user)
 	return user, err
+}
+
+func (api UserAPI) permanentDelete(id string) (error) {
+  _, err := api.httpClient.Post("/user_delete_requests", map[string]interface{}{"intercom_user_id": id})
+
+  if err != nil {
+		return err
+	}
+  return nil
 }
