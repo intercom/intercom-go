@@ -98,9 +98,9 @@ func (t TestUserAPI) delete(id string) (User, error) {
 	return User{}, nil
 }
 
-func (t TestUserAPI) permanentDelete(id string) (error) {
+func (t TestUserAPI) permanentDelete(id string) error {
 	if id != "46adad3f09126dca" {
 		t.t.Errorf("intercom_user_id was %s, expected 46adad3f09126dca", id)
 	}
-	return  nil
+	return nil
 }
