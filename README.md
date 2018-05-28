@@ -125,6 +125,12 @@ userList, err := ic.Users.ListByTag("42", intercom.PageParams{})
 user, err := ic.Users.Delete("46adad3f09126dca")
 ```
 
+#### Permanent Delete
+
+```go
+err := ic.Users.PermanentDelete("46adad3f09126dca")
+```
+
 ### Contacts
 
 #### Find

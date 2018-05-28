@@ -98,6 +98,12 @@ func TestUserAPIDelete(t *testing.T) {
 	api.delete("1234")
 }
 
+func TestUserAPIPermanentDelete(t *testing.T) {
+	http := TestUserHTTPClient{t: t, expectedURI: "/user_delete_requests"}
+	api := UserAPI{httpClient: &http}
+	api.permanentDelete("1234")
+}
+
 type TestUserHTTPClient struct {
 	TestHTTPClient
 	t               *testing.T

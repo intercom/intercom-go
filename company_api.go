@@ -63,7 +63,7 @@ func (api CompanyAPI) list(params companyListParams) (CompanyList, error) {
 
 func (api CompanyAPI) scroll(scrollParam string) (CompanyList, error) {
 	companyList := CompanyList{}
-	params := scrollParams{ScrollParam: scrollParam }
+	params := scrollParams{ScrollParam: scrollParam}
 	data, err := api.httpClient.Get("/companies/scroll", params)
 	if err != nil {
 		return companyList, err

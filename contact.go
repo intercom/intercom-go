@@ -9,8 +9,8 @@ type ContactService struct {
 
 // ContactList holds a list of Contacts and paging information
 type ContactList struct {
-	Pages    PageParams
-	Contacts []Contact
+	Pages       PageParams
+	Contacts    []Contact
 	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
@@ -69,7 +69,7 @@ func (c *ContactService) List(params PageParams) (ContactList, error) {
 
 // List all Contacts for App via Scroll API
 func (c *ContactService) Scroll(scrollParam string) (ContactList, error) {
-       return c.Repository.scroll(scrollParam)
+	return c.Repository.scroll(scrollParam)
 }
 
 // ListByEmail looks up a list of Contacts by their Email.

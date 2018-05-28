@@ -15,6 +15,7 @@ type UserRepository interface {
 	scroll(scrollParam string) (UserList, error)
 	save(*User) (User, error)
 	delete(id string) (User, error)
+	permanentDelete(id string) error
 }
 
 // UserAPI implements UserRepository
@@ -23,7 +24,7 @@ type UserAPI struct {
 }
 
 type requestScroll struct {
-	ScrollParam            string                 `json:"scroll_param,omitempty"`
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 type requestUser struct {
 	ID                     string                 `json:"id,omitempty"`
@@ -68,17 +69,17 @@ func (api UserAPI) list(params userListParams) (UserList, error) {
 }
 
 func (api UserAPI) scroll(scrollParam string) (UserList, error) {
-       userList := UserList{}
+	userList := UserList{}
 
-       url := "/users/scroll"
-       params := scrollParams{ ScrollParam: scrollParam }
-       data, err := api.httpClient.Get(url, params)
+	url := "/users/scroll"
+	params := scrollParams{ScrollParam: scrollParam}
+	data, err := api.httpClient.Get(url, params)
 
-       if err != nil {
-               return userList, err
-       }
-       err = json.Unmarshal(data, &userList)
-       return userList, err
+	if err != nil {
+		return userList, err
+	}
+	err = json.Unmarshal(data, &userList)
+	return userList, err
 }
 
 func (api UserAPI) save(user *User) (User, error) {
@@ -102,4 +103,13 @@ func (api UserAPI) delete(id string) (User, error) {
 	}
 	err = json.Unmarshal(data, &user)
 	return user, err
+}
+
+func (api UserAPI) permanentDelete(id string) error {
+	_, err := api.httpClient.Post("/user_delete_requests", map[string]interface{}{"intercom_user_id": id})
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
