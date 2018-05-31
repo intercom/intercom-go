@@ -23,7 +23,7 @@ func TestEventSave(t *testing.T) {
 	event := Event{}
 	event.UserID = "27"
 	event.EventName = "govent"
-	event.CreatedAt = int32(time.Now().Unix())
+	event.CreatedAt = int64(time.Now().Unix())
 	event.Metadata = map[string]interface{}{"is_cool": true}
 	eventService.Save(&event)
 }

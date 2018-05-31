@@ -72,6 +72,10 @@ func (t TestUserAPI) list(params userListParams) (UserList, error) {
 	return UserList{Users: []User{User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
 }
 
+func (t TestUserAPI) scroll(scrollParam string) (UserList, error) {
+	return UserList{Users: []User{User{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
+}
+
 func (t TestUserAPI) save(user *User) (User, error) {
 	if user.ID != "46adad3f09126dca" {
 		t.t.Errorf("User ID was %s, expected 46adad3f09126dca", user.ID)

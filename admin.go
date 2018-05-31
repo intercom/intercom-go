@@ -5,12 +5,18 @@ import (
 	"fmt"
 )
 
+// AdminAvatar represents an admin's avatar
+type AdminAvatar struct {
+	ImageURL string `json:"image_url"`
+}
+
 // Admin represents an Admin in Intercom.
 type Admin struct {
-	ID    json.Number `json:"id"`
-	Type  string      `json:"type"`
-	Name  string      `json:"name"`
-	Email string      `json:"email"`
+	ID     json.Number  `json:"id"`
+	Type   string       `json:"type"`
+	Name   string       `json:"name"`
+	Email  string       `json:"email"`
+	Avatar *AdminAvatar `json:"avatar"`
 }
 
 // AdminList represents an object holding list of Admins
@@ -26,6 +32,11 @@ type AdminService struct {
 // List lists the Admins associated with your App.
 func (c *AdminService) List() (AdminList, error) {
 	return c.Repository.list()
+}
+
+// Read reads an Admin associated with your App.
+func (c *AdminService) Read(adminID string) (Admin, error) {
+	return c.Repository.read(adminID)
 }
 
 // IsNobodyAdmin is a helper function to determine if the Admin is 'Nobody'.

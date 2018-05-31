@@ -5,13 +5,14 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/intercom/intercom-go/interfaces"
+	"gopkg.in/intercom/intercom-go.v2/interfaces"
 )
 
 // UserRepository defines the interface for working with Users through the API.
 type UserRepository interface {
 	find(UserIdentifiers) (User, error)
 	list(userListParams) (UserList, error)
+	scroll(scrollParam string) (UserList, error)
 	save(*User) (User, error)
 	delete(id string) (User, error)
 }
@@ -21,14 +22,18 @@ type UserAPI struct {
 	httpClient interfaces.HTTPClient
 }
 
+type requestScroll struct {
+	ScrollParam            string                 `json:"scroll_param,omitempty"`
+}
 type requestUser struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
+	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
-	SignedUpAt             int32                  `json:"signed_up_at,omitempty"`
-	RemoteCreatedAt        int32                  `json:"remote_created_at,omitempty"`
-	LastRequestAt          int32                  `json:"last_request_at,omitempty"`
+	SignedUpAt             int64                  `json:"signed_up_at,omitempty"`
+	RemoteCreatedAt        int64                  `json:"remote_created_at,omitempty"`
+	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
 	LastSeenIP             string                 `json:"last_seen_ip,omitempty"`
 	UnsubscribedFromEmails *bool                  `json:"unsubscribed_from_emails,omitempty"`
 	Companies              []UserCompany          `json:"companies,omitempty"`
@@ -62,32 +67,22 @@ func (api UserAPI) list(params userListParams) (UserList, error) {
 	return userList, err
 }
 
-// A Company the User belongs to
-// used to update Companies on a User.
-type UserCompany struct {
-	ID     string `json:"id,omitempty"`
-	Name   string `json:"name,omitempty"`
-	Remove *bool  `json:"remove,omitempty"`
+func (api UserAPI) scroll(scrollParam string) (UserList, error) {
+       userList := UserList{}
+
+       url := "/users/scroll"
+       params := scrollParams{ ScrollParam: scrollParam }
+       data, err := api.httpClient.Get(url, params)
+
+       if err != nil {
+               return userList, err
+       }
+       err = json.Unmarshal(data, &userList)
+       return userList, err
 }
 
 func (api UserAPI) save(user *User) (User, error) {
-	requestUser := requestUser{
-		ID:                     user.ID,
-		Email:                  user.Email,
-		UserID:                 user.UserID,
-		Name:                   user.Name,
-		SignedUpAt:             user.SignedUpAt,
-		RemoteCreatedAt:        user.RemoteCreatedAt,
-		LastRequestAt:          user.LastRequestAt,
-		LastSeenIP:             user.LastSeenIP,
-		UnsubscribedFromEmails: user.UnsubscribedFromEmails,
-		Companies:              api.getCompaniesToSendFromUser(user),
-		CustomAttributes:       user.CustomAttributes,
-		UpdateLastRequestAt:    user.UpdateLastRequestAt,
-		NewSession:             user.NewSession,
-		LastSeenUserAgent:      user.LastSeenUserAgent,
-	}
-	return unmarshalToUser(api.httpClient.Post("/users", &requestUser))
+	return unmarshalToUser(api.httpClient.Post("/users", RequestUserMapper{}.ConvertUser(user)))
 }
 
 func unmarshalToUser(data []byte, err error) (User, error) {
@@ -97,25 +92,6 @@ func unmarshalToUser(data []byte, err error) (User, error) {
 	}
 	err = json.Unmarshal(data, &savedUser)
 	return savedUser, err
-}
-
-func (api UserAPI) getCompaniesToSendFromUser(user *User) []UserCompany {
-	if user.Companies == nil {
-		return []UserCompany{}
-	}
-	return makeUserCompaniesFromCompanies(user.Companies.Companies)
-}
-
-func makeUserCompaniesFromCompanies(companies []Company) []UserCompany {
-	userCompanies := make([]UserCompany, len(companies))
-	for i := 0; i < len(companies); i++ {
-		userCompanies[i] = UserCompany{
-			ID:     companies[i].ID,
-			Name:   companies[i].Name,
-			Remove: companies[i].Remove,
-		}
-	}
-	return userCompanies
 }
 
 func (api UserAPI) delete(id string) (User, error) {

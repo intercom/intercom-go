@@ -5,13 +5,14 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/intercom/intercom-go/interfaces"
+	"gopkg.in/intercom/intercom-go.v2/interfaces"
 )
 
 // ContactRepository defines the interface for working with Contacts through the API.
 type ContactRepository interface {
 	find(UserIdentifiers) (Contact, error)
 	list(contactListParams) (ContactList, error)
+	scroll(scrollParam string) (ContactList, error)
 	create(*Contact) (Contact, error)
 	update(*Contact) (Contact, error)
 	convert(*Contact, *User) (User, error)
@@ -47,6 +48,17 @@ func (api ContactAPI) list(params contactListParams) (ContactList, error) {
 	return contactList, err
 }
 
+func (api ContactAPI) scroll(scrollParam string) (ContactList, error) {
+       contactList := ContactList{}
+       params := scrollParams{ ScrollParam: scrollParam }
+       data, err := api.httpClient.Get("/contacts/scroll", params)
+       if err != nil {
+               return contactList, err
+       }
+       err = json.Unmarshal(data, &contactList)
+       return contactList, err
+}
+
 func (api ContactAPI) create(contact *Contact) (Contact, error) {
 	requestContact := api.buildRequestContact(contact)
 	return unmarshalToContact(api.httpClient.Post("/contacts", &requestContact))
@@ -54,7 +66,7 @@ func (api ContactAPI) create(contact *Contact) (Contact, error) {
 
 func (api ContactAPI) update(contact *Contact) (Contact, error) {
 	requestContact := api.buildRequestContact(contact)
-	return unmarshalToContact(api.httpClient.Patch("/contacts", &requestContact))
+	return unmarshalToContact(api.httpClient.Post("/contacts", &requestContact))
 }
 
 func (api ContactAPI) convert(contact *Contact, user *User) (User, error) {
@@ -95,6 +107,7 @@ func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
 	return requestUser{
 		ID:                     contact.ID,
 		Email:                  contact.Email,
+		Phone:                  contact.Phone,
 		UserID:                 contact.UserID,
 		Name:                   contact.Name,
 		LastRequestAt:          contact.LastRequestAt,
@@ -111,5 +124,5 @@ func (api ContactAPI) getCompaniesToSendFromContact(contact *Contact) []UserComp
 	if contact.Companies == nil {
 		return []UserCompany{}
 	}
-	return makeUserCompaniesFromCompanies(contact.Companies.Companies)
+	return RequestUserMapper{}.MakeUserCompaniesFromCompanies(contact.Companies.Companies)
 }

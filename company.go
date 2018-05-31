@@ -9,8 +9,9 @@ type CompanyService struct {
 
 // CompanyList holds a list of Companies and paging information
 type CompanyList struct {
-	Pages     PageParams
-	Companies []Company
+	Pages       PageParams
+	Companies   []Company
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // Company represents a Company in Intercom
@@ -20,13 +21,13 @@ type Company struct {
 	ID               string                 `json:"id,omitempty"`
 	CompanyID        string                 `json:"company_id,omitempty"`
 	Name             string                 `json:"name,omitempty"`
-	RemoteCreatedAt  int32                  `json:"remote_created_at,omitempty"`
-	LastRequestAt    int32                  `json:"last_request_at,omitempty"`
-	CreatedAt        int32                  `json:"created_at,omitempty"`
-	UpdatedAt        int32                  `json:"updated_at,omitempty"`
-	SessionCount     int32                  `json:"session_count,omitempty"`
-	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
-	UserCount        int32                  `json:"user_count,omitempty"`
+	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
+	LastRequestAt    int64                  `json:"last_request_at,omitempty"`
+	CreatedAt        int64                  `json:"created_at,omitempty"`
+	UpdatedAt        int64                  `json:"updated_at,omitempty"`
+	SessionCount     int64                  `json:"session_count,omitempty"`
+	MonthlySpend     int64                  `json:"monthly_spend,omitempty"`
+	UserCount        int64                  `json:"user_count,omitempty"`
 	Tags             *TagList               `json:"tags,omitempty"`
 	Segments         *SegmentList           `json:"segments,omitempty"`
 	Plan             *Plan                  `json:"plan,omitempty"`
@@ -86,6 +87,11 @@ func (c *CompanyService) ListBySegment(segmentID string, params PageParams) (Com
 // List Companies by Tag
 func (c *CompanyService) ListByTag(tagID string, params PageParams) (CompanyList, error) {
 	return c.Repository.list(companyListParams{PageParams: params, TagID: tagID})
+}
+
+// List all Companies for App via Scroll API
+func (c *CompanyService) Scroll(scrollParam string) (CompanyList, error) {
+	return c.Repository.scroll(scrollParam)
 }
 
 // Save a new Company, or update an existing one.

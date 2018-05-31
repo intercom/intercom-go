@@ -2,13 +2,13 @@ package intercom
 
 import (
 	"encoding/json"
-
-	"github.com/intercom/intercom-go/interfaces"
+	"gopkg.in/intercom/intercom-go.v2/interfaces"
 )
 
 // AdminRepository defines the interface for working with Admins through the API.
 type AdminRepository interface {
 	list() (AdminList, error)
+	read(string) (Admin, error)
 }
 
 // AdminAPI implements AdminRepository
@@ -24,4 +24,14 @@ func (api AdminAPI) list() (AdminList, error) {
 	}
 	err = json.Unmarshal(data, &adminList)
 	return adminList, err
+}
+
+func (api AdminAPI) read(adminID string) (Admin, error) {
+	admin := Admin{}
+	data, err := api.httpClient.Get("/admins/"+adminID, nil)
+	if err != nil {
+		return admin, err
+	}
+	err = json.Unmarshal(data, &admin)
+	return admin, err
 }

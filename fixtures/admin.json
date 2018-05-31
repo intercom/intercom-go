@@ -1,0 +1,9 @@
+{
+  "type": "admin",
+  "email": "admin_a@example.io",
+  "id": "123",
+  "name": "Admin A",
+  "avatar": {
+    "image_url": "https://intercom.io/testA.png"
+  }
+}

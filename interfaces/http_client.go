@@ -155,7 +155,10 @@ func (c IntercomHTTPClient) parseResponseError(data []byte, statusCode int) Inte
 	errorList := HTTPErrorList{}
 	err := json.Unmarshal(data, &errorList)
 	if err != nil {
-		return NewUnknownHTTPError()
+		return NewUnknownHTTPError(statusCode)
+	}
+	if len(errorList.Errors) == 0 {
+		return NewUnknownHTTPError(statusCode)
 	}
 	httpError := errorList.Errors[0]
 	httpError.StatusCode = statusCode
