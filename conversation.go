@@ -171,5 +171,5 @@ type conversationListParams struct {
 	Open           *bool  `url:"open,omitempty"`
 	Unread         *bool  `url:"unread,omitempty"`
 	DisplayAs      string `url:"display_as,omitempty"`
-	OrderBy        string `url:"order,omitempty"`
+	Order          string `url:"order,omitempty"`
 }
