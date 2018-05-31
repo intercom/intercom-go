@@ -70,11 +70,12 @@ func (c *ConversationService) ListAll(pageParams PageParams) (ConversationList, 
 }
 
 // List Conversations by Admin
-func (c *ConversationService) ListByAdmin(admin *Admin, state ConversationListState, pageParams PageParams) (ConversationList, error) {
+func (c *ConversationService) ListByAdmin(adminID string, orderBy string, state ConversationListState, pageParams PageParams) (ConversationList, error) {
 	params := conversationListParams{
 		PageParams: pageParams,
 		Type:       "admin",
-		AdminID:    admin.ID.String(),
+		AdminID:    adminID,
+		Order:      orderBy,
 	}
 	if state == SHOW_OPEN {
 		params.Open = Bool(true)
@@ -170,4 +171,5 @@ type conversationListParams struct {
 	Open           *bool  `url:"open,omitempty"`
 	Unread         *bool  `url:"unread,omitempty"`
 	DisplayAs      string `url:"display_as,omitempty"`
+	OrderBy        string `url:"order,omitempty"`
 }
