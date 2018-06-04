@@ -70,18 +70,21 @@ func (c *ConversationService) ListAll(pageParams PageParams) (ConversationList, 
 }
 
 // List Conversations by Admin
-func (c *ConversationService) ListByAdmin(adminID string, orderBy string, state ConversationListState, pageParams PageParams) (ConversationList, error) {
+func (c *ConversationService) ListByAdmin(adminID string, orderBy string, sort string, state ConversationListState, pageParams PageParams) (ConversationList, error) {
 	params := conversationListParams{
 		PageParams: pageParams,
 		Type:       "admin",
 		AdminID:    adminID,
 		Order:      orderBy,
+		Sort:       sort,
 	}
 	if state == SHOW_OPEN {
 		params.Open = Bool(true)
+		params.State = "open"
 	}
 	if state == SHOW_CLOSED {
 		params.Open = Bool(false)
+		params.State = "closed"
 	}
 	return c.Repository.list(params)
 }
@@ -172,4 +175,6 @@ type conversationListParams struct {
 	Unread         *bool  `url:"unread,omitempty"`
 	DisplayAs      string `url:"display_as,omitempty"`
 	Order          string `url:"order,omitempty"`
+	Sort           string `url:"sort,omitempty"`
+	State          string `url:"state,omitempty"`
 }
