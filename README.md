@@ -119,17 +119,20 @@ userList, err := ic.Users.ListBySegment("segmentID123", intercom.PageParams{})
 userList, err := ic.Users.ListByTag("42", intercom.PageParams{})
 ```
 
-#### Delete
+#### Archiving a User
 
 ```go
-user, err := ic.Users.Delete("46adad3f09126dca")
+user, err := ic.Users.Archive("46adad3f09126dca")
 ```
+(Note, ic.Users.Delete() is going to be deprecated and move to ic.Users.Archive() instead.)
 
 #### Permanent Delete
 
 ```go
 err := ic.Users.PermanentDelete("46adad3f09126dca")
 ```
+
+For more on the difference between archive and permanently deleting a user please see [here](https://developers.intercom.com/reference#archive-a-user).
 
 ### Contacts
 
