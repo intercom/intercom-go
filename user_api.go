@@ -14,7 +14,7 @@ type UserRepository interface {
 	list(userListParams) (UserList, error)
 	scroll(scrollParam string) (UserList, error)
 	save(*User) (User, error)
-	delete(id string) (User, error)
+	archive(id string) (User, error)
 	permanentDelete(id string) error
 }
 
@@ -95,7 +95,7 @@ func unmarshalToUser(data []byte, err error) (User, error) {
 	return savedUser, err
 }
 
-func (api UserAPI) delete(id string) (User, error) {
+func (api UserAPI) archive(id string) (User, error) {
 	user := User{}
 	data, err := api.httpClient.Delete(fmt.Sprintf("/users/%s", id), nil)
 	if err != nil {

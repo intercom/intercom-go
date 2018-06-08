@@ -139,8 +139,13 @@ func (u *UserService) Save(user *User) (User, error) {
 	return u.Repository.save(user)
 }
 
+// Deprecated: Use user.Archive(id) instead.
 func (u *UserService) Delete(id string) (User, error) {
-	return u.Repository.delete(id)
+	return u.Repository.archive(id)
+}
+
+func (u *UserService) Archive(id string) (User, error) {
+	return u.Repository.archive(id)
 }
 
 func (u *UserService) PermanentDelete(id string) error {
