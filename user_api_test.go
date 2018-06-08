@@ -95,7 +95,13 @@ func TestUserAPISave(t *testing.T) {
 func TestUserAPIDelete(t *testing.T) {
 	http := TestUserHTTPClient{t: t, expectedURI: "/users/1234"}
 	api := UserAPI{httpClient: &http}
-	api.delete("1234")
+	api.archive("1234")
+}
+
+func TestUserAPIArchive(t *testing.T) {
+	http := TestUserHTTPClient{t: t, expectedURI: "/users/1234"}
+	api := UserAPI{httpClient: &http}
+	api.archive("1234")
 }
 
 func TestUserAPIPermanentDelete(t *testing.T) {

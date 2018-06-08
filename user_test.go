@@ -91,7 +91,7 @@ func (t TestUserAPI) save(user *User) (User, error) {
 	return User{}, nil
 }
 
-func (t TestUserAPI) delete(id string) (User, error) {
+func (t TestUserAPI) archive(id string) (User, error) {
 	if id != "46adad3f09126dca" {
 		t.t.Errorf("id was %s, expected 46adad3f09126dca", id)
 	}
