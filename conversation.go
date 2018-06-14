@@ -23,6 +23,26 @@ type Conversation struct {
 	ConversationMessage ConversationMessage  `json:"conversation_message"`
 	ConversationParts   ConversationPartList `json:"conversation_parts"`
 	TagList             *TagList             `json:"tags"`
+	ConversationRating  ConversationRating   `json:"conversation_rating"`
+}
+
+type Customer struct {
+	Type string `json:"type"`
+	ID   string `json:"id"`
+}
+
+type Teammate struct {
+	Type string `json:"type"`
+	ID   string `json:"id"`
+}
+
+// A ConversationRating is the customer satisfaction rating result
+type ConversationRating struct {
+	Rating    int64    `json:"rating"`
+	Remark    string   `json:"remark"`
+	CreatedAt int64    `json:"created_at"`
+	Customer  Customer `json:"customer"`
+	Teammate  Teammate `json:"teammate"`
 }
 
 // A ConversationMessage is the message that started the conversation rendered for presentation

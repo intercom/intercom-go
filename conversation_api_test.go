@@ -18,6 +18,9 @@ func TestConversationFind(t *testing.T) {
 	if convo.ConversationMessage.URL != "/the/page/url.html" {
 		t.Errorf("Conversation URL not retrieved, %s", convo.ConversationMessage.URL)
 	}
+	if convo.ConversationRating.Remark != "super great service" {
+		t.Errorf("No rating")
+	}
 }
 
 func TestConversationRead(t *testing.T) {

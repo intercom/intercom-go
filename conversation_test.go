@@ -137,8 +137,7 @@ func TestListAdminConversationsAll(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	admin := Admin{}
-	list, _ := conversationService.ListByAdmin(&admin, SHOW_ALL, PageParams{})
+	list, _ := conversationService.ListByAdmin("", "created_at", "desc", SHOW_ALL, PageParams{})
 	if list.Conversations[0].ID != "123" {
 		t.Errorf("did not receive conversation")
 	}
@@ -152,8 +151,7 @@ func TestListAdminConversationsOpen(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	admin := Admin{}
-	list, _ := conversationService.ListByAdmin(&admin, SHOW_OPEN, PageParams{})
+	list, _ := conversationService.ListByAdmin("", "created_at", "desc", SHOW_OPEN, PageParams{})
 	if list.Conversations[0].ID != "123" {
 		t.Errorf("did not receive conversation")
 	}
