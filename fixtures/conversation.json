@@ -1,54 +1,74 @@
 {
-	"type": "conversation",
-	"id": "147",
-	"created_at": 1400850973,
-	"updated_at": 1400857494,
-	"user": {
-		"type": "user",
-		"id": "536e564f316c83104c000020"
-	},
-	"assignee": {
-		"type": "admin",
-		"id": "25"
-	},
-	"conversation_message": {
-		"type": "conversation_message",
-		"subject": "",
-		"body": "<p>Hi Alice,</p>\n\n<p>We noticed you using our Product, do you have any questions?</p> \n<p>- Jane</p>",
-		"author": {
-			"type": "admin",
-			"id": "25"
-		},
-		"attachments": [{
-			"name": "signature",
-			"url": "http://someurl.com/signature.jpg"
-		}],
-		"url": "/the/page/url.html"
-	},
-	"conversation_parts": {
-		"type": "conversation_part.list",
-		"conversation_parts": [{
-			"type": "conversation_part",
-			"id": "4412",
-			"part_type": "comment",
-			"body": "<p>Hi Jane, it's all great thanks!</p>",
-			"created_at": 1400857494,
-			"updated_at": 1400857494,
-			"notified_at": 1400857587,
-			"assigned_to": null,
-			"author": {
-				"type": "user",
-				"id": "536e564f316c83104c000020"
-			},
-			"attachments": []
-		}]
-	},
-	"tags": {
-    	"type": "tag.list",
-		"tags": [{
-			"type": "tag",
-			"id": "12345",
-			"name": "Some tag"
-		}]
-	}
+  "type": "conversation",
+  "id": "147",
+  "created_at": 1400850973,
+  "updated_at": 1400857494,
+  "user": {
+    "type": "user",
+    "id": "536e564f316c83104c000020"
+  },
+  "assignee": {
+    "type": "admin",
+    "id": "25"
+  },
+  "conversation_message": {
+    "type": "conversation_message",
+    "subject": "",
+    "body":
+      "<p>Hi Alice,</p>\n\n<p>We noticed you using our Product, do you have any questions?</p> \n<p>- Jane</p>",
+    "author": {
+      "type": "admin",
+      "id": "25"
+    },
+    "attachments": [
+      {
+        "name": "signature",
+        "url": "http://someurl.com/signature.jpg"
+      }
+    ],
+    "url": "/the/page/url.html"
+  },
+  "conversation_parts": {
+    "type": "conversation_part.list",
+    "conversation_parts": [
+      {
+        "type": "conversation_part",
+        "id": "4412",
+        "part_type": "comment",
+        "body": "<p>Hi Jane, it's all great thanks!</p>",
+        "created_at": 1400857494,
+        "updated_at": 1400857494,
+        "notified_at": 1400857587,
+        "assigned_to": null,
+        "author": {
+          "type": "user",
+          "id": "536e564f316c83104c000020"
+        },
+        "attachments": []
+      }
+    ]
+  },
+  "tags": {
+    "type": "tag.list",
+    "tags": [
+      {
+        "type": "tag",
+        "id": "12345",
+        "name": "Some tag"
+      }
+    ]
+  },
+  "conversation_rating": {
+    "rating": 5,
+    "remark": "super great service",
+    "created_at": 1400857495,
+    "customer": {
+      "type": "user",
+      "id": "337682"
+    },
+    "teammate": {
+      "type": "admin",
+      "id": "25"
+    }
+  }
 }
