@@ -23,6 +23,26 @@ type Conversation struct {
 	ConversationMessage ConversationMessage  `json:"conversation_message"`
 	ConversationParts   ConversationPartList `json:"conversation_parts"`
 	TagList             *TagList             `json:"tags"`
+	ConversationRating  ConversationRating   `json:"conversation_rating"`
+}
+
+type Customer struct {
+	Type string `json:"type"`
+	ID   string `json:"id"`
+}
+
+type Teammate struct {
+	Type string `json:"type"`
+	ID   int64  `json:"id"`
+}
+
+// A ConversationRating is the customer satisfaction rating result
+type ConversationRating struct {
+	Rating    int64    `json:"rating"`
+	Remark    string   `json:"remark"`
+	CreatedAt int64    `json:"created_at"`
+	Customer  Customer `json:"customer"`
+	Teammate  Teammate `json:"teammate"`
 }
 
 // A ConversationMessage is the message that started the conversation rendered for presentation
@@ -70,17 +90,21 @@ func (c *ConversationService) ListAll(pageParams PageParams) (ConversationList, 
 }
 
 // List Conversations by Admin
-func (c *ConversationService) ListByAdmin(admin *Admin, state ConversationListState, pageParams PageParams) (ConversationList, error) {
+func (c *ConversationService) ListByAdmin(adminID string, orderBy string, sort string, state ConversationListState, pageParams PageParams) (ConversationList, error) {
 	params := conversationListParams{
 		PageParams: pageParams,
 		Type:       "admin",
-		AdminID:    admin.ID.String(),
+		AdminID:    adminID,
+		Order:      orderBy,
+		Sort:       sort,
 	}
 	if state == SHOW_OPEN {
 		params.Open = Bool(true)
+		params.State = "open"
 	}
 	if state == SHOW_CLOSED {
 		params.Open = Bool(false)
+		params.State = "closed"
 	}
 	return c.Repository.list(params)
 }
@@ -170,4 +194,7 @@ type conversationListParams struct {
 	Open           *bool  `url:"open,omitempty"`
 	Unread         *bool  `url:"unread,omitempty"`
 	DisplayAs      string `url:"display_as,omitempty"`
+	Order          string `url:"order,omitempty"`
+	Sort           string `url:"sort,omitempty"`
+	State          string `url:"state,omitempty"`
 }
