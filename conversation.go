@@ -33,7 +33,7 @@ type Customer struct {
 
 type Teammate struct {
 	Type string `json:"type"`
-	ID   string `json:"id"`
+	ID   int64  `json:"id"`
 }
 
 // A ConversationRating is the customer satisfaction rating result
