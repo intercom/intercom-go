@@ -74,7 +74,6 @@ func NewClientWithHTTPClient(appID, apiKey string, httpClient interfaces.HTTPCli
 	return &intercom
 }
 
-
 // TraceHTTP turns on HTTP request/response tracing for debugging.
 func TraceHTTP(trace bool) option {
 	return func(c *Client) option {
