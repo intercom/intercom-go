@@ -64,12 +64,12 @@ const (
 
 // List all Conversations
 func (c *ConversationService) ListAll(pageParams PageParams) (ConversationList, error) {
-	return c.Repository.list(conversationListParams{PageParams: pageParams})
+	return c.Repository.list(ConversationListParams{PageParams: pageParams})
 }
 
 // List Conversations by Admin
 func (c *ConversationService) ListByAdmin(admin *Admin, state ConversationListState, pageParams PageParams) (ConversationList, error) {
-	params := conversationListParams{
+	params := ConversationListParams{
 		PageParams: pageParams,
 		Type:       "admin",
 		AdminID:    admin.ID.String(),
@@ -85,7 +85,7 @@ func (c *ConversationService) ListByAdmin(admin *Admin, state ConversationListSt
 
 // List Conversations by User
 func (c *ConversationService) ListByUser(user *User, state ConversationListState, pageParams PageParams) (ConversationList, error) {
-	params := conversationListParams{
+	params := ConversationListParams{
 		PageParams:     pageParams,
 		Type:           "user",
 		IntercomUserID: user.ID,
@@ -158,7 +158,7 @@ func (c *ConversationService) Close(id string, closer *Admin) (Conversation, err
 	return c.reply(id, closer, CONVERSATION_CLOSE, "", nil)
 }
 
-type conversationListParams struct {
+type ConversationListParams struct {
 	PageParams
 	Type           string `url:"type,omitempty"`
 	AdminID        string `url:"admin_id,omitempty"`
