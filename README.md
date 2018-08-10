@@ -1,6 +1,6 @@
 # Intercom-Go
 
-[![Build Status](https://travis-ci.org/intercom/intercom-go.svg)](https://travis-ci.org/intercom/intercom-go)
+[![Circle CI](https://circleci.com/gh/intercom/intercom-go.png?style=badge)](https://circleci.com/gh/intercom/intercom-go)
 
 Thin client for the [Intercom](https://www.intercom.io) API.
 
