@@ -10,7 +10,7 @@ import (
 // ConversationRepository defines the interface for working with Conversations through the API.
 type ConversationRepository interface {
 	find(id string) (Conversation, error)
-	list(params conversationListParams) (ConversationList, error)
+	list(params ConversationListParams) (ConversationList, error)
 	read(id string) (Conversation, error)
 	reply(id string, reply *Reply) (Conversation, error)
 }
@@ -24,7 +24,7 @@ type conversationReadRequest struct {
 	Read bool `json:"read"`
 }
 
-func (api ConversationAPI) list(params conversationListParams) (ConversationList, error) {
+func (api ConversationAPI) list(params ConversationListParams) (ConversationList, error) {
 	convoList := ConversationList{}
 	data, err := api.httpClient.Get("/conversations", params)
 	if err != nil {

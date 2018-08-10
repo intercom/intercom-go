@@ -102,8 +102,8 @@ func TestListAllConversations(t *testing.T) {
 func TestListUserConversationsUnread(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
 	testAPI.testFunc = func(t *testing.T, params interface{}) {
-		if *params.(conversationListParams).Unread != true {
-			t.Errorf("unread was %v, expected true", *params.(conversationListParams).Unread)
+		if *params.(ConversationListParams).Unread != true {
+			t.Errorf("unread was %v, expected true", *params.(ConversationListParams).Unread)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -117,8 +117,8 @@ func TestListUserConversationsUnread(t *testing.T) {
 func TestListUserConversationsAll(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
 	testAPI.testFunc = func(t *testing.T, params interface{}) {
-		if params.(conversationListParams).Unread != nil {
-			t.Errorf("unread was not nil, was %v", *params.(conversationListParams).Unread)
+		if params.(ConversationListParams).Unread != nil {
+			t.Errorf("unread was not nil, was %v", *params.(ConversationListParams).Unread)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -132,8 +132,8 @@ func TestListUserConversationsAll(t *testing.T) {
 func TestListAdminConversationsAll(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
 	testAPI.testFunc = func(t *testing.T, params interface{}) {
-		if params.(conversationListParams).Open != nil {
-			t.Errorf("open was not nil, was %v", *params.(conversationListParams).Open)
+		if params.(ConversationListParams).Open != nil {
+			t.Errorf("open was not nil, was %v", *params.(ConversationListParams).Open)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -147,8 +147,8 @@ func TestListAdminConversationsAll(t *testing.T) {
 func TestListAdminConversationsOpen(t *testing.T) {
 	testAPI := TestConversationAPI{t: t}
 	testAPI.testFunc = func(t *testing.T, params interface{}) {
-		if *params.(conversationListParams).Open != true {
-			t.Errorf("open was not true, was %v", *params.(conversationListParams).Open)
+		if *params.(ConversationListParams).Open != true {
+			t.Errorf("open was not true, was %v", *params.(ConversationListParams).Open)
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
@@ -164,7 +164,7 @@ type TestConversationAPI struct {
 	t        *testing.T
 }
 
-func (t TestConversationAPI) list(params conversationListParams) (ConversationList, error) {
+func (t TestConversationAPI) list(params ConversationListParams) (ConversationList, error) {
 	if t.testFunc != nil {
 		t.testFunc(t.t, params)
 	}
