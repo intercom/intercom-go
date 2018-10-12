@@ -27,6 +27,7 @@ type Conversation struct {
 
 // A ConversationMessage is the message that started the conversation rendered for presentation
 type ConversationMessage struct {
+	ID      string         `json:"id"`
 	Subject string         `json:"subject"`
 	Body    string         `json:"body"`
 	Author  MessageAddress `json:"author"`
