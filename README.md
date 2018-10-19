@@ -135,6 +135,10 @@ err := ic.Users.PermanentDelete("46adad3f09126dca")
 For more on the difference between archive and permanently deleting a user please see [here](https://developers.intercom.com/reference#archive-a-user).
 
 ### Contacts
+##### Contacts are the same as leads. 
+In the Intercom API we refer to contacts as leads. See [here](https://developers.intercom.com/intercom-api-reference/reference#leads) for more info 
+We did not change this in the SDK since that would be a major breaking change. This is something we will address shortly. 
+So any reference to contacts in the SDK is a reference to a lead in Intercom
 
 #### Find
 
