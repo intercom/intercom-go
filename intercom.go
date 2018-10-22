@@ -51,7 +51,7 @@ const (
 
 type option func(c *Client) option
 
-// Set Options on the Intercom Client, see TraceHTTP, BaseURI and SetHTTPClient.
+// Option sets Options on the Intercom Client, see TraceHTTP, BaseURI and SetHTTPClient.
 func (c *Client) Option(opts ...option) (previous option) {
 	for _, opt := range opts {
 		previous = opt(c)
@@ -60,6 +60,7 @@ func (c *Client) Option(opts ...option) (previous option) {
 }
 
 // NewClient returns a new Intercom API client, configured with the default HTTPClient.
+// If you're using a Personal Access Token you can pass it where you would pass the appID and use an empty string for the apiKey
 func NewClient(appID, apiKey string) *Client {
 	intercom := Client{AppID: appID, APIKey: apiKey, baseURI: defaultBaseURI, debug: false, clientVersion: clientVersion}
 	intercom.HTTPClient = interfaces.NewIntercomHTTPClient(intercom.AppID, intercom.APIKey, &intercom.baseURI, &intercom.clientVersion, &intercom.debug)
@@ -67,7 +68,7 @@ func NewClient(appID, apiKey string) *Client {
 	return &intercom
 }
 
-// Returns a new Intercom API client, configured with the supplied HTTPClient interface
+// NewClientWithHTTPClient returns a new Intercom API client, configured with the supplied HTTPClient interface
 func NewClientWithHTTPClient(appID, apiKey string, httpClient interfaces.HTTPClient) *Client {
 	intercom := Client{AppID: appID, APIKey: apiKey, baseURI: defaultBaseURI, debug: false, clientVersion: clientVersion, HTTPClient: httpClient}
 	intercom.setup()
