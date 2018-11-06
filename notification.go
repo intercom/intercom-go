@@ -8,6 +8,7 @@ import (
 // Notification is the object delivered to a webhook.
 type Notification struct {
 	ID               string        `json:"id,omitempty"`
+	AppID            string        `json:"app_id"`
 	CreatedAt        int64         `json:"created_at,omitempty"`
 	Topic            string        `json:"topic,omitempty"`
 	DeliveryAttempts int64         `json:"delivery_attempts,omitempty"`
@@ -44,7 +45,8 @@ func NewNotification(r io.Reader) (*Notification, error) {
 		"conversation.admin.assigned",
 		"conversation.admin.noted",
 		"conversation.admin.closed",
-		"conversation.admin.opened":
+		"conversation.admin.opened",
+		"conversation_part.tag.created":
 		c := &Conversation{}
 		json.Unmarshal(notification.RawData.Item, c)
 		notification.Conversation = c

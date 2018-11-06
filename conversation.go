@@ -20,9 +20,14 @@ type Conversation struct {
 	Assignee            Admin                `json:"assignee"`
 	Open                bool                 `json:"open"`
 	Read                bool                 `json:"read"`
+	Links               Link                 `json:"links"`
 	ConversationMessage ConversationMessage  `json:"conversation_message"`
 	ConversationParts   ConversationPartList `json:"conversation_parts"`
 	TagList             *TagList             `json:"tags"`
+}
+
+type Link struct {
+	ConversationWeb string `json:"conversation_web"`
 }
 
 // A ConversationMessage is the message that started the conversation rendered for presentation
