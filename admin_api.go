@@ -2,7 +2,7 @@ package intercom
 
 import (
 	"encoding/json"
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/launchpadcentral/intercom-go/interfaces"
 )
 
 // AdminRepository defines the interface for working with Admins through the API.

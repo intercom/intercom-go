@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/launchpadcentral/intercom-go/interfaces"
 )
 
 // ContactRepository defines the interface for working with Contacts through the API.
