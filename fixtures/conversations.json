@@ -43,6 +43,9 @@
 				},
 				"attachments": []
 			}]
+		},
+		"links": {
+			"conversation_web": "https://app.intercom.io/a/apps/a3q03viv/inbox/all/conversations/147"
 		}
 	}]
 }
