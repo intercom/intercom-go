@@ -8,6 +8,7 @@ import (
 // Notification is the object delivered to a webhook.
 type Notification struct {
 	ID               string        `json:"id,omitempty"`
+	AppID            string        `json:"app_id,omitempty"`
 	CreatedAt        int64         `json:"created_at,omitempty"`
 	Topic            string        `json:"topic,omitempty"`
 	DeliveryAttempts int64         `json:"delivery_attempts,omitempty"`

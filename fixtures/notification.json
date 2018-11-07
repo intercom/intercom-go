@@ -2,6 +2,7 @@
   "type": "notification_event",
   "topic": "company.created",
   "id": "notif_ccd8a4d0-f965-11e3-a367-c779cae3e1b3",
+  "app_id": "a3q03viv",
   "created_at": 1392731331,
   "delivery_attempts": 1,
   "first_sent_at": 1392731392,

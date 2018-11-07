@@ -23,6 +23,9 @@ func TestParsingFromReader(t *testing.T) {
 	if n.ID != "notif_ccd8a4d0-f965-11e3-a367-c779cae3e1b3" {
 		t.Errorf("Notification did not have ID")
 	}
+	if n.AppID != "a3q03viv" {
+		t.Errorf("Notification did not have AppID")
+	}
 	if n.CreatedAt != 1392731331 {
 		t.Errorf("Notification did not have CreatedAt")
 	}
