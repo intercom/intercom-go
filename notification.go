@@ -44,7 +44,8 @@ func NewNotification(r io.Reader) (*Notification, error) {
 		"conversation.admin.assigned",
 		"conversation.admin.noted",
 		"conversation.admin.closed",
-		"conversation.admin.opened":
+		"conversation.admin.opened",
+		"conversation_part.tag.created":
 		c := &Conversation{}
 		json.Unmarshal(notification.RawData.Item, c)
 		notification.Conversation = c

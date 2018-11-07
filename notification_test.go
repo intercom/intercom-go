@@ -70,6 +70,7 @@ func TestParsingConverationFromReader(t *testing.T) {
 		"conversation.admin.noted",
 		"conversation.admin.closed",
 		"conversation.admin.opened",
+		"conversation_part.tag.created",
 	}
 
 	for _, topic := range topics {
