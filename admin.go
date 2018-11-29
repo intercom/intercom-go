@@ -13,6 +13,13 @@ type Admin struct {
 	Email string      `json:"email"`
 }
 
+// AdminIdentifiers are used to identify Admins in Intercom.
+type AdminIdentifiers struct {
+	ID     string `url:"-"`
+	UserID string `url:"user_id,omitempty"`
+	Email  string `url:"email,omitempty"`
+}
+
 // AdminList represents an object holding list of Admins
 type AdminList struct {
 	Admins []Admin
@@ -31,6 +38,15 @@ func (c *AdminService) List() (AdminList, error) {
 // IsNobodyAdmin is a helper function to determine if the Admin is 'Nobody'.
 func (a Admin) IsNobodyAdmin() bool {
 	return a.Type == "nobody_admin"
+}
+
+// FindByID looks up a Admin by their Intercom ID.
+func (a *AdminService) FindByID(id string) (Admin, error) {
+	return a.findWithIdentifiers(AdminIdentifiers{ID: id})
+}
+
+func (a *AdminService) findWithIdentifiers(identifiers AdminIdentifiers) (Admin, error) {
+	return a.Repository.find(identifiers)
 }
 
 // Get the address for a Contact in order to message them
