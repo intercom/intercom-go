@@ -54,6 +54,13 @@ type companyListParams struct {
 	TagID     string `url:"tag_id,omitempty"`
 }
 
+type companyUserListParams struct {
+	ID        string `url:"-"`
+	CompanyID string `url:"company_id,omitempty"`
+	Type      string `url:"type,omitempty"`
+	PageParams
+}
+
 // FindByID finds a Company using their Intercom ID
 func (c *CompanyService) FindByID(id string) (Company, error) {
 	return c.findWithIdentifiers(CompanyIdentifiers{ID: id})
@@ -87,6 +94,20 @@ func (c *CompanyService) ListBySegment(segmentID string, params PageParams) (Com
 // List Companies by Tag
 func (c *CompanyService) ListByTag(tagID string, params PageParams) (CompanyList, error) {
 	return c.Repository.list(companyListParams{PageParams: params, TagID: tagID})
+}
+
+// List Company Users by ID
+func (c *CompanyService) ListUsersByID(id string, params PageParams) (UserList, error) {
+	return c.listUsersWithIdentifiers(id, companyUserListParams{PageParams: params})
+}
+
+// List Company Users by CompanyID
+func (c *CompanyService) ListUsersByCompanyID(companyID string, params PageParams) (UserList, error) {
+	return c.listUsersWithIdentifiers("", companyUserListParams{CompanyID: companyID, Type: "user", PageParams: params})
+}
+
+func (c *CompanyService) listUsersWithIdentifiers(id string, params companyUserListParams) (UserList, error) {
+	return c.Repository.listUsers(id, params)
 }
 
 // List all Companies for App via Scroll API
