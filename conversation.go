@@ -47,14 +47,23 @@ type ConversationPartList struct {
 
 // A ConversationPart is a Reply, Note, or Assignment to a Conversation
 type ConversationPart struct {
-	ID         string         `json:"id"`
-	PartType   string         `json:"part_type"`
-	Body       string         `json:"body"`
-	CreatedAt  int64          `json:"created_at"`
-	UpdatedAt  int64          `json:"updated_at"`
-	NotifiedAt int64          `json:"notified_at"`
-	AssignedTo Admin          `json:"assigned_to"`
-	Author     MessageAddress `json:"author"`
+	ID          string         `json:"id"`
+	PartType    string         `json:"part_type"`
+	Body        string         `json:"body"`
+	CreatedAt   int64          `json:"created_at"`
+	UpdatedAt   int64          `json:"updated_at"`
+	NotifiedAt  int64          `json:"notified_at"`
+	AssignedTo  Admin          `json:"assigned_to"`
+	Author      MessageAddress `json:"author"`
+	Attachments []Attachment   `json:"attachments"`
+}
+
+// Attachment represents an attachment that attached to the associated conversation
+type Attachment struct {
+	Type        string `json:"type"`
+	Name        string `json:"name"`
+	URL         string `json:"url"`
+	ContentType string `json:"contentType"`
 }
 
 // The state of Conversations to query
