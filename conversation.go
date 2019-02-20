@@ -33,11 +33,12 @@ type Links struct {
 
 // A ConversationMessage is the message that started the conversation rendered for presentation
 type ConversationMessage struct {
-	ID      string         `json:"id"`
-	Subject string         `json:"subject"`
-	Body    string         `json:"body"`
-	Author  MessageAddress `json:"author"`
-	URL     string         `json:"url"`
+	ID          string         `json:"id"`
+	Subject     string         `json:"subject"`
+	Body        string         `json:"body"`
+	Author      MessageAddress `json:"author"`
+	URL         string         `json:"url"`
+	Attachments []Attachment   `json:"attachments"`
 }
 
 // A ConversationPartList lists the subsequent Conversation Parts
