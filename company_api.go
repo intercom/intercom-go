@@ -29,6 +29,8 @@ type requestCompany struct {
 	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
 	MonthlySpend     int64                  `json:"monthly_spend,omitempty"`
 	Plan             string                 `json:"plan,omitempty"`
+	Industry         string                 `json:"industry,omitempty"`
+	Size             int64                  `json:"size,omitempty"`
 	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
 }
 
@@ -101,6 +103,8 @@ func (api CompanyAPI) save(company *Company) (Company, error) {
 		RemoteCreatedAt:  company.RemoteCreatedAt,
 		MonthlySpend:     company.MonthlySpend,
 		Plan:             api.getPlanName(company),
+		Industry:         company.Industry,
+		Size:             company.Size,
 		CustomAttributes: company.CustomAttributes,
 	}
 
