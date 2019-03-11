@@ -259,6 +259,17 @@ companyList, err := ic.Companies.ListBySegment("segmentID123", intercom.PagePara
 companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 ```
 
+#### ListUsers
+
+```go
+userList, err := ic.Companies.ListUsersByID("46adad3f09126dca", intercom.PageParams{})
+userList.Users // []User
+```
+
+```go
+userList, err := ic.Companies.ListUsersByCompanyID("27", intercom.PageParams{})
+```
+
 ### Events
 
 #### Save
