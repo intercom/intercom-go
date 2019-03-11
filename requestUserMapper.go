@@ -3,10 +3,9 @@ package intercom
 // A Company the User belongs to
 // used to update Companies on a User.
 type UserCompany struct {
-	CompanyID        string                 `json:"company_id,omitempty"`
-	Name             string                 `json:"name,omitempty"`
-	Remove           *bool                  `json:"remove,omitempty"`
-	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
+	CompanyID string `json:"company_id,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Remove    *bool  `json:"remove,omitempty"`
 }
 
 type RequestUserMapper struct{}
@@ -43,10 +42,9 @@ func (rum RequestUserMapper) MakeUserCompaniesFromCompanies(companies []Company)
 	userCompanies := make([]UserCompany, len(companies))
 	for i := 0; i < len(companies); i++ {
 		userCompanies[i] = UserCompany{
-			CompanyID:        companies[i].CompanyID,
-			Name:             companies[i].Name,
-			Remove:           companies[i].Remove,
-			CustomAttributes: companies[i].CustomAttributes,
+			CompanyID: companies[i].CompanyID,
+			Name:      companies[i].Name,
+			Remove:    companies[i].Remove,
 		}
 	}
 	return userCompanies
