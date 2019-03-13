@@ -6,7 +6,7 @@ Thin client for the [Intercom](https://www.intercom.io) API.
 
 ## Install
 
-`go get gopkg.in/intercom/intercom-go.v2`
+`go get github.com/ybs-github/intercom-go`
 
 [![docker_image 1](https://cloud.githubusercontent.com/assets/15954251/17524401/5743439e-5e56-11e6-8567-d3d9da1727da.png)](https://hub.docker.com/r/cathalhoran/intercom-go/) <br>
 Try out our [Docker Image (Beta)](https://hub.docker.com/r/cathalhoran/intercom-go/) to help you get started more quickly. <br>
@@ -19,7 +19,7 @@ It should make it easier to get setup with the SDK and start interacting with th
 
 ```go
 import (
-	intercom "gopkg.in/intercom/intercom-go.v2"
+	intercom "github.com/ybs-github/intercom-go"
 )
 // You can use either an an OAuth or Access Token
 ic := intercom.NewClient("access_token", "")

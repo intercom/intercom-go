@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/ybs-github/intercom-go/interfaces"
 )
 
 func TestEventAPISave(t *testing.T) {
