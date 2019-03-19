@@ -107,7 +107,7 @@ func (c *ContactService) Delete(contact *Contact) (Contact, error) {
 	return c.Repository.delete(contact.ID)
 }
 
-// Get the address for a Contact in order to message them
+// MessageAddress gets the address for a Contact in order to message them
 func (c Contact) MessageAddress() MessageAddress {
 	return MessageAddress{
 		Type:   "contact",
