@@ -152,7 +152,7 @@ func (u *UserService) PermanentDelete(id string) error {
 	return u.Repository.permanentDelete(id)
 }
 
-// Get the address for an User in order to message them
+// MessageAddress gets the address for an User in order to message them
 func (u User) MessageAddress() MessageAddress {
 	return MessageAddress{
 		Type:   "user",

@@ -33,7 +33,7 @@ func (a Admin) IsNobodyAdmin() bool {
 	return a.Type == "nobody_admin"
 }
 
-// Get the address for a Contact in order to message them
+// MessageAddress gets the address for a Contact in order to message them
 func (a Admin) MessageAddress() MessageAddress {
 	return MessageAddress{
 		Type: "admin",

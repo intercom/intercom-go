@@ -67,7 +67,7 @@ func NewClient(appID, apiKey string) *Client {
 	return &intercom
 }
 
-// Returns a new Intercom API client, configured with the supplied HTTPClient interface
+// NewClientWithHTTPClient returns a new Intercom API client, configured with the supplied HTTPClient interface
 func NewClientWithHTTPClient(appID, apiKey string, httpClient interfaces.HTTPClient) *Client {
 	intercom := Client{AppID: appID, APIKey: apiKey, baseURI: defaultBaseURI, debug: false, clientVersion: clientVersion, HTTPClient: httpClient}
 	intercom.setup()
