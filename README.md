@@ -72,7 +72,7 @@ Adding a Company:
 ```go
 companyList := intercom.CompanyList{
 	Companies: []intercom.Company{
-		{ID: "5"},
+		{CompanyID: "5"},
 	},
 }
 user := intercom.User{
