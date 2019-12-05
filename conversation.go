@@ -19,6 +19,7 @@ type Conversation struct {
 	User                User                 `json:"user"`
 	Assignee            Admin                `json:"assignee"`
 	Open                bool                 `json:"open"`
+	State		    string		 `json:"state"`
 	Read                bool                 `json:"read"`
 	ConversationMessage ConversationMessage  `json:"conversation_message"`
 	ConversationParts   ConversationPartList `json:"conversation_parts"`
