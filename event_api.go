@@ -1,6 +1,6 @@
 package intercom
 
-import "github.com/intercom/intercom-go/interfaces"
+import "github.com/phenry-db/intercom-go/interfaces"
 
 // EventRepository defines the interface for working with Events through the API.
 type EventRepository interface {

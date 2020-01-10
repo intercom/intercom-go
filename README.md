@@ -1,30 +1,35 @@
 # Intercom-Go
 
-[![Build Status](https://travis-ci.org/intercom/intercom-go.svg)](https://travis-ci.org/intercom/intercom-go)
+[![Circle CI](https://circleci.com/gh/intercom/intercom-go.png?style=badge)](https://circleci.com/gh/intercom/intercom-go)
 
 Thin client for the [Intercom](https://www.intercom.io) API.
 
-_Currently in beta, though breaking API changes are not expected._
-
 ## Install
 
-`go get gopkg.in/intercom/intercom-go.v1`
+`go get gopkg.in/intercom/intercom-go.v2`
+
+[![docker_image 1](https://cloud.githubusercontent.com/assets/15954251/17524401/5743439e-5e56-11e6-8567-d3d9da1727da.png)](https://hub.docker.com/r/cathalhoran/intercom-go/) <br>
+Try out our [Docker Image (Beta)](https://hub.docker.com/r/cathalhoran/intercom-go/) to help you get started more quickly. <br>
+It should make it easier to get setup with the SDK and start interacting with the API. <br>
+(Note, this is in Beta and is for testing purposes only, it should not be used in production)
 
 ## Usage
 
 ### Getting a Client
 
-The first step to using Intercom's Go client is to create a client object, using your App ID and Api Key from your [settings](http://app.intercom.io/apps/api_keys).
-
 ```go
 import (
-	`gopkg.in/intercom/intercom-go.v1`
+	intercom "gopkg.in/intercom/intercom-go.v2"
 )
-
-ic := intercom.NewClient("appID", "apiKey")
+// You can use either an an OAuth or Access Token
+ic := intercom.NewClient("access_token", "")
 ```
-
 This client can then be used to make requests.
+
+If you already have an access token you can find it [here](https://app.intercom.com/developers/_). If you want to create or learn more about access tokens then you can find more info [here](https://developers.intercom.io/docs/personal-access-tokens).
+
+If you are building a third party application you can get your OAuth token by [setting-up-oauth](https://developers.intercom.io/page/setting-up-oauth) for Intercom.
+You can use the [Goth library](https://github.com/markbates/goth) which is a simple OAuth package for Go web aplicaitons and supports Intercom to more easily implement Oauth.
 
 #### Client Options
 
@@ -51,7 +56,7 @@ user := intercom.User{
 	UserID: "27",
 	Email: "test@example.com",
 	Name: "InterGopher",
-	SignedUpAt: int32(time.Now().Unix()),
+	SignedUpAt: int64(time.Now().Unix()),
 	CustomAttributes: map[string]interface{}{"is_cool": true},
 }
 savedUser, err := ic.Users.Save(&user)
@@ -67,7 +72,7 @@ Adding a Company:
 ```go
 companyList := intercom.CompanyList{
 	Companies: []intercom.Company{
-		{ID: "5"},
+		{CompanyID: "5"},
 	},
 }
 user := intercom.User{
@@ -101,6 +106,12 @@ userList.Users // []User
 ```
 
 ```go
+userList, err := ic.Users.Scroll("")
+scrollParam := userList.ScrollParam
+userList, err := ic.Users.Scroll(scrollParam)
+```
+
+```go
 userList, err := ic.Users.ListBySegment("segmentID123", intercom.PageParams{})
 ```
 
@@ -115,6 +126,10 @@ user, err := ic.Users.Delete("46adad3f09126dca")
 ```
 
 ### Contacts
+##### Contacts are the same as leads. 
+In the Intercom API we refer to contacts as leads. See [here](https://developers.intercom.com/intercom-api-reference/reference#leads) for more info 
+We did not change this in the SDK since that would be a major breaking change. This is something we will address shortly. 
+So any reference to contacts in the SDK is a reference to a lead in Intercom
 
 #### Find
 
@@ -133,6 +148,12 @@ contactList, err := ic.Contacts.List(intercom.PageParams{Page: 2})
 contactList.Pages // page information
 contactList.Contacts // []Contact
 ```
+```go
+contactList, err := ic.Contacts.Scroll("")
+scrollParam = contactList.ScrollParam
+contactList, err := ic.Contacts.Scroll(scrollParam)
+```
+
 
 ```go
 contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PageParams{})
@@ -229,6 +250,17 @@ companyList, err := ic.Companies.ListBySegment("segmentID123", intercom.PagePara
 companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 ```
 
+#### ListUsers
+
+```go
+userList, err := ic.Companies.ListUsersByID("46adad3f09126dca", intercom.PageParams{})
+userList.Users // []User
+```
+
+```go
+userList, err := ic.Companies.ListUsersByCompanyID("27", intercom.PageParams{})
+```
+
 ### Events
 
 #### Save
@@ -237,13 +269,13 @@ companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 event := intercom.Event{
 	UserID: "27",
 	EventName: "bought_item",
-	CreatedAt: int32(time.Now().Unix()),
+	CreatedAt: int64(time.Now().Unix()),
 	Metadata: map[string]interface{}{"item_name": "PocketWatch"},
 }
 err := ic.Events.Save(&event)
 ```
 
-* One of `UserID`, or `Email` is required.
+* One of `UserID`, `ID`, or `Email` is required (With leads you need to use ID).
 * `EventName` is required.
 * `CreatedAt` is optional, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
 * `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
@@ -302,13 +334,13 @@ savedTag, err := ic.Tags.Tag(&taggingList)
 
 ```go
 segmentList := ic.Segments.List()
-segments := segmentList.Segments
+segments, err := segmentList.Segments
 ```
 
 #### Find
 
 ```go
-segment := ic.Segments.Find("abc312daf2397")
+segment, err := ic.Segments.Find("abc312daf2397")
 ```
 
 ### Messages
@@ -437,6 +469,19 @@ convo, err := intercom.Conversations.Close("1234", &closerAdmin)
 convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdmin)
 ```
 
+### Webhooks
+
+### Notifications
+
+If you have received a JSON webhook notification, you may want to convert it into real Intercom object. A Notification can be created from any `io.Reader`, typically a http request:
+
+```go
+var r io.Reader
+notif, err := intercom.NewNotification(r)
+```
+
+The returned Notification will contain exactly 1 of the `Company`, `Conversation`, `Event`, `Tag` or `User` fields populated. It may only contain partial objects (such as a single conversation part) depending on what is provided by the webhook.
+
 ### Errors
 
 Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
@@ -474,3 +519,20 @@ ic.Option(intercom.SetHTTPClient(myHTTPClient))
 Due to the way Go represents the zero value for a bool, it's necessary to pass pointers to bool instead in some places.
 
 The helper `intercom.Bool(true)` creates these for you.
+
+
+### Pull Requests
+
+- **Add tests!** Your patch won't be accepted if it doesn't have tests.
+
+- **Document any change in behaviour**. Make sure the README and any other
+  relevant documentation are kept up-to-date.
+
+- **Create topic branches**. Don't ask us to pull from your master branch.
+
+- **One pull request per feature**. If you want to do more than one thing, send
+  multiple pull requests.
+
+- **Send coherent history**. Make sure each individual commit in your pull
+  request is meaningful. If you had to make multiple intermediate commits while
+  developing, please squash them before sending them to us.

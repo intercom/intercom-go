@@ -18,6 +18,9 @@ func TestUserAPIFind(t *testing.T) {
 	if user.UserID != "123" {
 		t.Errorf("UserID was %s, expected 123", user.UserID)
 	}
+	if user.Phone != "+12345678910" {
+		t.Errorf("Phone was %s, expected +12345678910", user.Phone)
+	}
 	if user.SignedUpAt != 1422143117 {
 		t.Errorf("SignedUpAt was %d, expected %d", user.SignedUpAt, 1422143117)
 	}

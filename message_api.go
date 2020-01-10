@@ -3,7 +3,7 @@ package intercom
 import (
 	"encoding/json"
 
-	"github.com/intercom/intercom-go/interfaces"
+	"github.com/phenry-db/intercom-go/interfaces"
 )
 
 // MessageRepository defines the interface for creating and updating Messages through the API.

@@ -5,13 +5,15 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/intercom/intercom-go/interfaces"
+	"github.com/phenry-db/intercom-go/interfaces"
 )
 
 // CompanyRepository defines the interface for working with Companies through the API.
 type CompanyRepository interface {
 	find(CompanyIdentifiers) (Company, error)
 	list(companyListParams) (CompanyList, error)
+	listUsers(string, companyUserListParams) (UserList, error)
+	scroll(scrollParam string) (CompanyList, error)
 	save(*Company) (Company, error)
 }
 
@@ -24,8 +26,8 @@ type requestCompany struct {
 	ID               string                 `json:"id,omitempty"`
 	CompanyID        string                 `json:"company_id,omitempty"`
 	Name             string                 `json:"name,omitempty"`
-	RemoteCreatedAt  int32                  `json:"remote_created_at,omitempty"`
-	MonthlySpend     int32                  `json:"monthly_spend,omitempty"`
+	RemoteCreatedAt  int64                  `json:"remote_created_at,omitempty"`
+	MonthlySpend     int64                  `json:"monthly_spend,omitempty"`
 	Plan             string                 `json:"plan,omitempty"`
 	CustomAttributes map[string]interface{} `json:"custom_attributes,omitempty"`
 }
@@ -53,6 +55,37 @@ func (api CompanyAPI) getClientForFind(params CompanyIdentifiers) ([]byte, error
 func (api CompanyAPI) list(params companyListParams) (CompanyList, error) {
 	companyList := CompanyList{}
 	data, err := api.httpClient.Get("/companies", params)
+	if err != nil {
+		return companyList, err
+	}
+	err = json.Unmarshal(data, &companyList)
+	return companyList, err
+}
+
+func (api CompanyAPI) listUsers(id string, params companyUserListParams) (UserList, error) {
+	companyUserList := UserList{}
+	data, err := api.getClientForListUsers(id, params)
+	if err != nil {
+		return companyUserList, err
+	}
+	err = json.Unmarshal(data, &companyUserList)
+	return companyUserList, err
+}
+
+func (api CompanyAPI) getClientForListUsers(id string, params companyUserListParams) ([]byte, error) {
+	switch {
+	case id != "":
+		return api.httpClient.Get(fmt.Sprintf("/companies/%s/users", id), params)
+	case params.CompanyID != "", params.Type == "user":
+		return api.httpClient.Get("/companies", params)
+	}
+	return nil, errors.New("Missing Company Identifier")
+}
+
+func (api CompanyAPI) scroll(scrollParam string) (CompanyList, error) {
+	companyList := CompanyList{}
+	params := scrollParams{ScrollParam: scrollParam}
+	data, err := api.httpClient.Get("/companies/scroll", params)
 	if err != nil {
 		return companyList, err
 	}

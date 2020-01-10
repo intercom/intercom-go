@@ -9,10 +9,11 @@ type EventService struct {
 
 // An Event represents a new event that happens to a User.
 type Event struct {
+	ID        string                 `json:"id,omitempty"`
 	Email     string                 `json:"email,omitempty"`
 	UserID    string                 `json:"user_id,omitempty"`
 	EventName string                 `json:"event_name,omitempty"`
-	CreatedAt int32                  `json:"created_at,omitempty"`
+	CreatedAt int64                  `json:"created_at,omitempty"`
 	Metadata  map[string]interface{} `json:"metadata,omitempty"`
 }
 

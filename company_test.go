@@ -33,6 +33,22 @@ func TestCompanyList(t *testing.T) {
 	}
 }
 
+func TestCompanyListUsersByID(t *testing.T) {
+	companyUserList, _ := (&CompanyService{Repository: TestCompanyAPI{t: t}}).ListUsersByID("46adad3f09126dca", PageParams{})
+	users := companyUserList.Users
+	if users[0].Companies.Companies[0].ID != "46adad3f09126dca" {
+		t.Errorf("User not listed")
+	}
+}
+
+func TestCompanyListUsersByCompanyID(t *testing.T) {
+	companyUserList, _ := (&CompanyService{Repository: TestCompanyAPI{t: t}}).ListUsersByCompanyID("134d", PageParams{})
+	users := companyUserList.Users
+	if users[0].Companies.Companies[0].CompanyID != "134d" {
+		t.Errorf("User not listed")
+	}
+}
+
 func TestCompanySave(t *testing.T) {
 	companyService := CompanyService{Repository: TestCompanyAPI{t: t}}
 	company := Company{ID: "46adad3f09126dca", CustomAttributes: map[string]interface{}{"is_cool": true}}
@@ -48,6 +64,14 @@ func (t TestCompanyAPI) find(params CompanyIdentifiers) (Company, error) {
 }
 
 func (t TestCompanyAPI) list(params companyListParams) (CompanyList, error) {
+	return CompanyList{Companies: []Company{Company{ID: "46adad3f09126dca", Name: "My Co", CompanyID: "aa123"}}}, nil
+}
+
+func (t TestCompanyAPI) listUsers(id string, params companyUserListParams) (UserList, error) {
+	return UserList{Users: []User{User{Companies: &CompanyList{Companies: []Company{Company{ID: id, CompanyID: params.CompanyID}}}}}}, nil
+}
+
+func (t TestCompanyAPI) scroll(scrollParam string) (CompanyList, error) {
 	return CompanyList{Companies: []Company{Company{ID: "46adad3f09126dca", Name: "My Co", CompanyID: "aa123"}}}, nil
 }
 

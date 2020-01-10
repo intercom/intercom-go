@@ -9,8 +9,9 @@ type ContactService struct {
 
 // ContactList holds a list of Contacts and paging information
 type ContactList struct {
-	Pages    PageParams
-	Contacts []Contact
+	Pages       PageParams
+	Contacts    []Contact
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // Contact represents a Contact within Intercom.
@@ -19,14 +20,15 @@ type ContactList struct {
 type Contact struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
+	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
 	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
 	LocationData           *LocationData          `json:"location_data,omitempty"`
-	LastRequestAt          int32                  `json:"last_request_at,omitempty"`
-	CreatedAt              int32                  `json:"created_at,omitempty"`
-	UpdatedAt              int32                  `json:"updated_at,omitempty"`
-	SessionCount           int32                  `json:"session_count,omitempty"`
+	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
+	CreatedAt              int64                  `json:"created_at,omitempty"`
+	UpdatedAt              int64                  `json:"updated_at,omitempty"`
+	SessionCount           int64                  `json:"session_count,omitempty"`
 	LastSeenIP             string                 `json:"last_seen_ip,omitempty"`
 	SocialProfiles         *SocialProfileList     `json:"social_profiles,omitempty"`
 	UnsubscribedFromEmails *bool                  `json:"unsubscribed_from_emails,omitempty"`
@@ -65,6 +67,11 @@ func (c *ContactService) List(params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params})
 }
 
+// List all Contacts for App via Scroll API
+func (c *ContactService) Scroll(scrollParam string) (ContactList, error) {
+	return c.Repository.scroll(scrollParam)
+}
+
 // ListByEmail looks up a list of Contacts by their Email.
 func (c *ContactService) ListByEmail(email string, params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params, Email: email})
@@ -100,7 +107,7 @@ func (c *ContactService) Delete(contact *Contact) (Contact, error) {
 	return c.Repository.delete(contact.ID)
 }
 
-// Get the address for a Contact in order to message them
+// MessageAddress gets the address for a Contact in order to message them
 func (c Contact) MessageAddress() MessageAddress {
 	return MessageAddress{
 		Type:   "contact",

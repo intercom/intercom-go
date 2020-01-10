@@ -102,6 +102,10 @@ func (t TestContactAPI) list(params contactListParams) (ContactList, error) {
 	return ContactList{Contacts: []Contact{Contact{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
 }
 
+func (t TestContactAPI) scroll(scrollParam string) (ContactList, error) {
+	return ContactList{Contacts: []Contact{Contact{ID: "46adad3f09126dca", Email: "jamie@example.io", UserID: "aa123"}}}, nil
+}
+
 func (t TestContactAPI) create(c *Contact) (Contact, error) {
 	return Contact{ID: c.ID, Email: c.Email, UserID: uuid.New()}, nil
 }

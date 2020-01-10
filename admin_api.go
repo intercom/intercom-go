@@ -2,8 +2,7 @@ package intercom
 
 import (
 	"encoding/json"
-
-	"github.com/intercom/intercom-go/interfaces"
+	"github.com/phenry-db/intercom-go/interfaces"
 )
 
 // AdminRepository defines the interface for working with Admins through the API.

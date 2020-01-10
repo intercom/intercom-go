@@ -9,8 +9,9 @@ type UserService struct {
 
 // UserList holds a list of Users and paging information
 type UserList struct {
-	Pages PageParams
-	Users []User
+	Pages       PageParams
+	Users       []User
+	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // User represents a User within Intercom.
@@ -19,18 +20,19 @@ type UserList struct {
 type User struct {
 	ID                     string                 `json:"id,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
+	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Anonymous              *bool                  `json:"anonymous,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
 	Pseudonym              string                 `json:"pseudonym,omitempty"`
 	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
 	LocationData           *LocationData          `json:"location_data,omitempty"`
-	SignedUpAt             int32                  `json:"signed_up_at,omitempty"`
-	RemoteCreatedAt        int32                  `json:"remote_created_at,omitempty"`
-	LastRequestAt          int32                  `json:"last_request_at,omitempty"`
-	CreatedAt              int32                  `json:"created_at,omitempty"`
-	UpdatedAt              int32                  `json:"updated_at,omitempty"`
-	SessionCount           int32                  `json:"session_count,omitempty"`
+	SignedUpAt             int64                  `json:"signed_up_at,omitempty"`
+	RemoteCreatedAt        int64                  `json:"remote_created_at,omitempty"`
+	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
+	CreatedAt              int64                  `json:"created_at,omitempty"`
+	UpdatedAt              int64                  `json:"updated_at,omitempty"`
+	SessionCount           int64                  `json:"session_count,omitempty"`
 	LastSeenIP             string                 `json:"last_seen_ip,omitempty"`
 	SocialProfiles         *SocialProfileList     `json:"social_profiles,omitempty"`
 	UnsubscribedFromEmails *bool                  `json:"unsubscribed_from_emails,omitempty"`
@@ -79,6 +81,7 @@ type UserIdentifiers struct {
 
 // UserAvatar represents an avatar for a User.
 type UserAvatar struct {
+	Type     string `json:"type,omitempty"`
 	ImageURL string `json:"image_url,omitempty"`
 }
 
@@ -86,6 +89,10 @@ type userListParams struct {
 	PageParams
 	SegmentID string `url:"segment_id,omitempty"`
 	TagID     string `url:"tag_id,omitempty"`
+}
+
+type scrollParams struct {
+	ScrollParam string `url:"scroll_param,omitempty"`
 }
 
 // FindByID looks up a User by their Intercom ID.
@@ -112,6 +119,11 @@ func (u *UserService) List(params PageParams) (UserList, error) {
 	return u.Repository.list(userListParams{PageParams: params})
 }
 
+// List all Users for App via Scroll API
+func (u *UserService) Scroll(scrollParam string) (UserList, error) {
+	return u.Repository.scroll(scrollParam)
+}
+
 // List Users by Segment.
 func (u *UserService) ListBySegment(segmentID string, params PageParams) (UserList, error) {
 	return u.Repository.list(userListParams{PageParams: params, SegmentID: segmentID})
@@ -131,7 +143,7 @@ func (u *UserService) Delete(id string) (User, error) {
 	return u.Repository.delete(id)
 }
 
-// Get the address for an User in order to message them
+// MessageAddress gets the address for an User in order to message them
 func (u User) MessageAddress() MessageAddress {
 	return MessageAddress{
 		Type:   "user",

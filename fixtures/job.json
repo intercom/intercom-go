@@ -1,0 +1,13 @@
+{
+  "id": "job_5ca1ab1eca11ab1e",
+  "app_id": "pi3243fa",
+  "name": "api bulk job",
+  "state": "running",
+  "updated_at": 1438944983,
+  "created_at": 1438944983,
+  "completed_at": null,
+  "links": {
+    "error": "https://api.intercom.io/jobs/job_5ca1ab1eca11ab1e/error",
+    "self": "https://api.intercom.io/jobs/job_5ca1ab1eca11ab1e"
+  }
+}
