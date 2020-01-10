@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/phenry-db/intercom-go.v2/interfaces"
+	"github.com/phenry-db/intercom-go/interfaces"
 )
 
 // TagRepository defines the interface for working with Tags through the API.

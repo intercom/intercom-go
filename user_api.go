@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/phenry-db/intercom-go.v2/interfaces"
+	"github.com/phenry-db/intercom-go/interfaces"
 )
 
 // UserRepository defines the interface for working with Users through the API.

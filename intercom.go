@@ -1,7 +1,7 @@
 package intercom
 
 import (
-	"github.com/phenry-db/intercom-go.v2/interfaces"
+	"github.com/phenry-db/intercom-go/interfaces"
 )
 
 // A Client manages interacting with the Intercom API.
