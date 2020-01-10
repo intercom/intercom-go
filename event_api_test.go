@@ -1,10 +1,9 @@
 package intercom
 
 import (
+	"github.com/phenry-db/intercom-go.v2/interfaces"
 	"testing"
 	"time"
-
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
 )
 
 func TestEventAPISave(t *testing.T) {

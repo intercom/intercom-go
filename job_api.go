@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/phenry-db/intercom-go.v2/interfaces"
 )
 
 // JobRepository defines the interface for working with Jobs.
