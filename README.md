@@ -277,7 +277,7 @@ err := ic.Events.Save(&event)
 
 * One of `UserID`, `ID`, or `Email` is required (With leads you need to use ID).
 * `EventName` is required.
-* `CreatedAt` is optional, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
+* `CreatedAt` is required, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
 * `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
 
 
