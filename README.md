@@ -536,3 +536,4 @@ The helper `intercom.Bool(true)` creates these for you.
 - **Send coherent history**. Make sure each individual commit in your pull
   request is meaningful. If you had to make multiple intermediate commits while
   developing, please squash them before sending them to us.
+
