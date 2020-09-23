@@ -17,6 +17,12 @@ type ContactRepository interface {
 	update(*Contact) (Contact, error)
 	convert(*Contact, *User) (User, error)
 	delete(id string) (Contact, error)
+	attachContact(*Contact, *Company) (Company, error)
+	detachContact(*Contact, *Company) (Company, error)
+}
+
+type requestContactAttachemntBody struct {
+	ID string `json:"id,omitempty"`
 }
 
 // ContactAPI implements ContactRepository
@@ -49,19 +55,28 @@ func (api ContactAPI) list(params contactListParams) (ContactList, error) {
 }
 
 func (api ContactAPI) scroll(scrollParam string) (ContactList, error) {
-       contactList := ContactList{}
-       params := scrollParams{ ScrollParam: scrollParam }
-       data, err := api.httpClient.Get("/contacts/scroll", params)
-       if err != nil {
-               return contactList, err
-       }
-       err = json.Unmarshal(data, &contactList)
-       return contactList, err
+	contactList := ContactList{}
+	params := scrollParams{ScrollParam: scrollParam}
+	data, err := api.httpClient.Get("/contacts/scroll", params)
+	if err != nil {
+		return contactList, err
+	}
+	err = json.Unmarshal(data, &contactList)
+	return contactList, err
 }
 
 func (api ContactAPI) create(contact *Contact) (Contact, error) {
 	requestContact := api.buildRequestContact(contact)
 	return unmarshalToContact(api.httpClient.Post("/contacts", &requestContact))
+}
+
+func (api ContactAPI) attachContact(contact *Contact, company *Company) (Company, error) {
+	requestContact := api.buildRequestContactAttachment(company)
+	return unmarshalToCompany(api.httpClient.Post(fmt.Sprintf("/contacts/%s/companies", contact.ID), &requestContact))
+}
+
+func (api ContactAPI) detachContact(contact *Contact, company *Company) (Company, error) {
+	return unmarshalToCompany(api.httpClient.Post(fmt.Sprintf("/contacts/%s/companies/%s", contact.ID, company.ID), nil))
 }
 
 func (api ContactAPI) update(contact *Contact) (Contact, error) {
@@ -117,6 +132,12 @@ func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
 		CustomAttributes:       contact.CustomAttributes,
 		UpdateLastRequestAt:    contact.UpdateLastRequestAt,
 		NewSession:             contact.NewSession,
+	}
+}
+
+func (api ContactAPI) buildRequestContactAttachment(company *Company) requestContactAttachemntBody {
+	return requestContactAttachemntBody{
+		ID: company.ID,
 	}
 }
 

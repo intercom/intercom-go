@@ -85,3 +85,25 @@ func TestContactAPIDelete(t *testing.T) {
 		t.Errorf("Expected UserID %s, got %s", "123", returned.UserID)
 	}
 }
+
+func TestContactAPIAttach(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact_attachment.json", expectedURI: "/contacts/b123d/companies", t: t}
+	api := ContactAPI{httpClient: &http}
+	contact := &Contact{ID: "b123d"}
+	company := &Company{ID: "46adad3f09126dca", Name: "My Co", CompanyID: "aa123"}
+	returned, _ := api.attachContact(contact, company)
+	if returned.ID != "46adad3f09126dca" {
+		t.Errorf("Expected ID %s, got %s", "46adad3f09126dca", returned.ID)
+	}
+}
+
+func TestContactAPIDetach(t *testing.T) {
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact_attachment.json", expectedURI: "/contacts/b123d/companies/46adad3f09126dca", t: t}
+	api := ContactAPI{httpClient: &http}
+	contact := &Contact{ID: "b123d"}
+	company := &Company{ID: "46adad3f09126dca", Name: "My Co", CompanyID: "aa123"}
+	returned, _ := api.detachContact(contact, company)
+	if returned.ID != "46adad3f09126dca" {
+		t.Errorf("Expected ID %s, got %s, %s", "46adad3f09126dca", returned.ID, company)
+	}
+}

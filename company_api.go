@@ -119,3 +119,12 @@ func (api CompanyAPI) getPlanName(company *Company) string {
 	}
 	return company.Plan.Name
 }
+
+func unmarshalToCompany(data []byte, err error) (Company, error) {
+	savedCompany := Company{}
+	if err != nil {
+		return savedCompany, err
+	}
+	err = json.Unmarshal(data, &savedCompany)
+	return savedCompany, err
+}
