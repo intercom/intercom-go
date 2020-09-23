@@ -121,3 +121,11 @@ func (t TestContactAPI) convert(c *Contact, u *User) (User, error) {
 func (t TestContactAPI) delete(id string) (Contact, error) {
 	return Contact{ID: id}, nil
 }
+
+func (t TestContactAPI) attachContact(c *Contact, co *Company) (Company, error) {
+	return Company{ID: co.ID}, nil
+}
+
+func (t TestContactAPI) detachContact(c *Contact, co *Company) (Company, error) {
+	return Company{ID: co.ID}, nil
+}

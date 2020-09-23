@@ -70,18 +70,15 @@ savedUser, err := ic.Users.Save(&user)
 Adding a Company:
 
 ```go
-companyList := intercom.CompanyList{
-	Companies: []intercom.Company{
-		{CompanyID: "5"},
-	},
+company := intercom.Company{
+		{CompanyID: "5"}
+contact := intercom.Contact{
+		{ContactID: "6"}
 }
-user := intercom.User{
-	UserID: "27",
-	Companies: &companyList,
-}
+savedContact, err := ic.Contacts.AttachContact(&contact, &company)
 ```
 
-Removing is similar, but adding a `Remove: intercom.Bool(true)` attribute to a company.
+Removing is similar, but use the `ic.Contacts.DetachContact(&contact, &company)` method instead.
 
 #### Find
 
