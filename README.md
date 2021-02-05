@@ -2,7 +2,9 @@
 
 [![Circle CI](https://circleci.com/gh/intercom/intercom-go.png?style=badge)](https://circleci.com/gh/intercom/intercom-go)
 
-Thin client for the [Intercom](https://www.intercom.io) API.
+Thin client for the [Intercom](https://www.intercom.io) API V1. 
+
+WARNING: THIS SDK DOES NOT WORK WITH THE V2 API !
 
 ## Install
 
