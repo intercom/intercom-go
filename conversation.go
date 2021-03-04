@@ -102,8 +102,13 @@ func (c *ConversationService) ListByUser(user *User, state ConversationListState
 }
 
 // Find Conversation by conversation id
-func (c *ConversationService) Find(id string) (Conversation, error) {
-	return c.Repository.find(id)
+// optionally accepts params
+func (c *ConversationService) Find(id string, params ...ConversationFindParams) (Conversation, error) {
+	param := ConversationFindParams{}
+	if len(params) > 0 {
+		param = params[0]
+	}
+	return c.Repository.find(id, param)
 }
 
 // Mark Conversation as read (by a User)
@@ -171,4 +176,9 @@ type ConversationListParams struct {
 	Open           *bool  `url:"open,omitempty"`
 	Unread         *bool  `url:"unread,omitempty"`
 	DisplayAs      string `url:"display_as,omitempty"`
+}
+
+// ConversationFindParams ...
+type ConversationFindParams struct {
+	DisplayAs string `url:"display_as,omitempty"`
 }

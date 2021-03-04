@@ -9,7 +9,7 @@ import (
 
 // ConversationRepository defines the interface for working with Conversations through the API.
 type ConversationRepository interface {
-	find(id string) (Conversation, error)
+	find(id string, params ConversationFindParams) (Conversation, error)
 	list(params ConversationListParams) (ConversationList, error)
 	read(id string) (Conversation, error)
 	reply(id string, reply *Reply) (Conversation, error)
@@ -54,9 +54,9 @@ func (api ConversationAPI) reply(id string, reply *Reply) (Conversation, error) 
 	return conversation, nil
 }
 
-func (api ConversationAPI) find(id string) (Conversation, error) {
+func (api ConversationAPI) find(id string, params ConversationFindParams) (Conversation, error) {
 	conversation := Conversation{}
-	data, err := api.httpClient.Get(fmt.Sprintf("/conversations/%s", id), nil)
+	data, err := api.httpClient.Get(fmt.Sprintf("/conversations/%s", id), params)
 	if err != nil {
 		return conversation, err
 	}
