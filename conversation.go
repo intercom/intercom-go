@@ -20,7 +20,7 @@ type Conversation struct {
 	Assignee            Admin                `json:"assignee"`
 	Open                bool                 `json:"open"`
 	Read                bool                 `json:"read"`
-	ConversationMessage ConversationMessage  `json:"conversation_message"`
+	ConversationMessage ConversationMessage  `json:"source"`
 	ConversationParts   ConversationPartList `json:"conversation_parts"`
 	TagList             *TagList             `json:"tags"`
 }
