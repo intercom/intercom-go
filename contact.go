@@ -9,8 +9,8 @@ type ContactService struct {
 
 // ContactList holds a list of Contacts and paging information
 type ContactList struct {
-	Pages    PageParams
-	Contacts []Contact
+	Pages       PageParams
+	Contacts    []Contact
 	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
@@ -24,7 +24,7 @@ type Contact struct {
 	UserID                 string                 `json:"user_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
 	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
-	LocationData           *LocationData          `json:"location_data,omitempty"`
+	LocationData           *LocationData          `json:"location,omitempty"`
 	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
 	CreatedAt              int64                  `json:"created_at,omitempty"`
 	UpdatedAt              int64                  `json:"updated_at,omitempty"`
@@ -69,7 +69,7 @@ func (c *ContactService) List(params PageParams) (ContactList, error) {
 
 // List all Contacts for App via Scroll API
 func (c *ContactService) Scroll(scrollParam string) (ContactList, error) {
-       return c.Repository.scroll(scrollParam)
+	return c.Repository.scroll(scrollParam)
 }
 
 // ListByEmail looks up a list of Contacts by their Email.
