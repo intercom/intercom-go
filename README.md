@@ -1,17 +1,23 @@
 # Intercom-Go
 
-[![Circle CI](https://circleci.com/gh/intercom/intercom-go.png?style=badge)](https://circleci.com/gh/intercom/intercom-go)
+[![Circle CI](https://circleci.com/gh/intercom/intercom-go.png?style=shield)](https://circleci.com/gh/intercom/intercom-go)
+![Intercom API Version](https://img.shields.io/badge/Intercom%20API%20Version-1.3-blue)
 
-Thin client for the [Intercom](https://www.intercom.io) API.
+> Thin client for the [Intercom API](https://developers.intercom.io/reference)
+
+## Project Updates
+
+### Maintenance
+
+We're currently building a new team to provide in-depth and dedicated SDK support.
+
+In the meantime, we'll be operating on limited capacity, meaning all pull requests will be evaluated on a best effort basis and will be limited to critical issues.
+
+We'll communicate all relevant updates as we build this new team and support strategy in the coming months.
 
 ## Install
 
 `go get gopkg.in/intercom/intercom-go.v2`
-
-[![docker_image 1](https://cloud.githubusercontent.com/assets/15954251/17524401/5743439e-5e56-11e6-8567-d3d9da1727da.png)](https://hub.docker.com/r/cathalhoran/intercom-go/) <br>
-Try out our [Docker Image (Beta)](https://hub.docker.com/r/cathalhoran/intercom-go/) to help you get started more quickly. <br>
-It should make it easier to get setup with the SDK and start interacting with the API. <br>
-(Note, this is in Beta and is for testing purposes only, it should not be used in production)
 
 ## Usage
 
@@ -19,11 +25,13 @@ It should make it easier to get setup with the SDK and start interacting with th
 
 ```go
 import (
-	intercom "gopkg.in/intercom/intercom-go.v2"
+    intercom "gopkg.in/intercom/intercom-go.v2"
 )
+
 // You can use either an an OAuth or Access Token
 ic := intercom.NewClient("access_token", "")
 ```
+
 This client can then be used to make requests.
 
 If you already have an access token you can find it [here](https://app.intercom.com/developers/_). If you want to create or learn more about access tokens then you can find more info [here](https://developers.intercom.io/docs/personal-access-tokens).
@@ -53,17 +61,17 @@ ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("http://intercom.dev"))
 
 ```go
 user := intercom.User{
-	UserID: "27",
-	Email: "test@example.com",
-	Name: "InterGopher",
-	SignedUpAt: int64(time.Now().Unix()),
-	CustomAttributes: map[string]interface{}{"is_cool": true},
+    UserID: "27",
+    Email: "test@example.com",
+    Name: "InterGopher",
+    SignedUpAt: int64(time.Now().Unix()),
+    CustomAttributes: map[string]interface{}{"is_cool": true},
 }
 savedUser, err := ic.Users.Save(&user)
 ```
 
-* One of `UserID`, or `Email` is required.
-* `SignedUpAt` (optional), like all dates in the client, must be an integer(32) representing seconds since Unix Epoch.
+- One of `UserID`, or `Email` is required.
+- `SignedUpAt` (optional), like all dates in the client, must be an integer(32) representing seconds since Unix Epoch.
 
 ##### Adding/Removing Companies
 
@@ -71,13 +79,13 @@ Adding a Company:
 
 ```go
 companyList := intercom.CompanyList{
-	Companies: []intercom.Company{
-		{CompanyID: "5"},
-	},
+    Companies: []intercom.Company{
+        {CompanyID: "5"},
+    },
 }
 user := intercom.User{
-	UserID: "27",
-	Companies: &companyList,
+    UserID: "27",
+    Companies: &companyList,
 }
 ```
 
@@ -126,8 +134,10 @@ user, err := ic.Users.Delete("46adad3f09126dca")
 ```
 
 ### Contacts
-##### Contacts are the same as leads. 
-In the Intercom API we refer to contacts as leads. See [here](https://developers.intercom.com/intercom-api-reference/reference#leads) for more info 
+
+#### Contacts are the same as leads
+
+In the Intercom API we refer to contacts as leads. See [here](https://developers.intercom.com/intercom-api-reference/reference#leads) for more info
 We did not change this in the SDK since that would be a major breaking change. This is something we will address shortly. 
 So any reference to contacts in the SDK is a reference to a lead in Intercom
 
@@ -148,12 +158,12 @@ contactList, err := ic.Contacts.List(intercom.PageParams{Page: 2})
 contactList.Pages // page information
 contactList.Contacts // []Contact
 ```
+
 ```go
 contactList, err := ic.Contacts.Scroll("")
 scrollParam = contactList.ScrollParam
 contactList, err := ic.Contacts.Scroll(scrollParam)
 ```
-
 
 ```go
 contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PageParams{})
@@ -163,29 +173,29 @@ contactList, err := ic.Contacts.ListByEmail("test@example.com", intercom.PagePar
 
 ```go
 contact := intercom.Contact{
-	Email: "test@example.com",
-	Name: "SomeContact",
-	CustomAttributes: map[string]interface{}{"is_cool": true},
+    Email: "test@example.com",
+    Name: "SomeContact",
+    CustomAttributes: map[string]interface{}{"is_cool": true},
 }
 savedContact, err := ic.Contacts.Create(&contact)
 ```
 
-* No identifier is required.
-* Set values for UserID will be ignored (consider creating _Users_ instead)
+- No identifier is required.
+- Set values for UserID will be ignored (consider creating _Users_ instead)
 
 #### Update
 
 ```go
 contact := intercom.Contact{
-	UserID: "abc-13d-3",
-	Name: "SomeContact",
-	CustomAttributes: map[string]interface{}{"is_cool": true},
+    UserID: "abc-13d-3",
+    Name: "SomeContact",
+    CustomAttributes: map[string]interface{}{"is_cool": true},
 }
 savedContact, err := ic.Contacts.Update(&contact)
 ```
 
-* ID or UserID is required.
-* Will not create new contacts.
+- ID or UserID is required.
+- Will not create new contacts.
 
 #### Convert
 
@@ -193,16 +203,16 @@ Used to convert a Contact into a User
 
 ```go
 contact := intercom.Contact{
-	UserID: "abc-13d-3",
+    UserID: "abc-13d-3",
 }
 user := intercom.User{
-	Email: "myuser@signedup.com",
+    Email: "myuser@signedup.com",
 }
 savedUser, err := ic.Contacts.Convert(&contact, &user)
 ```
 
-* If the User does not already exist in Intercom, the Contact will be uplifted to a User.
-* If the User does exist, the Contact will be merged into it and the User returned.
+- If the User does not already exist in Intercom, the Contact will be uplifted to a User.
+- If the User does exist, the Contact will be merged into it and the User returned.
 
 ### Companies
 
@@ -210,15 +220,15 @@ savedUser, err := ic.Contacts.Convert(&contact, &user)
 
 ```go
 company := intercom.Company{
-	CompanyID: "27",
-	Name: "My Co",
-	CustomAttributes: map[string]interface{}{"is_cool": true},
-	Plan: &intercom.Plan{Name: "MyPlan"},
+    CompanyID: "27",
+    Name: "My Co",
+    CustomAttributes: map[string]interface{}{"is_cool": true},
+    Plan: &intercom.Plan{Name: "MyPlan"},
 }
 savedCompany, err := ic.Companies.Save(&company)
 ```
 
-* `CompanyID` is required.
+- `CompanyID` is required.
 
 #### Find
 
@@ -267,19 +277,18 @@ userList, err := ic.Companies.ListUsersByCompanyID("27", intercom.PageParams{})
 
 ```go
 event := intercom.Event{
-	UserID: "27",
-	EventName: "bought_item",
-	CreatedAt: int64(time.Now().Unix()),
-	Metadata: map[string]interface{}{"item_name": "PocketWatch"},
+    UserID: "27",
+    EventName: "bought_item",
+    CreatedAt: int64(time.Now().Unix()),
+    Metadata: map[string]interface{}{"item_name": "PocketWatch"},
 }
 err := ic.Events.Save(&event)
 ```
 
-* One of `UserID`, `ID`, or `Email` is required (With leads you need to use ID).
-* `EventName` is required.
-* `CreatedAt` is required, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
-* `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
-
+- One of `UserID`, `ID`, or `Email` is required (With leads you need to use ID).
+- `EventName` is required.
+- `CreatedAt` is required, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
+- `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
 
 ### Admins
 
@@ -425,6 +434,7 @@ User reply:
 ```go
 convo, err := intercom.Conversations.Reply("1234", &user, intercom.CONVERSATION_COMMENT, "my message")
 ```
+
 User reply with attachment:
 
 ```go
@@ -489,7 +499,7 @@ Errors may be returned from some calls. Errors returned from the API will implem
 ```go
 _, err := ic.Users.FindByEmail("doesnotexist@intercom.io")
 if herr, ok := err.(intercom.IntercomError); ok && herr.GetCode() == "not_found" {
-	fmt.Print(herr)
+    fmt.Print(herr)
 }
 ```
 
@@ -499,10 +509,10 @@ The HTTP Client used by this package can be swapped out for one of your choosing
 
 ```go
 type HTTPClient interface {
-	Get(string, interface{}) ([]byte, error)
-	Post(string, interface{}) ([]byte, error)
-	Patch(string, interface{}) ([]byte, error)
-	Delete(string, interface{}) ([]byte, error)
+    Get(string, interface{}) ([]byte, error)
+    Post(string, interface{}) ([]byte, error)
+    Patch(string, interface{}) ([]byte, error)
+    Delete(string, interface{}) ([]byte, error)
 }
 ```
 
@@ -520,19 +530,10 @@ Due to the way Go represents the zero value for a bool, it's necessary to pass p
 
 The helper `intercom.Bool(true)` creates these for you.
 
-
 ### Pull Requests
 
 - **Add tests!** Your patch won't be accepted if it doesn't have tests.
-
-- **Document any change in behaviour**. Make sure the README and any other
-  relevant documentation are kept up-to-date.
-
+- **Document any change in behaviour**. Make sure the README and any other relevant documentation are kept up-to-date.
 - **Create topic branches**. Don't ask us to pull from your master branch.
-
-- **One pull request per feature**. If you want to do more than one thing, send
-  multiple pull requests.
-
-- **Send coherent history**. Make sure each individual commit in your pull
-  request is meaningful. If you had to make multiple intermediate commits while
-  developing, please squash them before sending them to us.
+- **One pull request per feature**. If you want to do more than one thing, send multiple pull requests.
+- **Send coherent history**. Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please squash them before sending them to us.
