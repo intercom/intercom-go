@@ -7,10 +7,16 @@ import (
 
 // Admin represents an Admin in Intercom.
 type Admin struct {
-	ID    json.Number `json:"id"`
-	Type  string      `json:"type"`
-	Name  string      `json:"name"`
-	Email string      `json:"email"`
+	ID               json.Number `json:"id"`
+	Type             string      `json:"type"`
+	Name             string      `json:"name"`
+	Email            string      `json:"email"`
+	JobTitle         string      `json:"job_title"`
+	AwayModeEnabled  bool        `json:"away_mode_enabled"`
+	AwayModeReassign bool        `json:"away_mode_reassign"`
+	HasInboxSeat     bool        `json:"has_inbox_seat"`
+	TeamIDs          []int       `json:"team_ids"`
+	Avatar           string      `json:"avatar"`
 }
 
 // AdminList represents an object holding list of Admins
