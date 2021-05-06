@@ -19,6 +19,7 @@ type UserList struct {
 // stripped out from the request. Please see the API documentation for details.
 type User struct {
 	ID                     string                 `json:"id,omitempty"`
+	Type                   string                 `json:"type,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
 	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
