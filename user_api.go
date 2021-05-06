@@ -31,6 +31,7 @@ type requestUser struct {
 	Phone                  string                 `json:"phone,omitempty"`
 	UserID                 string                 `json:"user_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
+        Avatar                 *UserAvatar            `json:"avatar,omitempty"`
 	SignedUpAt             int64                  `json:"signed_up_at,omitempty"`
 	RemoteCreatedAt        int64                  `json:"remote_created_at,omitempty"`
 	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
