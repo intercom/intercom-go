@@ -1,17 +1,17 @@
 {
-    "type": "admin.list",
-    "admins": [
-        {
-            "type": "admin",
-            "email": "admin_a@example.io",
-            "id": "1",
-            "name": "Admin A"
-        },
-        {
-            "type": "admin",
-            "email": "admin_b@example.io",
-            "id": "2",
-            "name": "Admin B"
-        }
-    ]
+  "type": "admin.list",
+  "admins": [
+    {
+      "type": "admin",
+      "email": "admin_a@example.io",
+      "id": "1",
+      "name": "Admin A"
+    },
+    {
+      "type": "admin",
+      "email": "admin_b@example.io",
+      "id": "2",
+      "name": "Admin B"
+    }
+  ]
 }

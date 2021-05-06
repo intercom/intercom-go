@@ -5,12 +5,18 @@ import (
 	"fmt"
 )
 
+// AdminAvatar represents an admin's avatar
+type AdminAvatar struct {
+	ImageURL string `json:"image_url"`
+}
+
 // Admin represents an Admin in Intercom.
 type Admin struct {
-	ID    json.Number `json:"id"`
-	Type  string      `json:"type"`
-	Name  string      `json:"name"`
-	Email string      `json:"email"`
+	ID     json.Number  `json:"id"`
+	Type   string       `json:"type"`
+	Name   string       `json:"name"`
+	Email  string       `json:"email"`
+	Avatar *AdminAvatar `json:"avatar"`
 }
 
 // AdminList represents an object holding list of Admins
