@@ -10,7 +10,7 @@ type ContactService struct {
 // ContactList holds a list of Contacts and paging information
 type ContactList struct {
 	Pages    PageParams
-	Contacts []Contact
+	Contacts []Contact `json:"data"`
 	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
