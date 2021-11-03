@@ -23,6 +23,7 @@ type Conversation struct {
 	ConversationMessage ConversationMessage  `json:"source"`
 	ConversationParts   ConversationPartList `json:"conversation_parts"`
 	TagList             *TagList             `json:"tags"`
+	State               string               `json:"state,omitempty"`
 }
 
 // A ConversationMessage is the message that started the conversation rendered for presentation
