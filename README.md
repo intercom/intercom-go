@@ -17,7 +17,7 @@ We'll communicate all relevant updates as we build this new team and support str
 
 ## Install
 
-`go get gopkg.in/intercom/intercom-go.v2`
+`go get github.com/cameronnewman/intercom-go`
 
 ## Usage
 
@@ -25,7 +25,7 @@ We'll communicate all relevant updates as we build this new team and support str
 
 ```go
 import (
-    intercom "gopkg.in/intercom/intercom-go.v2"
+    intercom "github.com/cameronnewman/intercom-go"
 )
 
 // You can use either an an OAuth or Access Token

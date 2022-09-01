@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/cameronnewman/intercom-go/interfaces"
 )
 
 // CompanyRepository defines the interface for working with Companies through the API.

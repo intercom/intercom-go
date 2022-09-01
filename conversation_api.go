@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/cameronnewman/intercom-go/interfaces"
 )
 
 // ConversationRepository defines the interface for working with Conversations through the API.
