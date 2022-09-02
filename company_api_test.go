@@ -1,7 +1,7 @@
 package intercom
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -64,10 +64,13 @@ func TestCompanyAPIListDefault(t *testing.T) {
 }
 
 func TestCompanyAPISave(t *testing.T) {
-	http := TestCompanyHTTPClient{t: t, expectedURI: "/companies"}
+	http := TestCompanyHTTPClient{fixtureFilename: "fixtures/companies.json", expectedURI: "/companies", t: t}
 	api := CompanyAPI{httpClient: &http}
 	company := Company{CompanyID: "27"}
-	api.save(&company)
+	_, err := api.save(&company)
+	if err != nil {
+		t.Errorf("Failed to save company: %s", err)
+	}
 }
 
 type TestCompanyHTTPClient struct {
@@ -81,12 +84,12 @@ func (t TestCompanyHTTPClient) Get(uri string, queryParams interface{}) ([]byte,
 	if t.expectedURI != uri {
 		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }
 
 func (t TestCompanyHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
 	if uri != "/companies" {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return nil, nil
+	return os.ReadFile(t.fixtureFilename)
 }

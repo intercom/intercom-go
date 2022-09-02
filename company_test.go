@@ -52,7 +52,10 @@ func TestCompanyListUsersByCompanyID(t *testing.T) {
 func TestCompanySave(t *testing.T) {
 	companyService := CompanyService{Repository: TestCompanyAPI{t: t}}
 	company := Company{ID: "46adad3f09126dca", CustomAttributes: map[string]interface{}{"is_cool": true}}
-	companyService.Save(&company)
+	_, err := companyService.Save(&company)
+	if err != nil {
+		t.Errorf("Failed to save compant %s", err)
+	}
 }
 
 type TestCompanyAPI struct {

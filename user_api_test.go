@@ -1,7 +1,7 @@
 package intercom
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -111,19 +111,19 @@ func (t *TestUserHTTPClient) Get(uri string, queryParams interface{}) ([]byte, e
 		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
 	}
 	t.lastQueryParams = queryParams
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }
 
 func (t *TestUserHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
 	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }
 
 func (t *TestUserHTTPClient) Delete(uri string, queryParams interface{}) ([]byte, error) {
 	if t.expectedURI != uri {
 		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }

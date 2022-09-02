@@ -1,7 +1,6 @@
 package intercom
 
 import (
-	"io/ioutil"
 	"testing"
 )
 
@@ -36,5 +35,5 @@ func (t *TestMessageHTTPClient) Post(uri string, body interface{}) ([]byte, erro
 	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }

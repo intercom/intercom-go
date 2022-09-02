@@ -25,7 +25,10 @@ func TestEventSave(t *testing.T) {
 	event.EventName = "govent"
 	event.CreatedAt = int64(time.Now().Unix())
 	event.Metadata = map[string]interface{}{"is_cool": true}
-	eventService.Save(&event)
+	err := eventService.Save(&event)
+	if err != nil {
+		t.Errorf("Failed to save event: %s", err)
+	}
 }
 
 func successBody(t *testing.T, event Event) error {

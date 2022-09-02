@@ -109,6 +109,7 @@ func (api CompanyAPI) save(company *Company) (Company, error) {
 	if err != nil {
 		return savedCompany, err
 	}
+	fmt.Println(data)
 	err = json.Unmarshal(data, &savedCompany)
 	return savedCompany, err
 }

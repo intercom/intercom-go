@@ -15,7 +15,10 @@ func TestNewJob(t *testing.T) {
 	}
 	user := User{Email: "foo@bar.com"}
 	js := JobService{Repository: repo}
-	js.NewUserJob(NewUserJobItem(&user, JOB_POST))
+	_, err := js.NewUserJob(NewUserJobItem(&user, JOB_POST))
+	if err != nil {
+		t.Errorf("Failed to create a new job: %s", err)
+	}
 }
 
 func TestAppendJob(t *testing.T) {
@@ -34,7 +37,10 @@ func TestAppendJob(t *testing.T) {
 	}
 	user := User{Email: "foo@bar.com"}
 
-	js.AppendUsers(newJob.ID, NewUserJobItem(&user, JOB_POST))
+	_, err := js.AppendUsers(newJob.ID, NewUserJobItem(&user, JOB_POST))
+	if err != nil {
+		t.Errorf("Failed to append user to existing job: %s", err)
+	}
 }
 
 type TestJobRepository struct {

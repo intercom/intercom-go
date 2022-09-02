@@ -22,6 +22,7 @@ type UserAPI struct {
 	httpClient interfaces.HTTPClient
 }
 
+//nolint:deadcode // Will be used in API update
 type requestScroll struct {
 	ScrollParam string `json:"scroll_param,omitempty"`
 }

@@ -29,7 +29,10 @@ func TestReplyConversationComment(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body")
+	_, err := conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body")
+	if err != nil {
+		t.Errorf("Failed to add conversation reply: %s", err)
+	}
 }
 
 func TestReplyConversationCommentWithAttachment(t *testing.T) {
@@ -43,7 +46,10 @@ func TestReplyConversationCommentWithAttachment(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	conversationService.ReplyWithAttachmentURLs("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body", []string{"http://www.example.com/attachment.jpg"})
+	_, err := conversationService.ReplyWithAttachmentURLs("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body", []string{"http://www.example.com/attachment.jpg"})
+	if err != nil {
+		t.Errorf("Failed to add conversation reply with attachment: %s", err)
+	}
 }
 
 func TestReplyConversationOpen(t *testing.T) {
@@ -57,7 +63,10 @@ func TestReplyConversationOpen(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_OPEN, "Body")
+	_, err := conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_OPEN, "Body")
+	if err != nil {
+		t.Errorf("Failed to add conversation reply for open: %s", err)
+	}
 }
 
 func TestReplyConversationNote(t *testing.T) {
@@ -71,7 +80,10 @@ func TestReplyConversationNote(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	conversationService.Reply("123", &Admin{ID: "abc123"}, CONVERSATION_NOTE, "Body")
+	_, err := conversationService.Reply("123", &Admin{ID: "abc123"}, CONVERSATION_NOTE, "Body")
+	if err != nil {
+		t.Errorf("Failed to add conversation reply with note: %s", err)
+	}
 }
 
 func TestAssignConversation(t *testing.T) {
@@ -88,7 +100,10 @@ func TestAssignConversation(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	conversationService.Assign("123", &Admin{ID: "abc123"}, &Admin{ID: "def789"})
+	_, err := conversationService.Assign("123", &Admin{ID: "abc123"}, &Admin{ID: "def789"})
+	if err != nil {
+		t.Errorf("Failed to assign conversation: %s", err)
+	}
 }
 
 func TestListAllConversations(t *testing.T) {

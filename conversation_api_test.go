@@ -1,7 +1,6 @@
 package intercom
 
 import (
-	"io/ioutil"
 	"testing"
 )
 
@@ -107,7 +106,10 @@ func TestConversationListUserUnread(t *testing.T) {
 		}
 	}
 	api := ConversationAPI{httpClient: &http}
-	api.list(ConversationListParams{Unread: Bool(true)})
+	_, err := api.list(ConversationListParams{Unread: Bool(true)})
+	if err != nil {
+		t.Errorf("Failed to return conversation list: %s", err)
+	}
 }
 
 func TestConversationListAdminOpen(t *testing.T) {
@@ -119,7 +121,10 @@ func TestConversationListAdminOpen(t *testing.T) {
 		}
 	}
 	api := ConversationAPI{httpClient: &http}
-	api.list(ConversationListParams{Open: Bool(true)})
+	_, err := api.list(ConversationListParams{Open: Bool(true)})
+	if err != nil {
+		t.Errorf("Failed to return conversation list params: %s", err)
+	}
 }
 
 type TestConversationHTTPClient struct {
@@ -138,7 +143,7 @@ func (t *TestConversationHTTPClient) Get(uri string, queryParams interface{}) ([
 	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }
 
 func (t *TestConversationHTTPClient) Post(uri string, dataObject interface{}) ([]byte, error) {
@@ -148,5 +153,5 @@ func (t *TestConversationHTTPClient) Post(uri string, dataObject interface{}) ([
 	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }

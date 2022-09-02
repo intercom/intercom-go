@@ -55,14 +55,20 @@ func TestContactAPICreate(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
 	api := ContactAPI{httpClient: &http}
 	contact := &Contact{Email: "mycontact@example.io"}
-	api.create(contact)
+	_, err := api.create(contact)
+	if err != nil {
+		t.Errorf("Failed to create contact: %s", err)
+	}
 }
 
 func TestContactAPIUpdate(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
 	api := ContactAPI{httpClient: &http}
 	contact := &Contact{UserID: "123", Email: "mycontact@example.io"}
-	api.update(contact)
+	_, err := api.update(contact)
+	if err != nil {
+		t.Errorf("Failed to update contact %s", err)
+	}
 }
 
 func TestContactAPIConvert(t *testing.T) {

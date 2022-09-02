@@ -1,7 +1,7 @@
 package intercom
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -25,5 +25,5 @@ func (t TestAdminHTTPClient) Get(uri string, queryParams interface{}) ([]byte, e
 	if t.expectedURI != uri {
 		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }
