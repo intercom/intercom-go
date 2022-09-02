@@ -4,8 +4,8 @@
 [![GoDoc][3]][4]
 [![Go Report Card][5]][6]
 
-[1]: https://github.com/cameronnewman/intercom-go/workflows/pipeline/badge.svg
-[2]: https://github.com/cameronnewman/intercom-go/actions
+[1]: https://github.com/cameronnewman/intercom-go/actions/workflows/pipeline.yml/badge.svg
+[2]: https://github.com/cameronnewman/intercom-go/actions/workflows/pipeline.yml
 [3]: https://godoc.org/github.com/cameronnewman/intercom-go?status.svg
 [4]: https://godoc.org/github.com/cameronnewman/intercom-go
 [5]: https://goreportcard.com/badge/github.com/cameronnewman/intercom-go
