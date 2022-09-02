@@ -134,7 +134,7 @@ type TestConversationHTTPClient struct {
 	testFunc        func(t *testing.T, queryParams interface{})
 	fixtureFilename string
 	expectedURI     string
-	lastQueryParams interface{}
+	lastQueryParams interface{} //nolint:deadcode,unused // Will be used in API update
 }
 
 func (t *TestConversationHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {

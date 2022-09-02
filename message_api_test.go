@@ -29,7 +29,7 @@ type TestMessageHTTPClient struct {
 	t               *testing.T
 	fixtureFilename string
 	expectedURI     string
-	lastQueryParams interface{}
+	lastQueryParams interface{} //nolint:deadcode,unused // Will be used in API update
 }
 
 func (t *TestMessageHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
