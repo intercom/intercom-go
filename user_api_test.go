@@ -89,7 +89,7 @@ func TestUserAPIListWithTag(t *testing.T) {
 }
 
 func TestUserAPISave(t *testing.T) {
-	http := TestUserHTTPClient{t: t, expectedURI: "/users"}
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
 	companyList := CompanyList{
 		Companies: []Company{
@@ -104,7 +104,7 @@ func TestUserAPISave(t *testing.T) {
 }
 
 func TestUserAPIDelete(t *testing.T) {
-	http := TestUserHTTPClient{t: t, expectedURI: "/users/1234"}
+	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users/1234", t: t}
 	api := UserAPI{httpClient: &http}
 	_, err := api.delete("1234")
 	if err != nil {
