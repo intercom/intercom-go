@@ -1,0 +1,31 @@
+run:
+  # concurrency: 1 - defaults to number of procs
+  timeout: 4m
+  skip-dirs:
+    - .github
+
+linters-settings:
+  # Maximum count of issues with the same text. Set to 0 to disable. Default is 3.
+  max-same-issues: 0
+
+  govet:
+    check-shadowing: false
+  maligned:
+    suggest-new: true
+  dupl:
+    threshold: 500
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  misspell:
+    locale: US
+
+  linters:
+  enable-all: true
+  disable:
+    - megacheck # already covered by other linters.
+    - gosec
+    - funlen
+    - wsl
+    - testpackage
+    - gosimple
