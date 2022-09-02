@@ -10,8 +10,8 @@ if [ ! "$GITHUB_ACTIONS" ]; then
     exit 1
 fi
 
-if [ ! "$GITHUB_REF" == "refs/heads/master" ]; then
-    echo "This build is not in the master branch"
+if [ ! "$GITHUB_REF" == "refs/heads/main" ]; then
+    echo "This build is not in the main branch"
     exit 1
 fi
 

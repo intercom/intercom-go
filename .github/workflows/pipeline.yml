@@ -23,7 +23,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     name: test, coverage export and tag
     env:
       ENVIRONMENT: ci
