@@ -13,18 +13,27 @@ func TestListTags(t *testing.T) {
 func TestSaveTag(t *testing.T) {
 	tagService := TagService{Repository: TestTagAPI{t: t}}
 	tag := Tag{ID: "24", Name: "My Tag"}
-	tagService.Save(&tag)
+	_, err := tagService.Save(&tag)
+	if err != nil {
+		t.Errorf("Failed to save tag: %s", err)
+	}
 }
 
 func TestDeleteTag(t *testing.T) {
 	tagService := TagService{Repository: TestTagAPI{t: t}}
-	tagService.Delete("6")
+	err := tagService.Delete("6")
+	if err != nil {
+		t.Errorf("Failed to delete tag: %s", err)
+	}
 }
 
 func TestTaggingUsers(t *testing.T) {
 	tagService := TagService{Repository: TestTagAPI{t: t}}
 	taggingList := TaggingList{Name: "My Tag", Users: []Tagging{Tagging{UserID: "245"}}}
-	tagService.Tag(&taggingList)
+	_, err := tagService.Tag(&taggingList)
+	if err != nil {
+		t.Errorf("Failed to tag user tag: %s", err)
+	}
 }
 
 type TestTagAPI struct {

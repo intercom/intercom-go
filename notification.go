@@ -36,6 +36,7 @@ func NewNotification(r io.Reader) (*Notification, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	switch notification.Topic {
 	case "conversation.user.created",
 		"conversation.user.replied",
@@ -46,27 +47,47 @@ func NewNotification(r io.Reader) (*Notification, error) {
 		"conversation.admin.closed",
 		"conversation.admin.opened":
 		c := &Conversation{}
-		json.Unmarshal(notification.RawData.Item, c)
+		err = json.Unmarshal(notification.RawData.Item, c)
+		if err != nil {
+			return nil, err
+		}
+
 		notification.Conversation = c
 	case "user.created",
 		"user.deleted",
 		"user.unsubscribed",
 		"user.email.updated":
 		u := &User{}
-		json.Unmarshal(notification.RawData.Item, u)
+		err = json.Unmarshal(notification.RawData.Item, u)
+		if err != nil {
+			return nil, err
+		}
+
 		notification.User = u
 	case "user.tag.created",
 		"user.tag.deleted":
 		t := &Tag{}
-		json.Unmarshal(notification.RawData.Item, t)
+		err = json.Unmarshal(notification.RawData.Item, t)
+		if err != nil {
+			return nil, err
+		}
+
 		notification.Tag = t
 	case "company.created":
 		c := &Company{}
-		json.Unmarshal(notification.RawData.Item, c)
+		err = json.Unmarshal(notification.RawData.Item, c)
+		if err != nil {
+			return nil, err
+		}
+
 		notification.Company = c
 	case "event.created":
 		e := &Event{}
-		json.Unmarshal(notification.RawData.Item, e)
+		err = json.Unmarshal(notification.RawData.Item, e)
+		if err != nil {
+			return nil, err
+		}
+		
 		notification.Event = e
 	}
 	return notification, nil

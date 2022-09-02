@@ -65,7 +65,11 @@ func TestUserAPIListWithPageNumber(t *testing.T) {
 func TestUserAPIListWithSegment(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	api.list(userListParams{SegmentID: "abc123"})
+	_, err := api.list(userListParams{SegmentID: "abc123"})
+	if err != nil {
+		t.Errorf("Failed to list users in segment: %s", err)
+	}
+
 	if ulParams, ok := http.lastQueryParams.(userListParams); !ok || ulParams.SegmentID != "abc123" {
 		t.Errorf("SegmentID expected to be abc123, but was %s", ulParams.SegmentID)
 	}
@@ -74,7 +78,11 @@ func TestUserAPIListWithSegment(t *testing.T) {
 func TestUserAPIListWithTag(t *testing.T) {
 	http := TestUserHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/users", t: t}
 	api := UserAPI{httpClient: &http}
-	api.list(userListParams{TagID: "123"})
+	_, err := api.list(userListParams{TagID: "123"})
+	if err != nil {
+		t.Errorf("Failed to list users with: %s", err)
+	}
+
 	if ulParams, ok := http.lastQueryParams.(userListParams); !ok || ulParams.TagID != "123" {
 		t.Errorf("SegmentID expected to be 123, but was %s", ulParams.TagID)
 	}
@@ -89,13 +97,19 @@ func TestUserAPISave(t *testing.T) {
 		},
 	}
 	user := User{UserID: "27", Companies: &companyList}
-	api.save(&user)
+	_, err := api.save(&user)
+	if err != nil {
+		t.Errorf("Failed to save user: %s", err)
+	}
 }
 
 func TestUserAPIDelete(t *testing.T) {
 	http := TestUserHTTPClient{t: t, expectedURI: "/users/1234"}
 	api := UserAPI{httpClient: &http}
-	api.delete("1234")
+	_, err := api.delete("1234")
+	if err != nil {
+		t.Errorf("Failed to delete user: %s", err)
+	}
 }
 
 type TestUserHTTPClient struct {

@@ -34,7 +34,10 @@ func TestAPITagSave(t *testing.T) {
 func TestAPITagDelete(t *testing.T) {
 	http := TestTagHTTPClient{t: t, expectedURI: "/tags/6"}
 	api := TagAPI{httpClient: &http}
-	api.delete("6")
+	err := api.delete("6")
+	if err != nil {
+		t.Errorf("Failed to delete tag: %s", err)
+	}
 }
 
 func TestAPITagTagging(t *testing.T) {
