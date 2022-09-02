@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/google/go-querystring/query"
@@ -166,7 +165,7 @@ func (c IntercomHTTPClient) parseResponseError(data []byte, statusCode int) Inte
 }
 
 func (c IntercomHTTPClient) readAll(body io.Reader) ([]byte, error) {
-	b, err := ioutil.ReadAll(body)
+	b, err := io.ReadAll(body)
 	if *c.Debug {
 		fmt.Println(string(b))
 		fmt.Println("")

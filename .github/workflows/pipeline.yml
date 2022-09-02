@@ -1,0 +1,39 @@
+name: Continuous Integration
+on: [push]
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
+    name: fmt, lint, test
+    env:
+      ENVIRONMENT: ci
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Run fmt
+        run: make fmt
+
+      - name: Run lint
+        run: make lint
+
+      - name: Run tests
+        run: make test
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    name: test, coverage export and tag
+    env:
+      ENVIRONMENT: ci
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: make test
+
+      - name: Run tag export
+        run: ./scripts/ci/tag.sh

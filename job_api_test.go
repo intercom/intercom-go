@@ -1,7 +1,7 @@
 package intercom
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -58,5 +58,5 @@ func (t *TestJobHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
 	if t.f != nil {
 		t.f(body.(*JobRequest))
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }

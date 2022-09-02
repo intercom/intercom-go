@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/cameronnewman/intercom-go/interfaces"
 )
 
 // JobRepository defines the interface for working with Jobs.
@@ -21,18 +21,23 @@ type JobAPI struct {
 func (api JobAPI) save(job *JobRequest) (JobResponse, error) {
 	for i := range job.Items {
 		obj := job.Items[i].Data
-		switch obj.(type) {
-		case *User:
-			user := obj.(*User)
+		user, ok := obj.(*User)
+		if ok {
 			job.Items[i].Data = RequestUserMapper{}.ConvertUser(user)
 		}
 	}
 	savedJob := JobResponse{}
+
 	data, err := api.httpClient.Post(fmt.Sprintf("/bulk/%s", job.bulkType), job)
 	if err != nil {
 		return savedJob, err
 	}
+
 	err = json.Unmarshal(data, &savedJob)
+	if err != nil {
+		return savedJob, err
+	}
+
 	return savedJob, err
 }
 

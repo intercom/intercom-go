@@ -4,14 +4,17 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/cameronnewman/intercom-go/interfaces"
 )
 
 func TestEventAPISave(t *testing.T) {
 	http := TestEventHTTPClient{t: t, expectedURI: "/events"}
 	api := EventAPI{httpClient: &http}
 	event := Event{UserID: "27", CreatedAt: int64(time.Now().Unix()), EventName: "govent"}
-	api.save(&event)
+	err := api.save(&event)
+	if err != nil {
+		t.Errorf("Failed to save event: %s", err)
+	}
 }
 
 func TestEventAPISaveFail(t *testing.T) {

@@ -3,7 +3,6 @@ package intercom
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
@@ -73,7 +72,7 @@ func TestParsingConverationFromReader(t *testing.T) {
 	}
 
 	for _, topic := range topics {
-		payload, _ := ioutil.ReadFile("fixtures/conversation.json")
+		payload, _ := os.ReadFile("fixtures/conversation.json")
 		r := strings.NewReader(fmt.Sprintf(`{
 			"topic": "%s",
 			"data": {
@@ -96,7 +95,7 @@ func TestParsingUserFromReader(t *testing.T) {
 	}
 
 	for _, topic := range topics {
-		payload, _ := ioutil.ReadFile("fixtures/user.json")
+		payload, _ := os.ReadFile("fixtures/user.json")
 		r := strings.NewReader(fmt.Sprintf(`{
 			"topic": "%s",
 			"data": {
@@ -117,7 +116,7 @@ func TestParsingTagFromReader(t *testing.T) {
 	}
 
 	for _, topic := range topics {
-		payload, _ := ioutil.ReadFile("fixtures/tag.json")
+		payload, _ := os.ReadFile("fixtures/tag.json")
 		r := strings.NewReader(fmt.Sprintf(`{
 			"topic": "%s",
 			"data": {
@@ -137,7 +136,7 @@ func TestParsingEventFromReader(t *testing.T) {
 	}
 
 	for _, topic := range topics {
-		payload, _ := ioutil.ReadFile("fixtures/event.json")
+		payload, _ := os.ReadFile("fixtures/event.json")
 		r := strings.NewReader(fmt.Sprintf(`{
 			"topic": "%s",
 			"data": {

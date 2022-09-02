@@ -36,11 +36,17 @@ func TestUserList(t *testing.T) {
 func TestUserSave(t *testing.T) {
 	userService := UserService{Repository: TestUserAPI{t: t}}
 	user := User{ID: "46adad3f09126dca", CustomAttributes: map[string]interface{}{"is_cool": true}}
-	userService.Save(&user)
+	_, err := userService.Save(&user)
+	if err != nil {
+		t.Errorf("Failed to save user: %s", err)
+	}
 }
 
 func TestUserDelete(t *testing.T) {
-	(&UserService{Repository: TestUserAPI{t: t}}).Delete("46adad3f09126dca")
+	_, err := (&UserService{Repository: TestUserAPI{t: t}}).Delete("46adad3f09126dca")
+	if err != nil {
+		t.Errorf("Failed to delete user: %s", err)
+	}
 }
 
 func TestUserMessageAddress(t *testing.T) {

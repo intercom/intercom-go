@@ -1,7 +1,7 @@
 package intercom
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 )
 
@@ -29,12 +29,12 @@ type TestMessageHTTPClient struct {
 	t               *testing.T
 	fixtureFilename string
 	expectedURI     string
-	lastQueryParams interface{}
+	lastQueryParams interface{} //nolint:deadcode,unused // Will be used in API update
 }
 
 func (t *TestMessageHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
 	if t.expectedURI != uri {
 		t.t.Errorf("Wrong endpoint called")
 	}
-	return ioutil.ReadFile(t.fixtureFilename)
+	return os.ReadFile(t.fixtureFilename)
 }

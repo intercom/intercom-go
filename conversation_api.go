@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"gopkg.in/intercom/intercom-go.v2/interfaces"
+	"github.com/cameronnewman/intercom-go/interfaces"
 )
 
 // ConversationRepository defines the interface for working with Conversations through the API.
@@ -51,6 +51,10 @@ func (api ConversationAPI) reply(id string, reply *Reply) (Conversation, error) 
 		return conversation, err
 	}
 	err = json.Unmarshal(data, &conversation)
+	if err != nil {
+		return conversation, err
+	}
+
 	return conversation, nil
 }
 
@@ -60,6 +64,11 @@ func (api ConversationAPI) find(id string) (Conversation, error) {
 	if err != nil {
 		return conversation, err
 	}
+	
 	err = json.Unmarshal(data, &conversation)
+	if err != nil {
+		return conversation, err
+	}
+
 	return conversation, err
 }

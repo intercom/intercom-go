@@ -3,7 +3,7 @@ package intercom
 import (
 	"testing"
 
-	"github.com/pborman/uuid"
+	"github.com/google/uuid"
 )
 
 func TestContactFindByID(t *testing.T) {
@@ -70,7 +70,10 @@ func TestContactConvert(t *testing.T) {
 func TestContactDelete(t *testing.T) {
 	contactService := ContactService{Repository: TestContactAPI{t: t}}
 	contact := Contact{UserID: "aaaa", Email: "some@email.com"}
-	contactService.Delete(&contact)
+	_, err := contactService.Delete(&contact)
+	if err != nil {
+		t.Errorf("Failed to delete contact: %s", err)
+	}
 }
 
 func TestContactMessageAddress(t *testing.T) {
@@ -107,7 +110,7 @@ func (t TestContactAPI) scroll(scrollParam string) (ContactList, error) {
 }
 
 func (t TestContactAPI) create(c *Contact) (Contact, error) {
-	return Contact{ID: c.ID, Email: c.Email, UserID: uuid.New()}, nil
+	return Contact{ID: c.ID, Email: c.Email, UserID: uuid.Must(uuid.NewRandom()).String()}, nil
 }
 
 func (t TestContactAPI) update(c *Contact) (Contact, error) {

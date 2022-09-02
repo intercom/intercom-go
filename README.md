@@ -1,23 +1,21 @@
 # Intercom-Go
 
-[![Circle CI](https://circleci.com/gh/intercom/intercom-go.png?style=shield)](https://circleci.com/gh/intercom/intercom-go)
-![Intercom API Version](https://img.shields.io/badge/Intercom%20API%20Version-1.3-blue)
+[![Build][1]][2]
+[![GoDoc][3]][4]
+[![Go Report Card][5]][6]
 
-> Thin client for the [Intercom API](https://developers.intercom.io/reference)
+[1]: https://github.com/cameronnewman/intercom-go/workflows/pipeline/badge.svg
+[2]: https://github.com/cameronnewman/intercom-go/actions
+[3]: https://godoc.org/github.com/cameronnewman/intercom-go?status.svg
+[4]: https://godoc.org/github.com/cameronnewman/intercom-go
+[5]: https://goreportcard.com/badge/github.com/cameronnewman/intercom-go
+[6]: https://goreportcard.com/report/github.com/cameronnewman/intercom-go
 
-## Project Updates
-
-### Maintenance
-
-We're currently building a new team to provide in-depth and dedicated SDK support.
-
-In the meantime, we'll be operating on limited capacity, meaning all pull requests will be evaluated on a best effort basis and will be limited to critical issues.
-
-We'll communicate all relevant updates as we build this new team and support strategy in the coming months.
+> Forked client for the [Intercom API](https://developers.intercom.io/reference)
 
 ## Install
 
-`go get gopkg.in/intercom/intercom-go.v2`
+`go get github.com/cameronnewman/intercom-go`
 
 ## Usage
 
@@ -25,34 +23,44 @@ We'll communicate all relevant updates as we build this new team and support str
 
 ```go
 import (
-    intercom "gopkg.in/intercom/intercom-go.v2"
+    intercom "github.com/cameronnewman/intercom-go"
 )
 
-// You can use either an an OAuth or Access Token
+// You can use either an OAuth or Access Token
 ic := intercom.NewClient("access_token", "")
 ```
 
 This client can then be used to make requests.
 
-If you already have an access token you can find it [here](https://app.intercom.com/developers/_). If you want to create or learn more about access tokens then you can find more info [here](https://developers.intercom.io/docs/personal-access-tokens).
+If you already have an access token you can find it [here](https://app.intercom.com/developers/_).
+If you want to create or learn more about access tokens then you can find more
+info [here](https://developers.intercom.io/docs/personal-access-tokens).
 
-If you are building a third party application you can get your OAuth token by [setting-up-oauth](https://developers.intercom.io/page/setting-up-oauth) for Intercom.
-You can use the [Goth library](https://github.com/markbates/goth) which is a simple OAuth package for Go web aplicaitons and supports Intercom to more easily implement Oauth.
+If you are building a third party application you can get your OAuth token by
+[setting-up-oauth](https://developers.intercom.io/page/setting-up-oauth) for Intercom.
+You can use the [Goth library](https://github.com/markbates/goth) which is a
+simple OAuth package for Go web application and supports Intercom to more easily
+implement Oauth.
 
 #### Client Options
 
 The client can be configured with different options by calls to `ic.Option`:
 
 ```go
-ic.Option(intercom.TraceHTTP(true)) // turn http tracing on
-ic.Option(intercom.BaseURI("http://intercom.dev")) // change the base uri used, useful for testing
-ic.Option(intercom.SetHTTPClient(myHTTPClient)) // set a new HTTP client, see below for more info
+// turn http tracing on
+ic.Option(intercom.TraceHTTP(true))
+
+// change the base uri used, useful for testing
+ic.Option(intercom.BaseURI("https://intercom.dev"))
+
+// set a new HTTP client, see below for more info
+ic.Option(intercom.SetHTTPClient(myHTTPClient))
 ```
 
 or combined:
 
 ```go
-ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("http://intercom.dev"))
+ic.Option(intercom.TraceHTTP(true), intercom.BaseURI("https://intercom.dev"))
 ```
 
 ### Users
@@ -71,7 +79,9 @@ savedUser, err := ic.Users.Save(&user)
 ```
 
 - One of `UserID`, or `Email` is required.
-- `SignedUpAt` (optional), like all dates in the client, must be an integer(32) representing seconds since Unix Epoch.
+
+- `SignedUpAt` (optional), like all dates in the client,
+must be an integer(32) representing seconds since Unix Epoch.
 
 ##### Adding/Removing Companies
 
@@ -91,10 +101,10 @@ user := intercom.User{
 
 Removing is similar, but adding a `Remove: intercom.Bool(true)` attribute to a company.
 
-#### Find
+#### Find user by ID
 
 ```go
-user, err := ic.Users.FindByID("46adad3f09126dca")
+user, err := ic.Users.FindByID("46ad3d3f09126dca")
 ```
 
 ```go
@@ -105,7 +115,7 @@ user, err := ic.Users.FindByUserID("27")
 user, err := ic.Users.FindByEmail("test@example.com")
 ```
 
-#### List
+#### List Users
 
 ```go
 userList, err := ic.Users.List(intercom.PageParams{Page: 2})
@@ -127,31 +137,33 @@ userList, err := ic.Users.ListBySegment("segmentID123", intercom.PageParams{})
 userList, err := ic.Users.ListByTag("42", intercom.PageParams{})
 ```
 
-#### Delete
+#### Delete User
 
 ```go
-user, err := ic.Users.Delete("46adad3f09126dca")
+user, err := ic.Users.Delete("46ad3d3f09126dca")
 ```
 
 ### Contacts
 
 #### Contacts are the same as leads
 
-In the Intercom API we refer to contacts as leads. See [here](https://developers.intercom.com/intercom-api-reference/reference#leads) for more info
-We did not change this in the SDK since that would be a major breaking change. This is something we will address shortly. 
-So any reference to contacts in the SDK is a reference to a lead in Intercom
+In the Intercom API we refer to contacts as leads.
+See [here](https://developers.intercom.com/intercom-api-reference/reference#leads)
+for more info. We did not change this in the SDK since that would be a
+major breaking change. This is something we will address shortly.
+So any reference to contacts in the SDK is a reference to a lead in Intercom.
 
-#### Find
+#### Find contact by ID
 
 ```go
-contact, err := ic.Contacts.FindByID("46adad3f09126dca")
+contact, err := ic.Contacts.FindByID("46ad3d3f09126dca")
 ```
 
 ```go
 contact, err := ic.Contacts.FindByUserID("27")
 ```
 
-#### List
+#### List Contacts
 
 ```go
 contactList, err := ic.Contacts.List(intercom.PageParams{Page: 2})
@@ -211,12 +223,15 @@ user := intercom.User{
 savedUser, err := ic.Contacts.Convert(&contact, &user)
 ```
 
-- If the User does not already exist in Intercom, the Contact will be uplifted to a User.
-- If the User does exist, the Contact will be merged into it and the User returned.
+- If the User does not already exist in Intercom, the Contact
+will be uplifted to a User.
+
+- If the User does exist, the Contact will be merged into
+it and the User returned.
 
 ### Companies
 
-#### Save
+#### Save Company
 
 ```go
 company := intercom.Company{
@@ -230,10 +245,10 @@ savedCompany, err := ic.Companies.Save(&company)
 
 - `CompanyID` is required.
 
-#### Find
+#### Find company by ID
 
 ```go
-company, err := ic.Companies.FindByID("46adad3f09126dca")
+company, err := ic.Companies.FindByID("46ad3d3f09126dca")
 ```
 
 ```go
@@ -244,7 +259,7 @@ company, err := ic.Companies.FindByCompanyID("27")
 company, err := ic.Companies.FindByName("My Co")
 ```
 
-#### List
+#### List Companies
 
 ```go
 companyList, err := ic.Companies.List(intercom.PageParams{Page: 2})
@@ -260,10 +275,10 @@ companyList, err := ic.Companies.ListBySegment("segmentID123", intercom.PagePara
 companyList, err := ic.Companies.ListByTag("42", intercom.PageParams{})
 ```
 
-#### ListUsers
+#### List Users within a company
 
 ```go
-userList, err := ic.Companies.ListUsersByID("46adad3f09126dca", intercom.PageParams{})
+userList, err := ic.Companies.ListUsersByID("46ad3d3f09126dca", intercom.PageParams{})
 userList.Users // []User
 ```
 
@@ -273,7 +288,7 @@ userList, err := ic.Companies.ListUsersByCompanyID("27", intercom.PageParams{})
 
 ### Events
 
-#### Save
+#### Save Event
 
 ```go
 event := intercom.Event{
@@ -285,14 +300,20 @@ event := intercom.Event{
 err := ic.Events.Save(&event)
 ```
 
-- One of `UserID`, `ID`, or `Email` is required (With leads you need to use ID).
+- One of `UserID`, `ID`, or `Email` is required
+(With leads you need to use ID).
+
 - `EventName` is required.
-- `CreatedAt` is required, must be an integer representing seconds since Unix Epoch. Will be set to _now_ unless given.
-- `Metadata` is optional, and can be constructed using the helper as above, or as a passed `map[string]interface{}`.
+
+- `CreatedAt` is required, must be an integer representing
+seconds since Unix Epoch. Will be set to _now_ unless given.
+
+- `Metadata` is optional, and can be constructed using
+the helper as above, or as a passed `map[string]interface{}`.
 
 ### Admins
 
-#### List
+#### List Admins
 
 ```go
 adminList, err := ic.Admins.List()
@@ -301,14 +322,14 @@ admins := adminList.Admins
 
 ### Tags
 
-#### List
+#### List Tags
 
 ```go
 tagList, err := ic.Tags.List()
 tags := tagList.Tags
 ```
 
-#### Save
+#### Save Tag
 
 ```go
 tag := intercom.Tag{Name: "GoTag"}
@@ -317,7 +338,7 @@ savedTag, err := ic.Tags.Save(&tag)
 
 `Name` is required. Passing an `ID` will attempt to update the tag with that ID.
 
-#### Delete
+#### Delete Tag
 
 ```go
 err := ic.Tags.Delete("6")
@@ -326,27 +347,42 @@ err := ic.Tags.Delete("6")
 #### Tagging Users/Companies
 
 ```go
-taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{{UserID: "27"}}}
+taggingList := intercom.TaggingList{
+    Name: "GoTag",
+    Users: []intercom.Tagging{
+        {
+            UserID: "27"
+        }
+    }
+}
 savedTag, err := ic.Tags.Tag(&taggingList)
 ```
 
 A `Tagging` can identify a User or Company, and can be set to `Untag`:
 
 ```go
-taggingList := intercom.TaggingList{Name: "GoTag", Users: []intercom.Tagging{{UserID: "27", Untag: intercom.Bool(true)}}}
+taggingList := intercom.TaggingList{
+    Name: "GoTag",
+    Users: []intercom.Tagging{
+        {
+            UserID: "27",
+            Untag: intercom.Bool(true)
+        }
+    }
+}
 savedTag, err := ic.Tags.Tag(&taggingList)
 ```
 
 ### Segments
 
-#### List
+#### List Segments
 
 ```go
 segmentList := ic.Segments.List()
 segments, err := segmentList.Segments
 ```
 
-#### Find
+#### Find segment by ID
 
 ```go
 segment, err := ic.Segments.Find("abc312daf2397")
@@ -357,7 +393,12 @@ segment, err := ic.Segments.Find("abc312daf2397")
 #### New Admin to User/Contact Email
 
 ```go
-msg := intercom.NewEmailMessage(intercom.PERSONAL_TEMPLATE, intercom.Admin{ID: "1234"}, intercom.User{Email: "test@example.com"}, "subject", "body")
+msg := intercom.NewEmailMessage(
+    intercom.PERSONAL_TEMPLATE,
+    intercom.Admin{ID: "1234"},
+    intercom.User{Email: "test@example.com"},
+    "subject",
+    "body")
 savedMessage, err := ic.Messages.Save(&msg)
 ```
 
@@ -366,7 +407,11 @@ Can use intercom.PLAIN_TEMPLATE too, or replace the intercom.User with an interc
 #### New Admin to User/Contact InApp
 
 ```go
-msg := intercom.NewInAppMessage(intercom.Admin{ID: "1234"}, intercom.Contact{Email: "test@example.com"}, "body")
+msg := intercom.NewInAppMessage(
+    intercom.Admin{ID: "1234"},
+    intercom.Contact{Email: "test@example.com"},
+    "body")
+
 savedMessage, err := ic.Messages.Save(&msg)
 ```
 
@@ -398,13 +443,21 @@ convoList, err := intercom.Conversations.ListAll(intercom.PageParams{})
 Showing all for user:
 
 ```go
-convoList, err := intercom.Conversations.ListByUser(&user, intercom.SHOW_ALL, intercom.PageParams{})
+convoList, err := intercom.Conversations.ListByUser(
+    &user,
+    intercom.SHOW_ALL,
+    intercom.PageParams{}
+    )
 ```
 
 Showing just Unread for user:
 
 ```go
-convoList, err := intercom.Conversations.ListByUser(&user, intercom.SHOW_UNREAD, intercom.PageParams{})
+convoList, err := intercom.Conversations.ListByUser(
+    &user,
+    intercom.SHOW_UNREAD,
+    intercom.PageParams{}
+    )
 ```
 
 #### By Admin
@@ -412,19 +465,31 @@ convoList, err := intercom.Conversations.ListByUser(&user, intercom.SHOW_UNREAD,
 Showing all for admin:
 
 ```go
-convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_ALL, intercom.PageParams{})
+convoList, err := intercom.Conversations.ListByAdmin(
+    &admin,
+    intercom.SHOW_ALL,
+    intercom.PageParams{}
+    )
 ```
 
 Showing just Open for admin:
 
 ```go
-convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_OPEN, intercom.PageParams{})
+convoList, err := intercom.Conversations.ListByAdmin(
+    &admin,
+    intercom.SHOW_OPEN,
+    intercom.PageParams{}
+    )
 ```
 
 Showing just Closed for admin:
 
 ```go
-convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_CLOSED, intercom.PageParams{})
+convoList, err := intercom.Conversations.ListByAdmin(
+    &admin,
+    intercom.SHOW_CLOSED,
+    intercom.PageParams{}
+    )
 ```
 
 ### Reply
@@ -432,31 +497,57 @@ convoList, err := intercom.Conversations.ListByAdmin(&admin, intercom.SHOW_CLOSE
 User reply:
 
 ```go
-convo, err := intercom.Conversations.Reply("1234", &user, intercom.CONVERSATION_COMMENT, "my message")
+convo, err := intercom.Conversations.Reply(
+        "1234",
+        &user,
+        intercom.CONVERSATION_COMMENT,
+        "my message"
+    )
 ```
 
 User reply with attachment:
 
 ```go
-convo, err := intercom.Conversations.ReplyWithAttachmentURLs("1234", &user, intercom.CONVERSATION_COMMENT, "my message", string[]{"http://www.example.com/attachment.jpg"})
+convo, err := intercom.Conversations.ReplyWithAttachmentURLs(
+        "1234",
+        &user,
+        intercom.CONVERSATION_COMMENT,
+        "my message",
+        string[]{"https://www.example.com/attachment.jpg"}
+    )
 ```
 
 User reply that opens:
 
 ```go
-convo, err := intercom.Conversations.Reply("1234", &user, intercom.CONVERSATION_OPEN, "my message")
+convo, err := intercom.Conversations.Reply(
+        "1234",
+        &user,
+        intercom.CONVERSATION_OPEN,
+        "my message"
+    )
 ```
 
 Admin reply:
 
 ```go
-convo, err := intercom.Conversations.Reply("1234", &admin, intercom.CONVERSATION_COMMENT, "my message")
+convo, err := intercom.Conversations.Reply(
+        "1234",
+        &admin,
+        intercom.CONVERSATION_COMMENT,
+        "my message"
+    )
 ```
 
 Admin note:
 
 ```go
-convo, err := intercom.Conversations.Reply("1234", &admin, intercom.CONVERSATION_NOTE, "my message to just admins")
+convo, err := intercom.Conversations.Reply(
+        "1234",
+        &admin,
+        intercom.CONVERSATION_NOTE,
+        "my message to just admins"
+    )
 ```
 
 ### Open and Close
@@ -483,29 +574,37 @@ convo, err := intercom.Conversations.Assign("1234", &assignerAdmin, &assigneeAdm
 
 ### Notifications
 
-If you have received a JSON webhook notification, you may want to convert it into real Intercom object. A Notification can be created from any `io.Reader`, typically a http request:
+If you have received a JSON webhook notification, you may want to
+convert it into real Intercom object. A Notification can be
+created from any `io.Reader`, typically a http request:
 
 ```go
 var r io.Reader
 notif, err := intercom.NewNotification(r)
 ```
 
-The returned Notification will contain exactly 1 of the `Company`, `Conversation`, `Event`, `Tag` or `User` fields populated. It may only contain partial objects (such as a single conversation part) depending on what is provided by the webhook.
+The returned Notification will contain exactly 1 of the `Company`,
+`Conversation`, `Event`, `Tag` or `User` fields populated. It may only
+contain partial objects (such as a single conversation part) depending
+on what is provided by the webhook.
 
 ### Errors
 
-Errors may be returned from some calls. Errors returned from the API will implement `intercom.IntercomError` and can be checked:
+Errors may be returned from some calls. Errors returned from the API will
+implement `intercom.IntercomError` and can be checked:
 
 ```go
 _, err := ic.Users.FindByEmail("doesnotexist@intercom.io")
-if herr, ok := err.(intercom.IntercomError); ok && herr.GetCode() == "not_found" {
+herr, ok := err.(intercom.IntercomError)
+if ok && herr.GetCode() == "not_found" {
     fmt.Print(herr)
 }
 ```
 
 ### HTTP Client
 
-The HTTP Client used by this package can be swapped out for one of your choosing, with your own configuration, it just needs to implement the HTTPClient interface:
+The HTTP Client used by this package can be swapped out for one of your choosing,
+with your own configuration, it just needs to implement the HTTPClient interface:
 
 ```go
 type HTTPClient interface {
@@ -516,7 +615,9 @@ type HTTPClient interface {
 }
 ```
 
-It'll probably need to work with `appId`, `apiKey` and `baseURI` values. See the provided client for an example. Then create an Intercom Client and inject the HTTPClient:
+It'll probably need to work with `appId`, `apiKey` and `baseURI` values.
+See the provided client for an example. Then create an Intercom Client and
+inject the HTTPClient:
 
 ```go
 ic := intercom.Client{}
@@ -526,14 +627,23 @@ ic.Option(intercom.SetHTTPClient(myHTTPClient))
 
 ### On Bools
 
-Due to the way Go represents the zero value for a bool, it's necessary to pass pointers to bool instead in some places.
+Due to the way Go represents the zero value for a bool, it's necessary to
+pass pointers to bool instead in some places.
 
 The helper `intercom.Bool(true)` creates these for you.
 
 ### Pull Requests
 
-- **Add tests!** Your patch won't be accepted if it doesn't have tests.
-- **Document any change in behaviour**. Make sure the README and any other relevant documentation are kept up-to-date.
+- **Add tests!** Your patch won't be accepted if it does not have tests.
+
+- **Document any change in behaviour**. Make sure the README and any
+other relevant documentation are kept up-to-date.
+
 - **Create topic branches**. Don't ask us to pull from your master branch.
-- **One pull request per feature**. If you want to do more than one thing, send multiple pull requests.
-- **Send coherent history**. Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please squash them before sending them to us.
+
+- **One pull request per feature**. If you want to do more than one thing,
+send multiple pull requests.
+
+- **Send coherent history**. Make sure each individual commit in your pull
+request is meaningful. If you had to make multiple intermediate commits while
+developing, please squash them before sending them to us.
