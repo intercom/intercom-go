@@ -1,6 +1,7 @@
 package intercom
 
 import (
+	"os"
 	"testing"
 )
 
