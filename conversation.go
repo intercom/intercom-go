@@ -16,7 +16,7 @@ type Conversation struct {
 	ID                  string               `json:"id"`
 	CreatedAt           int64                `json:"created_at"`
 	UpdatedAt           int64                `json:"updated_at"`
-	Contacts            []Contact            `json:"contact"`
+	Contacts            []Contact            `json:"contacts"`
 	Assignee            Admin                `json:"assignee"`
 	Open                bool                 `json:"open"`
 	Read                bool                 `json:"read"`

@@ -95,7 +95,7 @@ func TestParsingUserFromReader(t *testing.T) {
 	}
 
 	for _, topic := range topics {
-		payload, _ := os.ReadFile("fixtures/user.json")
+		payload, _ := os.ReadFile("fixtures/contact.json")
 		r := strings.NewReader(fmt.Sprintf(`{
 			"topic": "%s",
 			"data": {

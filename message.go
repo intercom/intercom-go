@@ -84,8 +84,8 @@ func NewInAppMessage(from, to MessagePerson, body string) MessageRequest {
 	return MessageRequest{MessageType: "inapp", From: from.MessageAddress(), To: to.MessageAddress(), Body: body}
 }
 
-// NewUserMessage creates a new *Message from a User.
-func NewUserMessage(from MessagePerson, body string) MessageRequest {
+// NewContactMessage creates a new *Message from a User.
+func NewContactMessage(from MessagePerson, body string) MessageRequest {
 	return MessageRequest{MessageType: "inapp", From: from.MessageAddress(), Body: body}
 }
 

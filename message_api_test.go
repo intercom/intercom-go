@@ -8,7 +8,7 @@ import (
 func TestMessageAPISave(t *testing.T) {
 	http := TestMessageHTTPClient{t: t, expectedURI: "/messages", fixtureFilename: "fixtures/message.json"}
 	api := MessageAPI{httpClient: &http}
-	message := NewUserMessage(Contact{}, "Hey, is the new thing in stock?")
+	message := NewContactMessage(Contact{}, "Hey, is the new thing in stock?")
 	msg, err := api.save(&message)
 	if err != nil {
 		t.Error(err)
