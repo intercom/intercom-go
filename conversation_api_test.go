@@ -84,7 +84,7 @@ func TestConversationListAll(t *testing.T) {
 	if convos.Conversations[0].ID != "147" {
 		t.Errorf("Conversation not retrieved")
 	}
-	if convos.Conversations[0].User.ID != "536e564f316c83104c000020" {
+	if convos.Conversations[0].Contacts[0].ID != "536e564f316c83104c000020" {
 		t.Errorf("Conversation user not retrieved")
 	}
 	if convos.Conversations[0].ConversationMessage.Author.ID != "25" {

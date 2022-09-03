@@ -16,7 +16,7 @@ type Conversation struct {
 	ID                  string               `json:"id"`
 	CreatedAt           int64                `json:"created_at"`
 	UpdatedAt           int64                `json:"updated_at"`
-	User                User                 `json:"user"`
+	Contacts            []Contact            `json:"contact"`
 	Assignee            Admin                `json:"assignee"`
 	Open                bool                 `json:"open"`
 	Read                bool                 `json:"read"`
@@ -86,14 +86,14 @@ func (c *ConversationService) ListByAdmin(admin *Admin, state ConversationListSt
 	return c.Repository.list(params)
 }
 
-// List Conversations by User
-func (c *ConversationService) ListByUser(user *User, state ConversationListState, pageParams PageParams) (ConversationList, error) {
+// ListByContact lists Conversations by Contact
+func (c *ConversationService) ListByContact(contact *Contact, state ConversationListState, pageParams PageParams) (ConversationList, error) {
 	params := ConversationListParams{
 		PageParams:     pageParams,
 		Type:           "user",
-		IntercomUserID: user.ID,
-		UserID:         user.UserID,
-		Email:          user.Email,
+		IntercomUserID: contact.ID,
+		ExternalID:     contact.ExternalID,
+		Email:          contact.Email,
 	}
 	if state == SHOW_UNREAD {
 		params.Unread = Bool(true)
@@ -132,7 +132,7 @@ func (c *ConversationService) reply(id string, author MessagePerson, replyType R
 		reply.AdminID = addr.ID
 	} else {
 		reply.IntercomID = addr.ID
-		reply.UserID = addr.UserID
+		reply.ExternalID = addr.ExternalID
 		reply.Email = addr.Email
 	}
 	return c.Repository.reply(id, &reply)
@@ -166,7 +166,7 @@ type ConversationListParams struct {
 	Type           string `url:"type,omitempty"`
 	AdminID        string `url:"admin_id,omitempty"`
 	IntercomUserID string `url:"intercom_user_id,omitempty"`
-	UserID         string `url:"user_id,omitempty"`
+	ExternalID     string `url:"external_id,omitempty"`
 	Email          string `url:"email,omitempty"`
 	Open           *bool  `url:"open,omitempty"`
 	Unread         *bool  `url:"unread,omitempty"`

@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-var errTest = errors.New("Test Error")
+var errTest = errors.New("test error")
 
 type alwaysErrorReader struct{}
 
@@ -46,7 +46,7 @@ func TestParsingFromReader(t *testing.T) {
 	if n.Tag != nil {
 		t.Errorf("Notification should not have Tag")
 	}
-	if n.User != nil {
+	if n.Contact != nil {
 		t.Errorf("Notification shoud not have User")
 	}
 }
@@ -103,7 +103,7 @@ func TestParsingUserFromReader(t *testing.T) {
 			}
 		}`, topic, string(payload)))
 		n, _ := NewNotification(r)
-		if n.User == nil {
+		if n.Contact == nil {
 			t.Errorf("Notification did not have User")
 		}
 	}

@@ -1,11 +1,14 @@
 package intercom
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestContactAPIFind(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts/54c42e7ea7a765fa7", t: t}
+	http := TestContactHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts/54c42e7ea7a765fa7", t: t}
 	api := ContactAPI{httpClient: &http}
-	contact, err := api.find(UserIdentifiers{ID: "54c42e7ea7a765fa7"})
+	contact, err := api.find(ContactIdentifiers{ID: "54c42e7ea7a765fa7"})
 	if err != nil {
 		t.Errorf("Error parsing fixture %s", err)
 	}
@@ -15,13 +18,13 @@ func TestContactAPIFind(t *testing.T) {
 	if contact.Phone != "+1234567890" {
 		t.Errorf("Phone was %s, expected +1234567890", contact.Phone)
 	}
-	if contact.UserID != "123" {
-		t.Errorf("UserID was %s, expected 123", contact.UserID)
+	if contact.ExternalID != "123" {
+		t.Errorf("ExternalID was %s, expected 123", contact.ExternalID)
 	}
 }
 
 func TestContactAPIListDefault(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/contacts.json", expectedURI: "/contacts", t: t}
+	http := TestContactHTTPClient{fixtureFilename: "fixtures/contacts.json", expectedURI: "/contacts", t: t}
 	api := ContactAPI{httpClient: &http}
 	contactList, _ := api.list(contactListParams{})
 	contacts := contactList.Contacts
@@ -35,7 +38,7 @@ func TestContactAPIListDefault(t *testing.T) {
 }
 
 func TestContactAPIListByEmail(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/contacts.json", expectedURI: "/contacts", t: t}
+	http := TestContactHTTPClient{fixtureFilename: "fixtures/contacts.json", expectedURI: "/contacts", t: t}
 	api := ContactAPI{httpClient: &http}
 	contactList, _ := api.list(contactListParams{Email: "mycontact@example.io"})
 	contacts := contactList.Contacts
@@ -52,7 +55,7 @@ func TestContactAPIListByEmail(t *testing.T) {
 }
 
 func TestContactAPICreate(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
+	http := TestContactHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
 	api := ContactAPI{httpClient: &http}
 	contact := &Contact{Email: "mycontact@example.io"}
 	_, err := api.create(contact)
@@ -62,32 +65,51 @@ func TestContactAPICreate(t *testing.T) {
 }
 
 func TestContactAPIUpdate(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
+	http := TestContactHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts", t: t}
 	api := ContactAPI{httpClient: &http}
-	contact := &Contact{UserID: "123", Email: "mycontact@example.io"}
+	contact := &Contact{ExternalID: "123", Email: "mycontact@example.io"}
 	_, err := api.update(contact)
 	if err != nil {
 		t.Errorf("Failed to update contact %s", err)
 	}
 }
 
-func TestContactAPIConvert(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/user.json", expectedURI: "/contacts/convert", t: t}
-	api := ContactAPI{httpClient: &http}
-	contact := &Contact{UserID: "abc", Email: "mycontact@example.io"}
-	user := &User{UserID: "123"}
-	returned, _ := api.convert(contact, user)
-	if returned.UserID != "123" {
-		t.Errorf("Expected UserID %s, got %s", "123", returned.UserID)
-	}
-}
-
 func TestContactAPIDelete(t *testing.T) {
-	http := TestUserHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts/b123d", t: t}
+	http := TestContactHTTPClient{fixtureFilename: "fixtures/contact.json", expectedURI: "/contacts/b123d", t: t}
 	api := ContactAPI{httpClient: &http}
 	contact := &Contact{ID: "b123d"}
 	returned, _ := api.delete(contact.ID)
-	if returned.UserID != "123" {
-		t.Errorf("Expected UserID %s, got %s", "123", returned.UserID)
+	if returned.ExternalID != "123" {
+		t.Errorf("Expected ExternalID %s, got %s", "123", returned.ExternalID)
 	}
+}
+
+type TestContactHTTPClient struct {
+	TestHTTPClient
+	t               *testing.T
+	fixtureFilename string
+	expectedURI     string
+	lastQueryParams interface{}
+}
+
+func (t *TestContactHTTPClient) Get(uri string, queryParams interface{}) ([]byte, error) {
+	if t.expectedURI != uri {
+		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
+	}
+	t.lastQueryParams = queryParams
+	return os.ReadFile(t.fixtureFilename)
+}
+
+func (t *TestContactHTTPClient) Post(uri string, body interface{}) ([]byte, error) {
+	if t.expectedURI != uri {
+		t.t.Errorf("Wrong endpoint called")
+	}
+	return os.ReadFile(t.fixtureFilename)
+}
+
+func (t *TestContactHTTPClient) Delete(uri string, queryParams interface{}) ([]byte, error) {
+	if t.expectedURI != uri {
+		t.t.Errorf("URI was %s, expected %s", uri, t.expectedURI)
+	}
+	return os.ReadFile(t.fixtureFilename)
 }

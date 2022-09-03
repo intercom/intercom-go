@@ -9,21 +9,22 @@ type ContactService struct {
 
 // ContactList holds a list of Contacts and paging information
 type ContactList struct {
-	Pages    PageParams
-	Contacts []Contact
+	Pages       PageParams
+	Contacts    []Contact
 	ScrollParam string `json:"scroll_param,omitempty"`
 }
 
 // Contact represents a Contact within Intercom.
-// Not all of the fields are writeable to the API, non-writeable fields are
+// Not all fields are writeable to the API, non-writeable fields are
 // stripped out from the request. Please see the API documentation for details.
 type Contact struct {
 	ID                     string                 `json:"id,omitempty"`
+	Type                   string                 `json:"type,omitempty"`
 	Email                  string                 `json:"email,omitempty"`
 	Phone                  string                 `json:"phone,omitempty"`
-	UserID                 string                 `json:"user_id,omitempty"`
+	ExternalID             string                 `json:"external_id,omitempty"`
 	Name                   string                 `json:"name,omitempty"`
-	Avatar                 *UserAvatar            `json:"avatar,omitempty"`
+	Avatar                 *ContactAvatar         `json:"avatar,omitempty"`
 	LocationData           *LocationData          `json:"location_data,omitempty"`
 	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
 	CreatedAt              int64                  `json:"created_at,omitempty"`
@@ -41,6 +42,45 @@ type Contact struct {
 	NewSession             *bool                  `json:"new_session,omitempty"`
 }
 
+// LocationData represents the location for a Contact.
+type LocationData struct {
+	CityName      string  `json:"city_name,omitempty"`
+	ContinentCode string  `json:"continent_code,omitempty"`
+	CountryName   string  `json:"country_name,omitempty"`
+	Latitude      float64 `json:"latitude,omitempty"`
+	Longitude     float64 `json:"longitude,omitempty"`
+	PostalCode    string  `json:"postal_code,omitempty"`
+	RegionName    string  `json:"region_name,omitempty"`
+	Timezone      string  `json:"timezone,omitempty"`
+	CountryCode   string  `json:"country_code,omitempty"`
+}
+
+// SocialProfileList is a list SocialProfiles for a Contact.
+type SocialProfileList struct {
+	SocialProfiles []SocialProfile `json:"social_profiles,omitempty"`
+}
+
+// SocialProfile represents a social account for a Contact.
+type SocialProfile struct {
+	Name     string `json:"name,omitempty"`
+	ID       string `json:"id,omitempty"`
+	Username string `json:"username,omitempty"`
+	URL      string `json:"url,omitempty"`
+}
+
+// ContactIdentifiers are used to identify contacts in Intercom.
+type ContactIdentifiers struct {
+	ID         string `url:"-"`
+	ExternalID string `url:"external_id,omitempty"`
+	Email      string `url:"email,omitempty"`
+}
+
+// ContactAvatar represents an avatar for a Contact.
+type ContactAvatar struct {
+	Type     string `json:"type,omitempty"`
+	ImageURL string `json:"image_url,omitempty"`
+}
+
 type contactListParams struct {
 	PageParams
 	SegmentID string `url:"segment_id,omitempty"`
@@ -48,17 +88,21 @@ type contactListParams struct {
 	Email     string `url:"email,omitempty"`
 }
 
+type scrollParams struct {
+	ScrollParam string `url:"scroll_param,omitempty"`
+}
+
 // FindByID looks up a Contact by their Intercom ID.
 func (c *ContactService) FindByID(id string) (Contact, error) {
-	return c.findWithIdentifiers(UserIdentifiers{ID: id})
+	return c.findWithIdentifiers(ContactIdentifiers{ID: id})
 }
 
-// FindByUserID looks up a Contact by their UserID (automatically generated server side).
+// FindByUserID looks up a Contact by their ExternalID (automatically generated server side).
 func (c *ContactService) FindByUserID(userID string) (Contact, error) {
-	return c.findWithIdentifiers(UserIdentifiers{UserID: userID})
+	return c.findWithIdentifiers(ContactIdentifiers{ExternalID: userID})
 }
 
-func (c *ContactService) findWithIdentifiers(identifiers UserIdentifiers) (Contact, error) {
+func (c *ContactService) findWithIdentifiers(identifiers ContactIdentifiers) (Contact, error) {
 	return c.Repository.find(identifiers)
 }
 
@@ -67,9 +111,9 @@ func (c *ContactService) List(params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params})
 }
 
-// List all Contacts for App via Scroll API
+// Scroll List all Contacts for App via Scroll API
 func (c *ContactService) Scroll(scrollParam string) (ContactList, error) {
-       return c.Repository.scroll(scrollParam)
+	return c.Repository.scroll(scrollParam)
 }
 
 // ListByEmail looks up a list of Contacts by their Email.
@@ -77,12 +121,12 @@ func (c *ContactService) ListByEmail(email string, params PageParams) (ContactLi
 	return c.Repository.list(contactListParams{PageParams: params, Email: email})
 }
 
-// List Contacts by Segment.
+// ListBySegment lists Contacts by Segment.
 func (c *ContactService) ListBySegment(segmentID string, params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params, SegmentID: segmentID})
 }
 
-// List Contacts By Tag.
+// ListByTag lists Contacts By Tag.
 func (c *ContactService) ListByTag(tagID string, params PageParams) (ContactList, error) {
 	return c.Repository.list(contactListParams{PageParams: params, TagID: tagID})
 }
@@ -97,11 +141,6 @@ func (c *ContactService) Update(contact *Contact) (Contact, error) {
 	return c.Repository.update(contact)
 }
 
-// Convert Contact to User
-func (c *ContactService) Convert(contact *Contact, user *User) (User, error) {
-	return c.Repository.convert(contact, user)
-}
-
 // Delete Contact
 func (c *ContactService) Delete(contact *Contact) (Contact, error) {
 	return c.Repository.delete(contact.ID)
@@ -110,13 +149,13 @@ func (c *ContactService) Delete(contact *Contact) (Contact, error) {
 // MessageAddress gets the address for a Contact in order to message them
 func (c Contact) MessageAddress() MessageAddress {
 	return MessageAddress{
-		Type:   "contact",
-		ID:     c.ID,
-		Email:  c.Email,
-		UserID: c.UserID,
+		Type:       "contact",
+		ID:         c.ID,
+		Email:      c.Email,
+		ExternalID: c.ExternalID,
 	}
 }
 
 func (c Contact) String() string {
-	return fmt.Sprintf("[intercom] contact { id: %s name: %s, user_id: %s, email: %s }", c.ID, c.Name, c.UserID, c.Email)
+	return fmt.Sprintf("[intercom] contact { id: %s name: %s, external_id: %s, email: %s }", c.ID, c.Name, c.ExternalID, c.Email)
 }

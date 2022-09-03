@@ -9,7 +9,7 @@ type Reply struct {
 	AdminID        string   `json:"admin_id,omitempty"`
 	IntercomID     string   `json:"intercom_user_id,omitempty"`
 	Email          string   `json:"email,omitempty"`
-	UserID         string   `json:"user_id,omitempty"`
+	ExternalID     string   `json:"external_id,omitempty"`
 	AttachmentURLs []string `json:"attachment_urls,omitempty"`
 }
 

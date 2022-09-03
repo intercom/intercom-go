@@ -12,7 +12,7 @@ import (
 type CompanyRepository interface {
 	find(CompanyIdentifiers) (Company, error)
 	list(companyListParams) (CompanyList, error)
-	listUsers(string, companyUserListParams) (UserList, error)
+	listContacts(string, companyUserListParams) (ContactList, error)
 	scroll(scrollParam string) (CompanyList, error)
 	save(*Company) (Company, error)
 }
@@ -62,14 +62,14 @@ func (api CompanyAPI) list(params companyListParams) (CompanyList, error) {
 	return companyList, err
 }
 
-func (api CompanyAPI) listUsers(id string, params companyUserListParams) (UserList, error) {
-	companyUserList := UserList{}
+func (api CompanyAPI) listContacts(id string, params companyUserListParams) (ContactList, error) {
+	companyContactList := ContactList{}
 	data, err := api.getClientForListUsers(id, params)
 	if err != nil {
-		return companyUserList, err
+		return companyContactList, err
 	}
-	err = json.Unmarshal(data, &companyUserList)
-	return companyUserList, err
+	err = json.Unmarshal(data, &companyContactList)
+	return companyContactList, err
 }
 
 func (api CompanyAPI) getClientForListUsers(id string, params companyUserListParams) ([]byte, error) {

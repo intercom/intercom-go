@@ -95,8 +95,8 @@ type MessagePerson interface {
 }
 
 type MessageAddress struct {
-	Type   string `json:"type,omitempty"`
-	ID     string `json:"id,omitempty"`
-	Email  string `json:"email,omitempty"`
-	UserID string `json:"user_id,omitempty"`
+	Type       string `json:"type,omitempty"`
+	ID         string `json:"id,omitempty"`
+	Email      string `json:"email,omitempty"`
+	ExternalID string `json:"external_id,omitempty"`
 }

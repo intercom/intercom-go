@@ -29,7 +29,7 @@ func TestReplyConversationComment(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	_, err := conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body")
+	_, err := conversationService.Reply("123", &Contact{ID: "abc123"}, CONVERSATION_COMMENT, "Body")
 	if err != nil {
 		t.Errorf("Failed to add conversation reply: %s", err)
 	}
@@ -46,7 +46,7 @@ func TestReplyConversationCommentWithAttachment(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	_, err := conversationService.ReplyWithAttachmentURLs("123", &User{ID: "abc123"}, CONVERSATION_COMMENT, "Body", []string{"http://www.example.com/attachment.jpg"})
+	_, err := conversationService.ReplyWithAttachmentURLs("123", &Contact{ID: "abc123"}, CONVERSATION_COMMENT, "Body", []string{"https://www.example.com/attachment.jpg"})
 	if err != nil {
 		t.Errorf("Failed to add conversation reply with attachment: %s", err)
 	}
@@ -63,7 +63,7 @@ func TestReplyConversationOpen(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	_, err := conversationService.Reply("123", &User{ID: "abc123"}, CONVERSATION_OPEN, "Body")
+	_, err := conversationService.Reply("123", &Contact{ID: "abc123"}, CONVERSATION_OPEN, "Body")
 	if err != nil {
 		t.Errorf("Failed to add conversation reply for open: %s", err)
 	}
@@ -122,8 +122,8 @@ func TestListUserConversationsUnread(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	user := User{}
-	list, _ := conversationService.ListByUser(&user, SHOW_UNREAD, PageParams{})
+	contact := Contact{}
+	list, _ := conversationService.ListByContact(&contact, SHOW_UNREAD, PageParams{})
 	if list.Conversations[0].ID != "123" {
 		t.Errorf("did not receive conversation")
 	}
@@ -137,8 +137,8 @@ func TestListUserConversationsAll(t *testing.T) {
 		}
 	}
 	conversationService := ConversationService{Repository: testAPI}
-	user := User{}
-	list, _ := conversationService.ListByUser(&user, SHOW_ALL, PageParams{})
+	contact := Contact{}
+	list, _ := conversationService.ListByContact(&contact, SHOW_ALL, PageParams{})
 	if list.Conversations[0].ID != "123" {
 		t.Errorf("did not receive conversation")
 	}
@@ -183,7 +183,7 @@ func (t TestConversationAPI) list(params ConversationListParams) (ConversationLi
 	if t.testFunc != nil {
 		t.testFunc(t.t, params)
 	}
-	return ConversationList{Conversations: []Conversation{Conversation{ID: "123"}}, Pages: PageParams{Page: 1, PerPage: 20}}, nil
+	return ConversationList{Conversations: []Conversation{{ID: "123"}}, Pages: PageParams{Page: 1, PerPage: 20}}, nil
 }
 
 func (t TestConversationAPI) find(id string) (Conversation, error) {

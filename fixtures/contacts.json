@@ -11,7 +11,7 @@
 		{
 			"type": "contact",
 			"id": "54c42e7ea7a765fa7",
-			"user_id": "123",
+			"external_id": "123",
 			"email": "mycontact@example.io",
 			"anonymous": true,
 			"name": "My Contact",
@@ -82,7 +82,7 @@
 		{
 			"type": "contact",
 			"id": "54c42e2e924b067904615236",
-			"user_id": "52454",
+			"external_id": "52454",
 			"email": "mycontact@example.io",
 			"anonymous": true,
 			"name": "Mr Go Lang",

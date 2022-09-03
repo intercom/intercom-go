@@ -29,7 +29,7 @@ func TestDeleteTag(t *testing.T) {
 
 func TestTaggingUsers(t *testing.T) {
 	tagService := TagService{Repository: TestTagAPI{t: t}}
-	taggingList := TaggingList{Name: "My Tag", Users: []Tagging{Tagging{UserID: "245"}}}
+	taggingList := TaggingList{Name: "My Tag", Contacts: []Tagging{{ContactID: "245"}}}
 	_, err := tagService.Tag(&taggingList)
 	if err != nil {
 		t.Errorf("Failed to tag user tag: %s", err)
@@ -59,8 +59,8 @@ func (t TestTagAPI) delete(id string) error {
 }
 
 func (t TestTagAPI) tag(taggingList *TaggingList) (Tag, error) {
-	if taggingList.Users[0].UserID != "245" {
-		t.t.Errorf("Tagging request expected to have UserID 245 but had %s", taggingList.Users[0].UserID)
+	if taggingList.Contacts[0].ContactID != "245" {
+		t.t.Errorf("Tagging request expected to have UserID 245 but had %s", taggingList.Contacts[0].CompanyID)
 	}
 	if taggingList.Name != "My Tag" {
 		t.t.Errorf("Tagging request expected to have Name My Tag but had %s", taggingList.Name)

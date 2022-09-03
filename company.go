@@ -86,31 +86,31 @@ func (c *CompanyService) List(params PageParams) (CompanyList, error) {
 	return c.Repository.list(companyListParams{PageParams: params})
 }
 
-// List Companies by Segment
+// ListBySegment lists Companies by Segment
 func (c *CompanyService) ListBySegment(segmentID string, params PageParams) (CompanyList, error) {
 	return c.Repository.list(companyListParams{PageParams: params, SegmentID: segmentID})
 }
 
-// List Companies by Tag
+// ListByTag lists Companies by Tag
 func (c *CompanyService) ListByTag(tagID string, params PageParams) (CompanyList, error) {
 	return c.Repository.list(companyListParams{PageParams: params, TagID: tagID})
 }
 
-// List Company Users by ID
-func (c *CompanyService) ListUsersByID(id string, params PageParams) (UserList, error) {
-	return c.listUsersWithIdentifiers(id, companyUserListParams{PageParams: params})
+// ListContactsByID lists Company Contacts by ID
+func (c *CompanyService) ListContactsByID(id string, params PageParams) (ContactList, error) {
+	return c.listContactsWithIdentifiers(id, companyUserListParams{PageParams: params})
 }
 
-// List Company Users by CompanyID
-func (c *CompanyService) ListUsersByCompanyID(companyID string, params PageParams) (UserList, error) {
-	return c.listUsersWithIdentifiers("", companyUserListParams{CompanyID: companyID, Type: "user", PageParams: params})
+// ListContactsByCompanyID lists Company Contacts by CompanyID
+func (c *CompanyService) ListContactsByCompanyID(companyID string, params PageParams) (ContactList, error) {
+	return c.listContactsWithIdentifiers("", companyUserListParams{CompanyID: companyID, Type: "user", PageParams: params})
 }
 
-func (c *CompanyService) listUsersWithIdentifiers(id string, params companyUserListParams) (UserList, error) {
-	return c.Repository.listUsers(id, params)
+func (c *CompanyService) listContactsWithIdentifiers(id string, params companyUserListParams) (ContactList, error) {
+	return c.Repository.listContacts(id, params)
 }
 
-// List all Companies for App via Scroll API
+// Scroll list all Companies for App via Scroll API
 func (c *CompanyService) Scroll(scrollParam string) (CompanyList, error) {
 	return c.Repository.scroll(scrollParam)
 }

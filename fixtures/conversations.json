@@ -5,10 +5,10 @@
 		"id": "147",
 		"created_at": 1400850973,
 		"updated_at": 1400857494,
-		"user": {
+		"contacts": [{
 			"type": "user",
 			"id": "536e564f316c83104c000020"
-		},
+		}],
 		"assignee": {
 			"type": "admin",
 			"id": "25"

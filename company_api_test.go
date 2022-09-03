@@ -27,16 +27,16 @@ func TestCompanyAPIFind(t *testing.T) {
 }
 
 func TestCompanyAPIListUsers(t *testing.T) {
-	http := TestCompanyHTTPClient{fixtureFilename: "fixtures/users.json", expectedURI: "/companies/54c42ed71623d8caa/users", t: t}
+	http := TestCompanyHTTPClient{fixtureFilename: "fixtures/contacts.json", expectedURI: "/companies/54c42ed71623d8caa/users", t: t}
 	api := CompanyAPI{httpClient: &http}
 	params := companyUserListParams{Type: "user"}
-	companyUserList, err := api.listUsers("54c42ed71623d8caa", params)
+	companyContactList, err := api.listContacts("54c42ed71623d8caa", params)
 	if err != nil {
 		t.Errorf("Error parsing fixture %s", err)
 	}
-	users := companyUserList.Users
-	if users[0].ID != "54c42e7ea7a765fa7" {
-		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", users[0].ID)
+	contacts := companyContactList.Contacts
+	if contacts[0].ID != "54c42e7ea7a765fa7" {
+		t.Errorf("ID was %s, expected 54c42e7ea7a765fa7", contacts[0].ID)
 	}
 }
 

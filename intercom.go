@@ -12,11 +12,9 @@ type Client struct {
 	Contacts      ContactService
 	Conversations ConversationService
 	Events        EventService
-	Jobs          JobService
 	Messages      MessageService
 	Segments      SegmentService
 	Tags          TagService
-	Users         UserService
 
 	// Mappings for resources to API constructs
 	AdminRepository        AdminRepository
@@ -24,11 +22,9 @@ type Client struct {
 	ContactRepository      ContactRepository
 	ConversationRepository ConversationRepository
 	EventRepository        EventRepository
-	JobRepository          JobRepository
 	MessageRepository      MessageRepository
 	SegmentRepository      SegmentRepository
 	TagRepository          TagRepository
-	UserRepository         UserRepository
 
 	// AppID For Intercom.
 	AppID string
@@ -51,7 +47,7 @@ const (
 
 type option func(c *Client) option
 
-// Set Options on the Intercom Client, see TraceHTTP, BaseURI and SetHTTPClient.
+// Option sets Options on the Intercom Client, see TraceHTTP, BaseURI and SetHTTPClient.
 func (c *Client) Option(opts ...option) (previous option) {
 	for _, opt := range opts {
 		previous = opt(c)
@@ -110,19 +106,15 @@ func (c *Client) setup() {
 	c.ContactRepository = ContactAPI{httpClient: c.HTTPClient}
 	c.ConversationRepository = ConversationAPI{httpClient: c.HTTPClient}
 	c.EventRepository = EventAPI{httpClient: c.HTTPClient}
-	c.JobRepository = JobAPI{httpClient: c.HTTPClient}
 	c.MessageRepository = MessageAPI{httpClient: c.HTTPClient}
 	c.SegmentRepository = SegmentAPI{httpClient: c.HTTPClient}
 	c.TagRepository = TagAPI{httpClient: c.HTTPClient}
-	c.UserRepository = UserAPI{httpClient: c.HTTPClient}
 	c.Admins = AdminService{Repository: c.AdminRepository}
 	c.Companies = CompanyService{Repository: c.CompanyRepository}
 	c.Contacts = ContactService{Repository: c.ContactRepository}
 	c.Conversations = ConversationService{Repository: c.ConversationRepository}
 	c.Events = EventService{Repository: c.EventRepository}
-	c.Jobs = JobService{Repository: c.JobRepository}
 	c.Messages = MessageService{Repository: c.MessageRepository}
 	c.Segments = SegmentService{Repository: c.SegmentRepository}
 	c.Tags = TagService{Repository: c.TagRepository}
-	c.Users = UserService{Repository: c.UserRepository}
 }

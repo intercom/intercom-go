@@ -18,7 +18,7 @@ func TestAdminMessageAddress(t *testing.T) {
 	if address.Type != "admin" {
 		t.Errorf("Admin address was not of type admin, was %s", address.Type)
 	}
-	if address.Email != "" && address.UserID != "" {
+	if address.Email != "" && address.ExternalID != "" {
 		t.Errorf("Admin address had Email/UserID")
 	}
 }

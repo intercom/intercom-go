@@ -43,7 +43,7 @@ func TestAPITagDelete(t *testing.T) {
 func TestAPITagTagging(t *testing.T) {
 	http := TestTagHTTPClient{t: t, fixtureFilename: "fixtures/tag.json", expectedURI: "/tags"}
 	api := TagAPI{httpClient: &http}
-	taggingList := TaggingList{Name: "My Tag", Users: []Tagging{Tagging{UserID: "2345"}}}
+	taggingList := TaggingList{Name: "My Tag", Contacts: []Tagging{{CompanyID: "2345"}}}
 	savedTag, _ := api.tag(&taggingList)
 	if savedTag.ID != "60218" {
 		t.Errorf("Expected saved tag with ID 60218, got %s", savedTag.ID)

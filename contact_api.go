@@ -10,12 +10,11 @@ import (
 
 // ContactRepository defines the interface for working with Contacts through the API.
 type ContactRepository interface {
-	find(UserIdentifiers) (Contact, error)
+	find(identifiers ContactIdentifiers) (Contact, error)
 	list(contactListParams) (ContactList, error)
 	scroll(scrollParam string) (ContactList, error)
 	create(*Contact) (Contact, error)
 	update(*Contact) (Contact, error)
-	convert(*Contact, *User) (User, error)
 	delete(id string) (Contact, error)
 }
 
@@ -24,18 +23,18 @@ type ContactAPI struct {
 	httpClient interfaces.HTTPClient
 }
 
-func (api ContactAPI) find(params UserIdentifiers) (Contact, error) {
+func (api ContactAPI) find(params ContactIdentifiers) (Contact, error) {
 	return unmarshalToContact(api.getClientForFind(params))
 }
 
-func (api ContactAPI) getClientForFind(params UserIdentifiers) ([]byte, error) {
+func (api ContactAPI) getClientForFind(params ContactIdentifiers) ([]byte, error) {
 	switch {
 	case params.ID != "":
 		return api.httpClient.Get(fmt.Sprintf("/contacts/%s", params.ID), nil)
-	case params.UserID != "":
+	case params.ExternalID != "":
 		return api.httpClient.Get("/contacts", params)
 	}
-	return nil, errors.New("Missing Contact Identifier")
+	return nil, errors.New("missing Contact Identifier")
 }
 
 func (api ContactAPI) list(params contactListParams) (ContactList, error) {
@@ -69,16 +68,6 @@ func (api ContactAPI) update(contact *Contact) (Contact, error) {
 	return unmarshalToContact(api.httpClient.Post("/contacts", &requestContact))
 }
 
-func (api ContactAPI) convert(contact *Contact, user *User) (User, error) {
-	cr := convertRequest{Contact: api.buildRequestContact(contact), User: requestUser{
-		ID:         user.ID,
-		UserID:     user.UserID,
-		Email:      user.Email,
-		SignedUpAt: user.SignedUpAt,
-	}}
-	return unmarshalToUser(api.httpClient.Post("/contacts/convert", &cr))
-}
-
 func (api ContactAPI) delete(id string) (Contact, error) {
 	contact := Contact{}
 	data, err := api.httpClient.Delete(fmt.Sprintf("/contacts/%s", id), nil)
@@ -87,11 +76,6 @@ func (api ContactAPI) delete(id string) (Contact, error) {
 	}
 	err = json.Unmarshal(data, &contact)
 	return contact, err
-}
-
-type convertRequest struct {
-	User    requestUser `json:"user"`
-	Contact requestUser `json:"contact"`
 }
 
 func unmarshalToContact(data []byte, err error) (Contact, error) {
@@ -103,12 +87,12 @@ func unmarshalToContact(data []byte, err error) (Contact, error) {
 	return savedContact, err
 }
 
-func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
-	return requestUser{
+func (api ContactAPI) buildRequestContact(contact *Contact) requestContact {
+	return requestContact{
 		ID:                     contact.ID,
 		Email:                  contact.Email,
 		Phone:                  contact.Phone,
-		UserID:                 contact.UserID,
+		ExternalID:             contact.ExternalID,
 		Name:                   contact.Name,
 		LastRequestAt:          contact.LastRequestAt,
 		LastSeenIP:             contact.LastSeenIP,
@@ -120,9 +104,47 @@ func (api ContactAPI) buildRequestContact(contact *Contact) requestUser {
 	}
 }
 
-func (api ContactAPI) getCompaniesToSendFromContact(contact *Contact) []UserCompany {
+func (api ContactAPI) getCompaniesToSendFromContact(contact *Contact) []ContactCompany {
 	if contact.Companies == nil {
-		return []UserCompany{}
+		return []ContactCompany{}
 	}
-	return RequestUserMapper{}.MakeUserCompaniesFromCompanies(contact.Companies.Companies)
+	return requestContact{}.MakeUserCompaniesFromCompanies(contact.Companies.Companies)
+}
+
+type requestContact struct {
+	ID                     string                 `json:"id,omitempty"`
+	Email                  string                 `json:"email,omitempty"`
+	Phone                  string                 `json:"phone,omitempty"`
+	ExternalID             string                 `json:"external_id,omitempty"`
+	Name                   string                 `json:"name,omitempty"`
+	SignedUpAt             int64                  `json:"signed_up_at,omitempty"`
+	RemoteCreatedAt        int64                  `json:"remote_created_at,omitempty"`
+	LastRequestAt          int64                  `json:"last_request_at,omitempty"`
+	LastSeenIP             string                 `json:"last_seen_ip,omitempty"`
+	UnsubscribedFromEmails *bool                  `json:"unsubscribed_from_emails,omitempty"`
+	Companies              []ContactCompany       `json:"companies,omitempty"`
+	CustomAttributes       map[string]interface{} `json:"custom_attributes,omitempty"`
+	UpdateLastRequestAt    *bool                  `json:"update_last_request_at,omitempty"`
+	NewSession             *bool                  `json:"new_session,omitempty"`
+	LastSeenUserAgent      string                 `json:"last_seen_user_agent,omitempty"`
+}
+
+func (rum requestContact) MakeUserCompaniesFromCompanies(companies []Company) []ContactCompany {
+	contactCompanies := make([]ContactCompany, len(companies))
+	for i := 0; i < len(companies); i++ {
+		contactCompanies[i] = ContactCompany{
+			CompanyID: companies[i].CompanyID,
+			Name:      companies[i].Name,
+			Remove:    companies[i].Remove,
+		}
+	}
+	return contactCompanies
+}
+
+// ContactCompany is the Company a Contact belongs to
+// used to update Companies on a Contact.
+type ContactCompany struct {
+	CompanyID string `json:"company_id,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Remove    *bool  `json:"remove,omitempty"`
 }
