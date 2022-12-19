@@ -13,17 +13,18 @@ type ConversationList struct {
 
 // A Conversation represents a conversation between users and admins in Intercom.
 type Conversation struct {
-	ID                  string               `json:"id"`
-	CreatedAt           int64                `json:"created_at"`
-	UpdatedAt           int64                `json:"updated_at"`
-	User                User                 `json:"user"`
-	Assignee            Admin                `json:"assignee"`
-	Open                bool                 `json:"open"`
-	Read                bool                 `json:"read"`
-	ConversationMessage ConversationMessage  `json:"source"`
-	ConversationParts   ConversationPartList `json:"conversation_parts"`
-	TagList             *TagList             `json:"tags"`
-	State               string               `json:"state,omitempty"`
+	ID                  string                 `json:"id"`
+	CreatedAt           int64                  `json:"created_at"`
+	UpdatedAt           int64                  `json:"updated_at"`
+	User                User                   `json:"user"`
+	Assignee            Admin                  `json:"assignee"`
+	Open                bool                   `json:"open"`
+	Read                bool                   `json:"read"`
+	ConversationMessage ConversationMessage    `json:"source"`
+	ConversationParts   ConversationPartList   `json:"conversation_parts"`
+	TagList             *TagList               `json:"tags"`
+	State               string                 `json:"state,omitempty"`
+	CustomAttributes    map[string]interface{} `json:"custom_attributes,omitempty"`
 }
 
 // A ConversationMessage is the message that started the conversation rendered for presentation
