@@ -35,7 +35,7 @@ type Contact struct {
 	UserAgentData          string                 `json:"user_agent_data,omitempty"`
 	Tags                   *TagList               `json:"tags,omitempty"`
 	Segments               *SegmentList           `json:"-,omitempty"`
-	Companies              *CompanyList           `json:"-,omitempty"`
+	Companies              *CompanyList           `json:"companies,omitempty"`
 	CustomAttributes       map[string]interface{} `json:"custom_attributes,omitempty"`
 	UpdateLastRequestAt    *bool                  `json:"update_last_request_at,omitempty"`
 	NewSession             *bool                  `json:"new_session,omitempty"`
